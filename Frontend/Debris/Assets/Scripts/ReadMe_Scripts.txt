@@ -6,4 +6,4 @@ Simple Model-View-Controller architecture;
 
 #Game Folder will include all game managerial scripts. Game behavior and the likes.
 
-#Subfolders based on this organization are all right. But should always be arranged according to MVC architecture
+#Subfolders based on this organization are all right. But should always be arranged according to MVC architecture.
