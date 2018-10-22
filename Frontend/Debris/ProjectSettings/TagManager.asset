@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - objNode
+  - redLine
+  - blueLine
+  - greenLine
+  - whiteLine
+  - txtRed
+  - txtBlue
+  - txtGreen
+  - ALLOBJECTS
   layers:
   - Default
   - TransparentFX
@@ -40,4 +49,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: OBJECTS
+    uniqueID: 2390156663
     locked: 0
