@@ -5,7 +5,7 @@ using UnityEngine;
 public class IconSwitch : MonoBehaviour {
 	public Sprite OffSprite;
     public Sprite OnSprite;
-    public B but;
+    /*public B but;
     public void ChangeImage()
     {
         if (but.image.sprite == OnSprite)
@@ -14,7 +14,7 @@ public class IconSwitch : MonoBehaviour {
         {
             but.image.sprite = OnSprite;
         }
-    }
+    }*/
 	// Use this for initialization
 	void Start () {
 		
