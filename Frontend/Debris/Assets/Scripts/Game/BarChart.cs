@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using CodeMonkey.Utils;
 
-public class LineChart : MonoBehaviour {
+public class BarChart : MonoBehaviour
+{
 
-    [SerializeField] private Sprite circleSprite;
+    [SerializeField] private Sprite dotSprite;
     private RectTransform graphContainer;
     private RectTransform labelTemplateX;
     private RectTransform labelTemplateY;
@@ -25,17 +26,17 @@ public class LineChart : MonoBehaviour {
         gameObjectList = new List<GameObject>();
 
         //The value to be input into the chart
-        List<int> valueList = new List<int>{ 5, 8, 16, 35, 42, 55, 31, 53, 26, 3, 11, 23, 40, 4, 26, 24 };
+        List<int> valueList = new List<int> { 5, 8, 16, 35, 42, 55, 31, 53, 26, 3, 11, 23, 40, 4, 26, 24 };
 
         //Create the graph, labelTemplateX and labelTemplateY
         ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
     }
 
-    private GameObject CreateCircle(Vector2 anchoredPosition)
+    private GameObject CreateDot(Vector2 anchoredPosition)
     {
-        GameObject gameObject = new GameObject("Knob", typeof(Image));
+        GameObject gameObject = new GameObject("Dot", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().sprite = circleSprite;
+        gameObject.GetComponent<Image>().sprite = dotSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
         rectTransform.sizeDelta = new Vector2(11, 11);
@@ -46,14 +47,17 @@ public class LineChart : MonoBehaviour {
 
     private void ShowGraph(List<int> valueList, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
-        if (getAxisLableX == null) {
+        if (getAxisLableX == null)
+        {
             getAxisLableX = delegate (int _i) { return _i.ToString(); };
         }
-        if (getAxisLableY == null) {
+        if (getAxisLableY == null)
+        {
             getAxisLableY = delegate (float _f) { return Mathf.RoundToInt(_f).ToString(); };
         }
 
-        foreach (GameObject gameObject in gameObjectList) {
+        foreach (GameObject gameObject in gameObjectList)
+        {
             Destroy(gameObject);
         }
 
@@ -67,18 +71,22 @@ public class LineChart : MonoBehaviour {
         float yMaximum = valueList[0];
         float yMinimum = valueList[0];
 
-        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount,0); i < valueList.Count; i++) {
+        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
+        {
             int value = valueList[i];
-            if (value > yMaximum) {
+            if (value > yMaximum)
+            {
                 yMaximum = value;
             }
-            if (value < yMinimum) {
+            if (value < yMinimum)
+            {
                 yMinimum = value;
             }
         }
 
         float yDifference = yMaximum - yMinimum;
-        if (yDifference <= 0) {
+        if (yDifference <= 0)
+        {
             yDifference = 5f;
         }
         yMaximum = yMaximum + (yDifference * 0.2f);
@@ -88,19 +96,19 @@ public class LineChart : MonoBehaviour {
 
         int xIndex = 0;
 
-        GameObject lastCircleGameObject = null;
+        GameObject lastDotGameObject = null;
         for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
         {
             float xPosition = xSize + xIndex * xSize;
-            float yPosition = ((valueList[i] - yMinimum)/ (yMaximum - yMinimum)) * graphHeight;
-            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
-            gameObjectList.Add(circleGameObject);
-            if (lastCircleGameObject != null)
+            float yPosition = ((valueList[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
+            GameObject dotGameObject = CreateDot(new Vector2(xPosition, yPosition));
+            gameObjectList.Add(dotGameObject);
+            if (lastDotGameObject != null)
             {
-                GameObject dotConnecionGameObject = CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition);
+                GameObject dotConnecionGameObject = CreateDotConnection(lastDotGameObject.GetComponent<RectTransform>().anchoredPosition, dotGameObject.GetComponent<RectTransform>().anchoredPosition);
                 gameObjectList.Add(dotConnecionGameObject);
             }
-            lastCircleGameObject = circleGameObject;
+            lastDotGameObject = dotGameObject;
 
             //Create the label for x axis
             RectTransform labelX = Instantiate(labelTemplateX);
@@ -121,7 +129,7 @@ public class LineChart : MonoBehaviour {
         }
 
         int separatorCount = 15;
-        for (int i = 0; i <= separatorCount; i++) 
+        for (int i = 0; i <= separatorCount; i++)
         {
             //Create the label for y axis
             RectTransform labelY = Instantiate(labelTemplateY);
@@ -159,3 +167,4 @@ public class LineChart : MonoBehaviour {
         return gameObject;
     }
 }
+
