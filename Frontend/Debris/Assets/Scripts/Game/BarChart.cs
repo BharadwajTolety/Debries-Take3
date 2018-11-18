@@ -66,7 +66,7 @@ public class BarChart : MonoBehaviour
         float graphWidth = graphContainer.sizeDelta.x;
         float graphHeight = graphContainer.sizeDelta.y;
 
-        int maxVisibleValueAmount = 10;
+        int maxVisibleValueAmount = 4;
 
         float yMaximum = valueList[0];
         float yMinimum = valueList[0];
@@ -99,9 +99,9 @@ public class BarChart : MonoBehaviour
         //GameObject lastDotGameObject = null;
         for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
         {
-            float xPosition = xSize + xIndex * xSize;
+            float xPosition = xSize * 0.5f + xIndex * xSize;
             float yPosition = ((valueList[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
-            GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * 0.9f);
+            GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * 0.8f);
             gameObjectList.Add(barGameObject);
 
 
