@@ -25,7 +25,7 @@ public class BarChart : MonoBehaviour
         dashTemplateY = graphContainer.Find("dashTemplateY").GetComponent<RectTransform>();
         gameObjectList = new List<GameObject>();
 
-        //The value to be input into the chart
+        //The input value
         List<int> valueList = new List<int> { 5, 8, 16, 35, 42, 55, 31, 53, 26, 3, 11, 23, 40, 4, 26, 24 };
 
         //Create the graph, labelTemplateX and labelTemplateY
@@ -66,7 +66,7 @@ public class BarChart : MonoBehaviour
         float graphWidth = graphContainer.sizeDelta.x;
         float graphHeight = graphContainer.sizeDelta.y;
 
-        int maxVisibleValueAmount = 15;
+        int maxVisibleValueAmount = 10;
 
         float yMaximum = valueList[0];
         float yMinimum = valueList[0];
@@ -96,19 +96,14 @@ public class BarChart : MonoBehaviour
 
         int xIndex = 0;
 
-        GameObject lastDotGameObject = null;
+        //GameObject lastDotGameObject = null;
         for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
         {
             float xPosition = xSize + xIndex * xSize;
             float yPosition = ((valueList[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
-            GameObject dotGameObject = CreateDot(new Vector2(xPosition, yPosition));
-            gameObjectList.Add(dotGameObject);
-            if (lastDotGameObject != null)
-            {
-                GameObject dotConnecionGameObject = CreateDotConnection(lastDotGameObject.GetComponent<RectTransform>().anchoredPosition, dotGameObject.GetComponent<RectTransform>().anchoredPosition);
-                gameObjectList.Add(dotConnecionGameObject);
-            }
-            lastDotGameObject = dotGameObject;
+            GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * 0.9f);
+            gameObjectList.Add(barGameObject);
+
 
             //Create the label for x axis
             RectTransform labelX = Instantiate(labelTemplateX);
@@ -150,21 +145,18 @@ public class BarChart : MonoBehaviour
         }
     }
 
-    //Create the connection between dots
-    private GameObject CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)
-    {
-        GameObject gameObject = new GameObject("dotConnection", typeof(Image));
+
+    private GameObject CreateBar(Vector2 graphPosition, float barWidth) {
+        GameObject gameObject = new GameObject("Bar", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
-        Vector2 dir = (dotPositionB - dotPositionA).normalized;
-        float distance = Vector2.Distance(dotPositionA, dotPositionB);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(graphPosition.x, 0f);
+        rectTransform.sizeDelta = new Vector2(barWidth, graphPosition.y);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
-        rectTransform.sizeDelta = new Vector2(distance, 3f);
-        rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
-        rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
+        rectTransform.pivot = new Vector2(0.5f, 0f);
         return gameObject;
+
     }
 }
 
