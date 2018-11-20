@@ -133,8 +133,6 @@ public class Map_Initiation : MonoBehaviour
             Nodes.Add(new Vector3((float)Px * unit_r, (float)Py * unit_r, 0));
         }
 
-
-
         //	foreach(Vector3 pos in Nodes){
         int nodes_length = Nodes.Count;
         Vector3 pos;
