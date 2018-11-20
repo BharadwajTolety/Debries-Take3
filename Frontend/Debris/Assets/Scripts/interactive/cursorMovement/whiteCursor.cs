@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class whiteCursor : MonoBehaviour {
     private Vector3 mousePosition;
-    // Use this for initialization
-    void Start () {
-		
-	}
 
     void Update()
     {

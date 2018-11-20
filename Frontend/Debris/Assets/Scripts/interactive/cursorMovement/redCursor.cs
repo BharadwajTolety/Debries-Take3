@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class redCursor : MonoBehaviour {
   private Vector3 mousePosition;
-	// Use this for initialization
-	void Start () {
-	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -36,9 +33,6 @@ public class redCursor : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-
 		Debug.Log ("ok");
-
 	}
-
 }

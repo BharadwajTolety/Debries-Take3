@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class GreenCursor : MonoBehaviour {
   private Vector3 mousePosition;
-  // Use this for initialization
-    void Start () {
-
-    }
 
   // Update is called once per frame
     void Update () {
