@@ -34,7 +34,7 @@ public class Main : MonoBehaviour{
     public Contractor[] Con_All = new Contractor[3];
 
 
-    private void Awake()
+    private void Update()
     {
         for (int i = 0; i < 3; i++)
         {
@@ -42,13 +42,10 @@ public class Main : MonoBehaviour{
         }
 
         Initiate_Contractor_Matric();
-
-
     }
 
     public void Initiate_Contractor_Matric()
     {
-
         //initiate and fill the edges list
         allEdges = new List<Edges>();
         Edges temp = new Edges();
@@ -57,7 +54,7 @@ public class Main : MonoBehaviour{
         GameObject[] theBlueEdges = GameObject.FindGameObjectsWithTag("blueLine");
         GameObject[] theGreenEdges = GameObject.FindGameObjectsWithTag("greenLine");
 
-
+        print("rededges: " + theRedEdges.Length);
         //get all red edges
         for (int i = 0; i < theRedEdges.Length; i++)
         {
@@ -114,6 +111,9 @@ public class Main : MonoBehaviour{
         Contractor_Clusters_new(1);
         Contractor_Clusters_new(2);
         Contractor_Clusters_new(3);
+
+        print("counting: " + allEdges.Count);
+       // print(allEdges[allEdges.Count-1]);
         print("OK");
     }
 
@@ -142,18 +142,21 @@ public class Main : MonoBehaviour{
             tempVar = Get_Node_number_from_string(GameObject.FindGameObjectsWithTag(contractorTag)[i].name, 1); //Node 1 of the edge
             if (tempVar != -1)
             {
-                if (!Con.Edges.Contains(tempVar)) Con.Edges.Add(tempVar);
+                if (!Con.Edges.Contains(tempVar))
+                    Con.Edges.Add(tempVar);
             }
             //////////////////////// add Nodes
             tempVar = Get_Node_number_from_string(GameObject.FindGameObjectsWithTag(contractorTag)[i].name, 2); //Node 1 of the edge
             if (tempVar != -1)
             {
-                if (!Con.Nodes.Contains(tempVar)) Con.Nodes.Add(tempVar);
+                if (!Con.Nodes.Contains(tempVar))
+                    Con.Nodes.Add(tempVar);
             }
             tempVar = Get_Node_number_from_string(GameObject.FindGameObjectsWithTag(contractorTag)[i].name, 3); //Node 2 of the edge
             if (tempVar != -1)
             {
-                if (!Con.Nodes.Contains(tempVar)) Con.Nodes.Add(tempVar);
+                if (!Con.Nodes.Contains(tempVar))
+                    Con.Nodes.Add(tempVar);
             }
 
         }

@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 31297217}
   - component: {fileID: 31297218}
+  - component: {fileID: 31297219}
   m_Layer: 0
   m_Name: MainScreen
   m_TagString: ALLOBJECTS
@@ -165,6 +166,17 @@ MonoBehaviour:
   unit_r: 10
   TransX: 0
   TransY: 0
+--- !u!114 &31297219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31297216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdabe942679f458448df2dd374e590da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &42116621
 GameObject:
   m_ObjectHideFlags: 0
