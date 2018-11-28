@@ -34,7 +34,7 @@ public class Main : MonoBehaviour{
     public Contractor[] Con_All = new Contractor[3];
 
 
-    private void Update()
+    private void Awake()
     {
         for (int i = 0; i < 3; i++)
         {
