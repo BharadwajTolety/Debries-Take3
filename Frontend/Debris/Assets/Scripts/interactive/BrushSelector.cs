@@ -38,7 +38,7 @@ public class BrushSelector : MonoBehaviour {
         GameObject.FindGameObjectWithTag("redCur").transform.position = new Vector3(-10000, 0, 0);
         GameObject.FindGameObjectWithTag("greenCur").transform.position = new Vector3(-10000, 0, 0);
     }
-    public void ChangeBrushSize(Slider slider)
+    /*public void ChangeBrushSize(Slider slider)
 	{
 		
 		try{
@@ -48,6 +48,6 @@ public class BrushSelector : MonoBehaviour {
 			Debug.Log ("Null"+ ex.Message);
 		}
 		//Debug.Log("New wind direction: " + slider.value);
-	}
+	}*/
 
 }

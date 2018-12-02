@@ -20,11 +20,11 @@ public class Click_count : MonoBehaviour {
 	private int count_intersect = 0;//11
     //Misc
 	private int count_undo = 0;//12
-	private int count_redo = 0;//13
+	private int count_redo = 0;//13*/
    
 
     public void press_count(int button_no)
-	{
+	{      
 		switch(button_no)
 		{
 			case 0:
@@ -74,7 +74,11 @@ public class Click_count : MonoBehaviour {
 	void Update () 
 	{
 		Debug.Log("Red button pressed : " + count_r);
-		Debug.Log("Green button pressed : " + count_g);
-		Debug.Log("Blue button pressed : " + count_b);
+		//Debug.Log("Green button pressed : " + count_g);
+		//Debug.Log("Blue button pressed : " + count_b);
+	}
+	private void Start()
+	{
+		
 	}
 }
