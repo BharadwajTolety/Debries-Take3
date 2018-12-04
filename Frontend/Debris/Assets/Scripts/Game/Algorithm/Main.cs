@@ -54,7 +54,7 @@ public class Main : MonoBehaviour{
         GameObject[] theBlueEdges = GameObject.FindGameObjectsWithTag("blueLine");
         GameObject[] theGreenEdges = GameObject.FindGameObjectsWithTag("greenLine");
 
-        print("rededges: " + theRedEdges.Length);
+        //print("rededges: " + theRedEdges.Length);
         //get all red edges
         for (int i = 0; i < theRedEdges.Length; i++)
         {

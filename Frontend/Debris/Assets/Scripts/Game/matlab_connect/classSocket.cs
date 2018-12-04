@@ -16,15 +16,15 @@ public class classSocket : MonoBehaviour
     StreamReader theReader;
     String Host = "localhost";
     Int32 Port = 55000;
+
+    /*
     void Start()
     {
         setupSocket();
         Debug.Log("socket is set up");
     }
-    // Update is called once per frame
-    void Update()
-    {
-    }
+    */
+
     public void setupSocket()
     {
         try
