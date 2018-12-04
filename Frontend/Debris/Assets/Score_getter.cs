@@ -38,5 +38,5 @@ public class Score_getter : MonoBehaviour {
 		readpath = Application.dataPath + "/Barru.txt";
 		readfile(readpath);
 	}
-
+ 
 }
