@@ -1,10 +1,10 @@
 ﻿<Properties StartupConfiguration="{1233E560-C13B-4CC6-2BDD-DA86C59F6CB7}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IconSwitch.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MainScreen.cs">
     <Files>
-      <File FileName="Assets/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile Overlay.shader" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ReadMe_Scripts.txt" Line="1" Column="1" />
-      <File FileName="Assets/IconSwitch.cs" Line="12" Column="4" />
+      <File FileName="Assets/Scripts/Game/BarChart.cs" Line="36" Column="6" />
+      <File FileName="Assets/Scripts/StartScreen.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MainScreen.cs" Line="8" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

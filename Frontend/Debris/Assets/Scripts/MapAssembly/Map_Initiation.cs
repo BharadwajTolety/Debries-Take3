@@ -41,7 +41,7 @@ public class Map_Initiation : MonoBehaviour
 
         itemData = JsonMapper.ToObject(JSONstring);
 
-        unit_r = 300;
+        unit_r = 80; // the scale between two nodes
         TransX = 30;
         TransY = -100;
         DrawMap();
@@ -133,8 +133,6 @@ public class Map_Initiation : MonoBehaviour
             Nodes.Add(new Vector3((float)Px * unit_r, (float)Py * unit_r, 0));
         }
 
-
-
         //	foreach(Vector3 pos in Nodes){
         int nodes_length = Nodes.Count;
         Vector3 pos;
@@ -209,7 +207,7 @@ public class Map_Initiation : MonoBehaviour
             GameObject NewObj;
             theSelectedObj = GameObject.Find(strType);
             NewObj = Instantiate(theSelectedObj, between2, Quaternion.identity);
-            NewObj.transform.localScale = new Vector3(1.0f, distance, 0.0f);
+            NewObj.transform.localScale = new Vector3(0.3f, distance, 0.0f); // Parameter1: the scale relative to the parent
             NewObj.transform.Rotate(Vector3.forward * 1 * tetha);//Rotate (startPoint, tetha);
             NewObj.transform.parent = gameObject.transform;
             NewObj.name = name;
