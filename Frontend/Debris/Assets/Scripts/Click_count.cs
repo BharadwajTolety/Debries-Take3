@@ -71,10 +71,13 @@ public class Click_count : MonoBehaviour {
 				break;
 		}
 	}
+
+    /*
 	void Update () 
 	{
 		Debug.Log("Red button pressed : " + count_r);
 		Debug.Log("Green button pressed : " + count_g);
 		Debug.Log("Blue button pressed : " + count_b);
 	}
+    */
 }

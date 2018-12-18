@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.IO;
 using System.Text;
+
 public class classSocket : MonoBehaviour
 {
     // Use this for initialization
@@ -14,17 +15,9 @@ public class classSocket : MonoBehaviour
     NetworkStream theStream;
     StreamWriter theWriter;
     StreamReader theReader;
-    String Host = "localhost";
-    Int32 Port = 55000;
-
-    /*
-    void Start()
-    {
-        setupSocket();
-        Debug.Log("socket is set up");
-    }
-    */
-
+    String Host = "LocalHost";
+    Int32 Port = 55002;
+    
     public void setupSocket()
     {
         try
@@ -33,7 +26,7 @@ public class classSocket : MonoBehaviour
             theStream = mySocket.GetStream();
             theWriter = new StreamWriter(theStream);
             socketReady = true;
-            Byte[] sendBytes = Encoding.UTF8.GetBytes("matlab can access the CSV now!");
+            Byte[] sendBytes = Encoding.UTF8.GetBytes("matlab can read CSV now!");
             mySocket.GetStream().Write(sendBytes, 0, sendBytes.Length);
             Debug.Log("socket is sent");
         }

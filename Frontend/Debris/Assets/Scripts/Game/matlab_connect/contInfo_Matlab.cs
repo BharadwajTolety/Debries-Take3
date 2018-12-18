@@ -1,24 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Linq;
 using System;
 using System.IO;
 using System.Text;
-using System.Runtime.InteropServices;
 
 public class contInfo_Matlab : classSocket
 {
     string csvPath;
 
-    private void Start()
+    private void Awake()
     {
-        writeCSV();
+       write_CSV();
     }
 
-    void writeCSV()
+    void write_CSV()
     {
         csvPath = Application.dataPath + "/Database/Output/edgelist_forMatlab.csv";
 
@@ -101,7 +98,7 @@ public class contInfo_Matlab : classSocket
             }
         }
 
-        Console.WriteLine("writting complete");
+        Debug.Log("writting complete");
 
         //setup the client for the matlab server to read
         setupSocket();
@@ -119,7 +116,8 @@ public class contInfo_Matlab : classSocket
         object mlab_result = null;
 
         matlab.Feval("unity_start", 0, out mlab_result);
-    }*/
+    }
+    */
 
     private int Get_Node_number_from_string(string value, int i)
     {
