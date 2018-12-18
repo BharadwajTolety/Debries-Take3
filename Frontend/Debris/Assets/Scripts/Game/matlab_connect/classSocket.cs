@@ -33,7 +33,7 @@ public class classSocket : MonoBehaviour
             theStream = mySocket.GetStream();
             theWriter = new StreamWriter(theStream);
             socketReady = true;
-            Byte[] sendBytes = Encoding.UTF8.GetBytes("yah!! it works");
+            Byte[] sendBytes = Encoding.UTF8.GetBytes("matlab can access the CSV now!");
             mySocket.GetStream().Write(sendBytes, 0, sendBytes.Length);
             Debug.Log("socket is sent");
         }

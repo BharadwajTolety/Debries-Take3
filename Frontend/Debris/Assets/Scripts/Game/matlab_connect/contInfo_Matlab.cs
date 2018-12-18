@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 
 public class contInfo_Matlab : classSocket
 {
@@ -100,8 +101,25 @@ public class contInfo_Matlab : classSocket
             }
         }
 
-        Console.WriteLine("write!!");
+        Console.WriteLine("writting complete");
+
+        //setup the client for the matlab server to read
+        setupSocket();
     }
+
+    /*
+    private void call_mat()
+    {
+        //make a matlab instance
+        MLApp.MLApp matlab = new MLApp.MLApp();
+
+        //get the codes library in
+        matlab.Execute(@"cd C:\Users\Uttkarsh\Desktop\Debris_work_folder\Codes-debris\Codes");
+
+        object mlab_result = null;
+
+        matlab.Feval("unity_start", 0, out mlab_result);
+    }*/
 
     private int Get_Node_number_from_string(string value, int i)
     {
