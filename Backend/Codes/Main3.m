@@ -255,9 +255,36 @@ end
     Rep(o).obj(persona).time = TIME_VEC;
     Rep(o).obj(persona).int = OVERLAP_VEC;
     
-    fileID = fopen('myfile.txt','w');
-    nbytes = fprintf(fileID,'%5d\n%5d',MAXTIME2, MINPROFIT2);
-    fclose(fileID);
+    %write score for unity
+    %fprintf('%s',pwd);
+    pathSplit=regexp(pwd,'\','split');
+    initPath = '';
+
+    for n = 1:numel(pathSplit)
+    if(strcmp(pathSplit(n),'Backend'))
+          break;
+    end
+   
+        if n == 1
+            initPath = strcat(initPath,pathSplit(n));
+        else
+            initPath = strcat(initPath,'\',pathSplit(n));
+        end
+   
+    end
+
+
+    scoreFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\score_info_fromMatlab.txt');
+    scoreFile = char(scoreFile);
+
+    fprintf('%s',scoreFile);
+    [fid, msg] = fopen(scoreFile,'w');
+    if fid < 0 
+         error('Failed to open file "%s" because: "%s"', scoreFile, msg);
+    else
+        nbytes = fprintf(fid,'%f,%f',MAXTIME2, MINPROFIT2);
+    end
+    fclose(fid);
 end
 %end
 
