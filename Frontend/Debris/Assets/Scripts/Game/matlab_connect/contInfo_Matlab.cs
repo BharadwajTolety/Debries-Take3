@@ -9,12 +9,14 @@ using System.Text;
 public class contInfo_Matlab : classSocket
 {
     string csvPath;
+    GameObject gameManager;
 
     private void Awake()
     {
        write_CSV();
     }
 
+    //write out the csv for matlab to read
     void write_CSV()
     {
         csvPath = Application.dataPath + "/Database/Output/edgelist_forMatlab.csv";
@@ -30,6 +32,7 @@ public class contInfo_Matlab : classSocket
         }
     }
 
+    //read all the contractor info and then write that info into csv
     public void read_contractor_info()
     {
         File.WriteAllText(csvPath, string.Empty);
@@ -102,6 +105,8 @@ public class contInfo_Matlab : classSocket
 
         //setup the client for the matlab server to read
         setupSocket();
+
+        call_reading();
     }
 
     /*
@@ -119,17 +124,13 @@ public class contInfo_Matlab : classSocket
     }
     */
 
-    private int Get_Node_number_from_string(string value, int i)
+    //read score sent from matlab
+    private void call_reading()
     {
-        char delimiter = '_';
-        string[] substrings = value.Split(delimiter);
-        if (i >= substrings.Length)
-        {
-            return -1;
-        }
-        else
-        {
-            return System.Int32.Parse(substrings[i]);
-        }
+        gameManager = GameObject.Find("GameManager") ;
+        read_Score read = (read_Score)gameManager.GetComponent(typeof(read_Score));
+
+        //start reading
+        read.reading();
     }
 }

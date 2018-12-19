@@ -21,16 +21,6 @@ for o = 1:1 %There are a total of 7 combinations of objectives
     profit_selected = oo(2);
     intersection_selected = oo(3);
 
-%load('Contractor.mat') % indicates the previously given solution to the user that the user is goint to play with
-%load('Contractor(shuffledDebris).mat')
-%load('Contractor(RandomDebris).mat')
-%load('Contractor2.mat')
-%load('ProblemData(Instance2).mat') %The problem data that is never going to change
-%load('ProblemData4.mat')
-%load('Regions.mat') %No need anymore
-
-%load('brushed_edges.mat') % from, to , new_nc(as a list)
-
 %Get a profit and time vec to see the relative difference of contractor's
 %values
 profit_vec=zeros(1,no_contractor);
@@ -41,25 +31,6 @@ for i=1:no_contractor
     profit_vec(i) = Contractor{i}.TotalProfit;
     time_vec(i) = Contractor{i}.TotalTime;
 end
-
-
-% newCoord = zeros(no_nodes,2);
-% for coord = 1:no_nodes
-%     lat = Coordinates(coord,2);
-%     lon = Coordinates(coord,1);
-%     alt=0;
-%     [x,y]=getCartesianCoord(lat,lon,alt);
-%     newCoord(coord,2)=x; newCoord(coord,1)=y;
-% end
-
-% newCoord = Coordinates;
-% 
-% [ d ] = euclidianDistance( x1, x2, y1, y2 );
-% edgeCoord = getEdgeCoord(EdgeList, newCoord);
-
-
-%brushed_edges = visualAttractiveness2(Contractor, EdgeList, edgeCoord, newCoord);
-
 
 EdgeListMatrix = GenerateEdgeList( Contractor );
 
@@ -137,12 +108,6 @@ end
 %edge change are the edges that will be transfered
 
 
-
-
-
-
-
-
 %Objectives:
 % Min MAXTIME
 % Max MINPROFIT
@@ -156,8 +121,6 @@ MINPROFIT1 = min(profit_vec);
 OVERLAP_VEC = OVERLAP1;
 TIME_VEC= MAXTIME1;
 PROFIT_VEC = MINPROFIT1;
-
-
 
     
 %for replication = 1:15
@@ -286,58 +249,3 @@ end
     end
     fclose(fid);
 end
-%end
-
-%load('ALLREP(4PersonasInst2).mat')%- ALLREP is for random debris
-%
-%load('REP(Person4).mat')
-%load('ALLREP(4Personas).mat')%- ALLREP is for random debris
-
-% load('REP(Person1-2).mat')
-% load('REP3.mat')
-%obj_cat_name= {'Time', 'Time + Int', 'Int', 'Profit', 'Profit+Int', 'Profit+Time', 'Profit+Time+Int'};
-%persona_name = {'All bad cycles Profit/time',' Bad cycles Intersection', 'Visual Overlap Brushing', 'Visual Overlap Erasing'};
-%color_vec = {[1, 0.1, 0.6],[0, 0.6, 0 ],[0.75 0.75 0.25],'b',[0.88 0.69 0.73],'c'};
-%%
-%figure 
-%hold on 
-%%
-%for p = 4
-%for o=1:6
-    %plot(1:16, Rep(o).obj(p).int,'-*','MarkerSize',10,'DisplayName',obj_cat_name{o},'Color',color_vec{o},'LineWidth',2)    
-    %plot(1:16, Rep(o).obj(p).time,'-*','DisplayName',persona_name{p},'Color',color_vec{p},'LineWidth',2,'MarkerSize',10)   
-%end
-%end
-%title('Change in Intersection wrt diff repairs (debris random, persona 4, Instance2)')
-%title('Change in Profit wrt diff personas (debris random, Instance 2, repair for P+I)')
-%xlabel('Iteration')
-%ylabel('Objectives')
-%legend('show')
-%legend('Location','southeast')
-%hold off
-
-% figure
-% hold on
-% %plot( 1:4,TIME_VEC,'-*')
-% %plot(1:4,OVERLAP_VEC.*100,'-*','color','r')
-% plot(1:21,TIME_VEC,'-*',1:21,PROFIT_VEC,'-*')
-% title('Improvement based on Profit + Time')
-% xlabel('Iteration')
-% ylabel('Objectives')
-% hold off
-%
-% legend('Time', 'Profit')%, 'Intersection')
-%
-% %--------------%
-% figure
-% hold on
-% plot(1:21,OVERLAP_VEC,'-*','color','r')
-% title('Improvement based on Profit + Time')
-% xlabel('Iteration')
-% ylabel('Overlap Objective')
-% hold off
-%
-% [ob1 , i ]= max(PROFIT_VEC);
-% ob2 = TIME_VEC(i);
-% ob3 = OVERLAP_VEC(i);
-%%

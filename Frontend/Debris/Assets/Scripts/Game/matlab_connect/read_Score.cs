@@ -17,13 +17,13 @@ public class read_Score : MonoBehaviour
         reset_score();
     }
 
-    void reset_score()
+    private void reset_score()
     {
         if(!File.Exists(scorePath))
         {
             File.CreateText(scorePath).Dispose();
         }
-        //StreamWriter writeScore = new StreamWriter(scorePath);
+        
         //reset/init the file to waiting..
         File.WriteAllText(scorePath,"waiting...");
 
@@ -31,7 +31,7 @@ public class read_Score : MonoBehaviour
         minTime = 0; maxProfit = 0;
     }
 
-    bool read_score()
+    private bool read_score()
     {
         string initRead;
 
@@ -61,10 +61,14 @@ public class read_Score : MonoBehaviour
 
     public void reading()
     {
+        reset_score();
         Debug.Log("waiting on score...");
-        //while (!read_score()) ;
-        read_score();
+
+        while (!read_score()) ;
+        //read_score();
         Debug.Log(maxProfit);
         Debug.Log(minTime);
+
+        reset_score();
     }
 }
