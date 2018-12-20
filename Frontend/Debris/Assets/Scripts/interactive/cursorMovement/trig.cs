@@ -4,40 +4,40 @@ using UnityEngine;
 using System;
 public class trig : MonoBehaviour {
 
-	void OnTriggerEnter2D(Collider2D col)
-	{
+    private void OnTriggerStay2D(Collider2D col)
+ 	{
 		//Debug.Log (this.name );
-		if (this.name == "cursorRed") {
-			if (Input.GetMouseButton (0) == true && col.name != "cursorRed" && col.tag != "redLine") {
-               //print(col.tag);
-				AsignLine ("LineRed", col.name);
+		if (this.tag == "redCursor") {
+            //Debug.Log(col.tag + " "  + this.tag);
+            if (Input.GetMouseButton (0) == true && this.tag == "redCursor" && col.tag != "redLine") {
+                Debug.Log("works red");
+				AssignLine ("LineRed", col.name);
 			}
 		}
-		else if(this.name == "cursorGreen") {
-			if (Input.GetMouseButton (0) == true && col.name != "cursorGreen" && col.tag != "greenLine") {
-				AsignLine ("LineGreen", col.name);
+		else if(this.tag == "greenCursor") {
+			if (Input.GetMouseButton (0) == true && this.tag == "greenCursor" && col.tag != "greenLine") {
+                Debug.Log("works");
+                AssignLine ("LineGreen", col.name);
 			}
 		}
-		else if(this.name == "cursorBlue") {
-			if (Input.GetMouseButton (0) == true && col.name != "cursorBlue" && col.tag != "blueLine") {
-				AsignLine ("LineBlue", col.name);
+		else if(this.tag == "blueCursor") {
+			if (Input.GetMouseButton (0) == true && this.tag == "blueCursor" && col.tag != "blueLine") {
+                Debug.Log("works");
+                AssignLine ("LineBlue", col.name);
 			}
 		}
-
-        else if (this.name == "cursorWhite")
+        else if (this.tag == "whiteCursor")
         {
-            if (Input.GetMouseButton(0) == true && col.name != "cursorWhite" && col.tag != "LineWhite")
+            if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "whiteLine")
             {
-                AsignLine("LineWhite", col.name);
+                AssignLine("LineWhite", col.name);
             }
         }
-
-
     }
 
-	void AsignLine(string lineType,string lineName){
+	void AssignLine(string lineType,string lineName){
 
-		//Debug.Log (lineType);
+		Debug.Log (lineType);
 
 		GameObject theSelectedObj;
 		GameObject NewObj=GameObject.Find(lineType);
@@ -58,12 +58,10 @@ public class trig : MonoBehaviour {
             //print(objectName);
             Destroy(theSelectedObj);
         }
-        
-
 
 		GameObject created= Instantiate (NewObj, between2, Quaternion.identity);
 		created.transform.rotation=tetha;//Rotate (startPoint, tetha);
-		created.transform.parent =GameObject.Find("Container").gameObject.transform ;
+		created.transform.parent =GameObject.Find("MapScreen").gameObject.transform ;
 		created.transform.localScale = distance;
 
 		created.name = lineName;
@@ -89,7 +87,7 @@ public class trig : MonoBehaviour {
 
         GameObject created = Instantiate(NewObj, between2, Quaternion.identity);
         created.transform.rotation = tetha;//Rotate (startPoint, tetha);
-        created.transform.parent = GameObject.Find("Container").gameObject.transform;
+        created.transform.parent = GameObject.Find("MapScreen").gameObject.transform;
         created.transform.localScale = distance;
 
         created.name = lineName;
