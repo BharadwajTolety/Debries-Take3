@@ -45,7 +45,8 @@ public class contInfo_Matlab : classSocket
         string to = "-";
         string nc = "-";
         StringBuilder csv = new StringBuilder();
-        string[] nodeInfo = new string[3];
+        string[] nodeInfo = new string[4];
+        int count_edges = 0;
 
         for(int i = 0 ; i < themRedEdges.Length ; i++)
         {
@@ -55,13 +56,14 @@ public class contInfo_Matlab : classSocket
                 from = nodeInfo[2];
                 to = nodeInfo[3];
                 nc = "1";
-            }
 
-            if(from != "-" || to != "-" || nc !="-")
-            {
-                string newline = string.Format("{0},{1},{2}", from, to, nc);
-                csv.AppendLine(newline);
-                File.WriteAllText(csvPath, csv.ToString());
+                if (from != "-" || to != "-" || nc != "-")
+                {
+                    string newline = string.Format("{0},{1},{2}", from, to, nc);
+                    csv.AppendLine(newline);
+                    File.WriteAllText(csvPath, csv.ToString());
+                    count_edges += 1;
+                }
             }
         }
 
@@ -73,13 +75,14 @@ public class contInfo_Matlab : classSocket
                 from = nodeInfo[2];
                 to = nodeInfo[3];
                 nc = "2";
-            }
 
-            if (from != "-" || to != "-" || nc != "-")
-            {
-                string newline = string.Format("{0},{1},{2}", from, to, nc);
-                csv.AppendLine(newline);
-                File.WriteAllText(csvPath, csv.ToString());
+                if (from != "-" || to != "-" || nc != "-")
+                {
+                    string newline = string.Format("{0},{1},{2}", from, to, nc);
+                    csv.AppendLine(newline);
+                    File.WriteAllText(csvPath, csv.ToString());
+                    count_edges += 1;
+                }
             }
         }
 
@@ -91,17 +94,18 @@ public class contInfo_Matlab : classSocket
                 from = nodeInfo[2];
                 to = nodeInfo[3];
                 nc = "3";
-            }
 
-            if (from != "-" || to != "-" || nc != "-")
-            {
-                string newline = string.Format("{0},{1},{2}", from, to, nc);
-                csv.AppendLine(newline);
-                File.WriteAllText(csvPath, csv.ToString());
+                if (from != "-" || to != "-" || nc != "-")
+                {
+                    string newline = string.Format("{0},{1},{2}", from, to, nc);
+                    csv.AppendLine(newline);
+                    File.WriteAllText(csvPath, csv.ToString());
+                    count_edges += 1;
+                }
             }
         }
 
-        Debug.Log("writting complete");
+        Debug.Log("writting complete!! total edges - " + count_edges);
 
         //setup the client for the matlab server to read
         setupSocket();

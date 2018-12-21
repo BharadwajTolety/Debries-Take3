@@ -136,10 +136,10 @@ public class Map_Initiation : MonoBehaviour
         //	foreach(Vector3 pos in Nodes){
         int nodes_length = Nodes.Count;
         Vector3 pos;
-        for (int i = 1; i < nodes_length; i++)
+        for (int i = 0; i < nodes_length; i++)
         {
             pos = Nodes[i];
-            AddNode(pos, "objNode", "n" + i);
+            AddNode(pos, "objNode", "n" + (i+1));
             //addNodeText (pos, "txtVal", "txt"+i,i+1);
         }
 
@@ -160,12 +160,12 @@ public class Map_Initiation : MonoBehaviour
 
             //Manager.Instance.debrisList.Add((float)itemData["EdgeData"][i]["debris"]);
 
-            source = (int)itemData["EdgeData"][i]["From"] - 1;
+            source = (int)itemData["EdgeData"][i]["From"];
             //contractorCode = (int)itemData ["CD"];
-            dest = (int)itemData["EdgeData"][i]["To"] - 1;
+            dest = (int)itemData["EdgeData"][i]["To"];
             contractorCode = (int)itemData["EdgeData"][i]["Contractor"];
             //Debug.Log(dest);
-            edgeNumber = i;
+            edgeNumber = i + 1;
 
             if (contractorCode == 1)
             {

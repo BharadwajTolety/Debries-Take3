@@ -6,22 +6,22 @@ public class trig : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D col)
  	{
-        Debug.Log(this.tag + " " + col.tag);
+        //Debug.Log(this.tag + " " + col.tag);
 		if (col.tag == "redCursor") {
             if (Input.GetMouseButton (0) == true && this.tag != "redLine" && col.tag == "redCursor") {
-                Debug.Log("works red");
+                //Debug.Log("works red");
 				AssignLine ("LineRed", this.name);
 			}
 		}
 		else if(col.tag == "greenCursor") {
 			if (Input.GetMouseButton (0) == true && this.tag != "greenLine" && col.tag == "greenCursor") {
-                Debug.Log("works");
+                //Debug.Log("works green");
                 AssignLine ("LineGreen", this.name);
 			}
 		}
 		else if(col.tag == "blueCursor") {
 			if (Input.GetMouseButton (0) == true && this.tag != "blueLine" && col.tag == "blueCursor") {
-                Debug.Log("works");
+                //Debug.Log("works blue");
                 AssignLine ("LineBlue", this.name);
 			}
 		}
@@ -36,7 +36,7 @@ public class trig : MonoBehaviour {
 
 	void AssignLine(string lineType,string lineName){
 
-		Debug.Log (lineType);
+		//Debug.Log (lineType);
 
 		GameObject theSelectedObj;
 		GameObject NewObj=GameObject.Find(lineType);

@@ -64,7 +64,7 @@ public class read_Score : MonoBehaviour
         reset_score();
         Debug.Log("waiting on score...");
 
-        while (!read_score()) ;
+        //while (!read_score()) ;
         //read_score();
         Debug.Log(maxProfit);
         Debug.Log(minTime);
