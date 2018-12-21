@@ -20,6 +20,13 @@ TagManager:
   - whiteCur
   - txtSelected
   - mSlider
+  - mask
+  - redOpen
+  - blueOpen
+  - greenOpen
+  - redClose
+  - blueClose
+  - greenClose
   layers:
   - Default
   - TransparentFX

@@ -13,10 +13,7 @@ public class redCursor : MonoBehaviour {
         if (Manager.Instance.mySelection==1) {
 			mousePosition = Input.mousePosition;
 			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            
-
-
-            
+           
            if (this.tag == "txtSelected")
             {
                 mousePosition.Set(mousePosition.x-250, mousePosition.y-250, mousePosition.z);

@@ -7,7 +7,6 @@ public class whiteCursor : MonoBehaviour {
 
     void Update()
     {
-
         Vector3 newSize = new Vector3(Manager.Instance.brushSize, Manager.Instance.brushSize, 1);
 
         float moveSpeed = 1f;

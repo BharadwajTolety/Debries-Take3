@@ -17,14 +17,16 @@ public class BrushSelector : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("greenCursor").transform.position = new Vector3 (10000, 0, 0);
         GameObject.FindGameObjectWithTag("whiteCursor").transform.position = new Vector3(10000, 0, 0);
     }
-	public void setBrushGreen(){
+	public void setBrushGreen()
+    {
 		Manager.Instance.mySelection = 2;
 
         GameObject.FindGameObjectWithTag("whiteCursor").transform.position = new Vector3(10000, 0, 0);
         GameObject.FindGameObjectWithTag ("blueCursor").transform.position = new Vector3 (10000, 0, 0);
         GameObject.FindGameObjectWithTag("redCursor").transform.position = new Vector3(10000, 0, 0);
 	}
-	public void setBrushBlue(){
+	public void setBrushBlue()
+    {
 		Manager.Instance.mySelection = 3;
         
         GameObject.FindGameObjectWithTag("whiteCursor").transform.position = new Vector3(10000, 0, 0);

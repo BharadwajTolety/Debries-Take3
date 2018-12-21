@@ -6,31 +6,30 @@ public class trig : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D col)
  	{
-		//Debug.Log (this.name );
-		if (this.tag == "redCursor") {
-            //Debug.Log(col.tag + " "  + this.tag);
-            if (Input.GetMouseButton (0) == true && this.tag == "redCursor" && col.tag != "redLine") {
+        Debug.Log(this.tag + " " + col.tag);
+		if (col.tag == "redCursor") {
+            if (Input.GetMouseButton (0) == true && this.tag != "redLine" && col.tag == "redCursor") {
                 Debug.Log("works red");
-				AssignLine ("LineRed", col.name);
+				AssignLine ("LineRed", this.name);
 			}
 		}
-		else if(this.tag == "greenCursor") {
-			if (Input.GetMouseButton (0) == true && this.tag == "greenCursor" && col.tag != "greenLine") {
+		else if(col.tag == "greenCursor") {
+			if (Input.GetMouseButton (0) == true && this.tag != "greenLine" && col.tag == "greenCursor") {
                 Debug.Log("works");
-                AssignLine ("LineGreen", col.name);
+                AssignLine ("LineGreen", this.name);
 			}
 		}
-		else if(this.tag == "blueCursor") {
-			if (Input.GetMouseButton (0) == true && this.tag == "blueCursor" && col.tag != "blueLine") {
+		else if(col.tag == "blueCursor") {
+			if (Input.GetMouseButton (0) == true && this.tag != "blueLine" && col.tag == "blueCursor") {
                 Debug.Log("works");
-                AssignLine ("LineBlue", col.name);
+                AssignLine ("LineBlue", this.name);
 			}
 		}
-        else if (this.tag == "whiteCursor")
+        else if (col.tag == "whiteCursor")
         {
-            if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "whiteLine")
+            if (Input.GetMouseButton(0) == true && this.tag != "whiteLine" && col.tag == "whiteCursor")
             {
-                AssignLine("LineWhite", col.name);
+                AssignLine("LineWhite", this.name);
             }
         }
     }
