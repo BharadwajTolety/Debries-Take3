@@ -20,13 +20,13 @@ public class read_Score : MonoBehaviour
     //reset score file so that matlab can rewrite it
     private void reset_score()
     {
-        if(!File.Exists(scorePath))
+        if(File.Exists(scorePath))
         {
-            File.CreateText(scorePath).Dispose();
+            File.Delete(scorePath);
         }
         
         //reset/init the file to waiting..
-        File.WriteAllText(scorePath,"waiting...");
+        //File.WriteAllText(scorePath,"waiting...");
 
         //reset/init variables
         minTime = 0; maxProfit = 0;
@@ -37,28 +37,30 @@ public class read_Score : MonoBehaviour
     {
         string initRead;
 
-        try
-        {
-            initRead = File.ReadAllText(scorePath);            
-        }
-        catch (Exception e)
-        {
-            Debug.Log("the file couldnt be read - " + e.Message);
-            return false;
-        }
-
-        if (initRead == "waiting...")
+        if(!File.Exists(scorePath))
         {
             return false;
         }
+        else
+        {
+            try
+            {
+                initRead = File.ReadAllText(scorePath);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("the file couldnt be read - " + e.Message);
+                return false;
+            }
 
-        string[] scoreInfo = new string[2];
+            string[] scoreInfo = new string[2];
 
-        scoreInfo = initRead.Split(',');
+            scoreInfo = initRead.Split(',');
 
-        maxProfit = float.Parse(scoreInfo[0]);
-        minTime = float.Parse(scoreInfo[1]);
-        return true;
+            maxProfit = float.Parse(scoreInfo[0]);
+            minTime = float.Parse(scoreInfo[1]);
+            return true;
+        }
     }
 
     //keep reading the score file while matlab is calculating and done writing the score file
@@ -68,7 +70,17 @@ public class read_Score : MonoBehaviour
         reset_score();
         Debug.Log("waiting on score...");
 
-        while (!read_score()) ;
+        float timespent = 1f;
+        while (!read_score())
+        {
+            timespent *= Time.unscaledDeltaTime;
+            if (timespent > 5)
+            {
+                Debug.Log("Matlab taking too long something wrong - " + timespent);
+                break;
+            }
+                
+        };
         //read_score();
         Debug.Log(maxProfit);
         Debug.Log(minTime);
