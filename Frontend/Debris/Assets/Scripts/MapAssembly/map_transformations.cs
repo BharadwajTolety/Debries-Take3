@@ -143,9 +143,13 @@ public class map_transformations : MonoBehaviour {
                     if (edge.GetComponent<SpriteRenderer>().maskInteraction == SpriteMaskInteraction.None)
                     {
                         edge.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                        edge.GetComponent<BoxCollider2D>().isTrigger = false;
                     }
                     else
+                    {
                         edge.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+                        edge.GetComponent<BoxCollider2D>().isTrigger = true;
+                    }
                 }
             }
         }
