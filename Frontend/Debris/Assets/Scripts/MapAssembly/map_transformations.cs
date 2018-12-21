@@ -17,12 +17,14 @@ public class map_transformations : MonoBehaviour {
         rotate_to_rectangle();
     }
 
+    //rotate the map to rectangle (better fix be if we changed actual pos in map initiation but for now this will do)
     private void rotate_to_rectangle()
     {
         transform.Rotate(rot);
         transform.position = pos;
     }
 
+    //map zoom in
     public void zoom_in()
     {
         if(transform.localScale.x < 1.55f)
@@ -32,6 +34,7 @@ public class map_transformations : MonoBehaviour {
         }
     }
 
+    //map zoom out
     public void zoom_out()
     {
         if(transform.localScale.x > 0.95f)
@@ -41,6 +44,7 @@ public class map_transformations : MonoBehaviour {
         }
     }
 
+    //turn cnc eyes on and off
     public void edge_mask(GameObject eye)
     {
         Sprite[] open = { GameObject.FindGameObjectWithTag("redOpen").GetComponent<Image>().sprite,
@@ -53,86 +57,36 @@ public class map_transformations : MonoBehaviour {
                           GameObject.FindGameObjectWithTag("greenClose").GetComponent<Image>().sprite
                         };
 
-        switch (eye.name)
+        string[] eyes = { "RedEye", "BlueEye", "GreenEye" };
+        string[] edges = { "redLine", "blueLine" , "greenLine" };
+
+        for(int i = 0 ; i < eyes.Length ; i++)
         {
-            case "RedEye":
-                if (GameObject.Find("BlueEye").GetComponent<Image>().sprite == open[1])
+            if(eyes[i] != eye.name)
+            {
+                if (GameObject.Find(eyes[i]).GetComponent<Image>().sprite == open[i])
                 {
-                    GameObject.Find("BlueEye").GetComponent<Image>().sprite = close[1];
-                    mask_edges("blueLine");
+                    GameObject.Find(eyes[i]).GetComponent<Image>().sprite = close[i];
+                    mask_edges(edges[i]);
                 }
-                else if(GameObject.Find("GreenEye").GetComponent<Image>().sprite == open[2])
+            }
+            else
+            {
+                if (eye.GetComponent<Image>().sprite != open[i])
                 {
-                    GameObject.Find("GreenEye").GetComponent<Image>().sprite = close[2];
-                    mask_edges("greenLine");
-                }
-                    
-                if ( eye.GetComponent<Image>().sprite != open[0])
-                {
-                    eye.GetComponent<Image>().sprite = open[0];
+                    eye.GetComponent<Image>().sprite = open[i];
                 }
                 else
                 {
-                    eye.GetComponent<Image>().sprite = close[0];
+                    eye.GetComponent<Image>().sprite = close[i];
                 }
 
-                mask_edges("redLine");
-
-                break;
-
-            case "BlueEye":
-                if (GameObject.Find("RedEye").GetComponent<Image>().sprite == open[0])
-                {
-                    GameObject.Find("RedEye").GetComponent<Image>().sprite = close[0];
-                    mask_edges("redLine");
-                }
-                else if(GameObject.Find("GreenEye").GetComponent<Image>().sprite == open[2])
-                {
-                    GameObject.Find("GreenEye").GetComponent<Image>().sprite = close[2];
-                    mask_edges("greenLine");
-                }
-                    
-                if (eye.GetComponent<Image>().sprite != open[1])
-                {
-                    eye.GetComponent<Image>().sprite = open[1];
-                }
-                else
-                    eye.GetComponent<Image>().sprite = close[1];
-
-                mask_edges("blueLine");
-
-                break;
-
-            case "GreenEye":
-                if (GameObject.Find("BlueEye").GetComponent<Image>().sprite == open[1])
-                {
-                    GameObject.Find("BlueEye").GetComponent<Image>().sprite = close[1];
-                    mask_edges("blueLine");
-                }   
-                else if(GameObject.Find("RedEye").GetComponent<Image>().sprite == open[0])
-                {
-                    GameObject.Find("RedEye").GetComponent<Image>().sprite = close[0];
-                    mask_edges("redLine");
-                }
-                    
-                if (eye.GetComponent<Image>().sprite != open[2])
-                {
-                    eye.GetComponent<Image>().sprite = open[2];
-                }
-                else
-                    eye.GetComponent<Image>().sprite = close[2];
-
-                mask_edges("greenLine");
-                
-                break;
-
-            default:
-                Debug.Log(eye.name);
-                Debug.Log(" nothing to mask here");
-                break;
+                mask_edges(edges[i]);
+            }
         }
     }
 
+    //mask the other edges out based on eye buttons
     private void mask_edges(string edg)
     {
         string[] what_edge  = {"redLine" , "blueLine" , "greenLine"};

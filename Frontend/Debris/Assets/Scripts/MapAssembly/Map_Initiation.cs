@@ -139,7 +139,7 @@ public class Map_Initiation : MonoBehaviour
         for (int i = 0; i < nodes_length; i++)
         {
             pos = Nodes[i];
-            AddNode(pos, "objNode", "n" + (i+1));
+            AddNode(pos, "objNode", "n_" + (i+1));
             //addNodeText (pos, "txtVal", "txt"+i,i+1);
         }
 
@@ -186,8 +186,8 @@ public class Map_Initiation : MonoBehaviour
     void AddEdge(int EdgeNumber, int nFrom, int nTo, string strType)
     {
         GameObject theSourceObj, theDestinationObj;
-        theSourceObj = GameObject.Find("n" + nFrom);
-        theDestinationObj = GameObject.Find("n" + nTo);
+        theSourceObj = GameObject.Find("n_" + nFrom);
+        theDestinationObj = GameObject.Find("n_" + nTo);
         Vector3 startPoint, endPoint;
 
         if (theSourceObj != null && theDestinationObj != null) //make sure the start and end node are given

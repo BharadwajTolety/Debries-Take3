@@ -17,6 +17,7 @@ public class read_Score : MonoBehaviour
         reset_score();
     }
 
+    //reset score file so that matlab can rewrite it
     private void reset_score()
     {
         if(!File.Exists(scorePath))
@@ -31,6 +32,7 @@ public class read_Score : MonoBehaviour
         minTime = 0; maxProfit = 0;
     }
 
+    //read the score file written by matlab algo server thingy
     private bool read_score()
     {
         string initRead;
@@ -59,8 +61,10 @@ public class read_Score : MonoBehaviour
         return true;
     }
 
+    //keep reading the score file while matlab is calculating and done writing the score file
     public void reading()
     {
+        //reset score file so it be waiting for matlab new scores
         reset_score();
         Debug.Log("waiting on score...");
 

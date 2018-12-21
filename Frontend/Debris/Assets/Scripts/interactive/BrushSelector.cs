@@ -10,6 +10,8 @@ using System;
 
 public class BrushSelector : MonoBehaviour {
 
+    //move the other brushes out of the way and set the current brush ON!!
+
 	public void setBrushRed(){
 		Manager.Instance.mySelection = 1;
         
@@ -42,9 +44,17 @@ public class BrushSelector : MonoBehaviour {
         GameObject.FindGameObjectWithTag("greenCursor").transform.position = new Vector3(10000, 0, 0);
     }
 
+    //every frame check for brush size
     private void Update()
 	{
-		try{
+        brush_size();
+	}
+
+    //control size of brush with mouse wheel
+    private void brush_size()
+    {
+        try
+        {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 if (Manager.Instance.brushSize > 10)
@@ -60,9 +70,9 @@ public class BrushSelector : MonoBehaviour {
                 }
             }
         }
-		catch(NullReferenceException ex) {
-			Debug.Log ("Null"+ ex.Message);
-		}
-	}
-
+        catch (NullReferenceException ex)
+        {
+            Debug.Log("Null" + ex.Message);
+        }
+    }
 }
