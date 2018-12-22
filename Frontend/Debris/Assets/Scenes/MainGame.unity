@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 31297217}
   - component: {fileID: 31297218}
   - component: {fileID: 31297219}
+  - component: {fileID: 31297220}
   m_Layer: 0
   m_Name: MapScreen
   m_TagString: ALLOBJECTS
@@ -392,6 +393,17 @@ MonoBehaviour:
   reset_pos: {x: -20, y: 30, z: 0}
   zoom: 0.05
   eye_mask: {fileID: 0}
+--- !u!114 &31297220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 31297216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2be12ee629133479af37f813239ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &47465701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,7 +1513,7 @@ Transform:
   m_GameObject: {fileID: 602467597}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6793, y: 1239, z: 0}
-  m_LocalScale: {x: 0.29538462, y: 0.29538462, z: 0.14769231}
+  m_LocalScale: {x: 0.36107814, y: 0.36107814, z: 0.18053907}
   m_Children: []
   m_Father: {fileID: 31297217}
   m_RootOrder: 4
