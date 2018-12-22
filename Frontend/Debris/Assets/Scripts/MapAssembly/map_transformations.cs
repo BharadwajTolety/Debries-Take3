@@ -9,8 +9,6 @@ public class map_transformations : MonoBehaviour {
     private Vector3 rot = new Vector3(0, 0, -61), pos = new Vector3(-78.5f, 755.83f, 0), reset_pos = new Vector3(-10, 30, 0);
     [SerializeField]
     private float zoom = 0.05f;
-    [SerializeField]
-    private GameObject eye_mask;
 
     private void Start()
     {

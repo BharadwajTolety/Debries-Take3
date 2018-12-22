@@ -9,8 +9,7 @@ using System.Text;
 public class contInfo_Matlab : classSocket
 {
     string csvPath;
-    GameObject gameManager;
-
+    
     private void Awake()
     {
        write_CSV();
@@ -131,7 +130,7 @@ public class contInfo_Matlab : classSocket
     //read score sent from matlab
     private void call_reading()
     {
-        gameManager = GameObject.Find("GameManager") ;
+        GameObject gameManager = GameObject.Find("GameManager") ;
         read_Score read = (read_Score)gameManager.GetComponent(typeof(read_Score));
 
         //start reading

@@ -62,7 +62,7 @@ public class read_Score : MonoBehaviour
             return true;
         }
     }
-
+     
     //keep reading the score file while matlab is calculating and done writing the score file
     public void reading()
     {
@@ -81,7 +81,11 @@ public class read_Score : MonoBehaviour
             }
                 
         };
-        //read_score();
+
+        GameObject map = GameObject.FindGameObjectWithTag("ALLOBJECTS");
+        badEdge_blinkers read_bE = (badEdge_blinkers)map.GetComponent(typeof(badEdge_blinkers));
+        read_bE.read_badEdges();
+
         Debug.Log(maxProfit);
         Debug.Log(minTime);
 
