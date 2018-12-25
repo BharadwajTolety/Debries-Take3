@@ -236,7 +236,18 @@ end
    
     end
 
+    badFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\badEdges_from_Matlab.csv');
+    badFile = char(badFile);
 
+    fprintf('%s',badFile);
+    [fid, msg] = fopen(badFile,'w');
+    if fid < 0 
+         error('Failed to open file "%s" because: "%s"', badFile, msg);
+    else
+        csvwrite(badFile,BadEdges);
+    end
+    fclose(fid);
+    
     scoreFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\score_info_fromMatlab.txt');
     scoreFile = char(scoreFile);
 
@@ -249,16 +260,4 @@ end
     end
     fclose(fid);
     
-    
-    badFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\badEdges_from_Matlab.csv');
-    badFile = char(badFile);
-
-    fprintf('%s',badFile);
-    [fid, msg] = fopen(badFile,'w');
-    if fid < 0 
-         error('Failed to open file "%s" because: "%s"', badFile, msg);
-    else
-        csvwrite(badFile,BadEdges);
-    end
-    fclose(fid);
 end
