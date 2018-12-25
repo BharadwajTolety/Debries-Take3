@@ -55,6 +55,8 @@ public class badEdge_blinkers : MonoBehaviour {
                     if (!bad_nodes.Contains(badEdge_info[1]))
                         bad_nodes.Add(badEdge_info[1]);
                 }
+
+                Debug.Log("Done reading badEdge file");
                 return true;
             }
             catch (Exception e)

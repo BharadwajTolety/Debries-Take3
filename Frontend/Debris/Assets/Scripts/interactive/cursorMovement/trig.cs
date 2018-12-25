@@ -7,29 +7,33 @@ public class trig : MonoBehaviour {
     private void OnTriggerStay2D(Collider2D col)
  	{
         //Debug.Log(this.tag + " " + col.tag);
-		if (col.tag == "redCursor") {
+		if (col.tag == "redCursor" || col.tag == "greenCursor" || col.tag == "blueCursor" || col.tag == "whiteCursor")
+        {
             if (Input.GetMouseButton (0) == true && this.tag != "redLine" && col.tag == "redCursor") {
                 //Debug.Log("works red");
 				AssignLine ("LineRed", this.name);
-			}
-		}
-		else if(col.tag == "greenCursor") {
-			if (Input.GetMouseButton (0) == true && this.tag != "greenLine" && col.tag == "greenCursor") {
+                Manager.Instance.count_move += 1;
+                Manager.Instance.save_map(Manager.Instance.count_move - 1);
+            }
+            else if (Input.GetMouseButton(0) == true && this.tag != "greenLine" && col.tag == "greenCursor")
+            {
                 //Debug.Log("works green");
-                AssignLine ("LineGreen", this.name);
-			}
-		}
-		else if(col.tag == "blueCursor") {
-			if (Input.GetMouseButton (0) == true && this.tag != "blueLine" && col.tag == "blueCursor") {
+                AssignLine("LineGreen", this.name);
+                Manager.Instance.count_move += 1;
+                Manager.Instance.save_map(Manager.Instance.count_move - 1);
+            }
+            else if (Input.GetMouseButton(0) == true && this.tag != "blueLine" && col.tag == "blueCursor")
+            {
                 //Debug.Log("works blue");
-                AssignLine ("LineBlue", this.name);
-			}
-		}
-        else if (col.tag == "whiteCursor")
-        {
-            if (Input.GetMouseButton(0) == true && this.tag != "whiteLine" && col.tag == "whiteCursor")
+                AssignLine("LineBlue", this.name);
+                Manager.Instance.count_move += 1;
+                Manager.Instance.save_map(Manager.Instance.count_move - 1);
+            }
+            else if (Input.GetMouseButton(0) == true && this.tag != "whiteLine" && col.tag == "whiteCursor")
             {
                 AssignLine("LineWhite", this.name);
+                Manager.Instance.count_move += 1;
+                Manager.Instance.save_map(Manager.Instance.count_move - 1);
             }
         }
     }
