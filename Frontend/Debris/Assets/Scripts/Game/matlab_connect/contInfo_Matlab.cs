@@ -12,29 +12,43 @@ public class contInfo_Matlab : classSocket
     
     private void Awake()
     {
-       write_CSV();
+        csvPath = Application.dataPath + "/Database/Output/edgelist_forMatlab.csv";
+        write_CSV(csvPath);
     }
 
     //write out the csv for matlab to read
-    void write_CSV()
+    void write_CSV(string path)
     {
-        csvPath = Application.dataPath + "/Database/Output/edgelist_forMatlab.csv";
-
         //if files doesn't exist make it
-        if(!File.Exists(csvPath))
+        if(!File.Exists(path))
         {
-            File.WriteAllText(csvPath, "-,-,-\n");
+            File.WriteAllText(path, "-,-,-\n");
         }
         else
         {
-            File.WriteAllText(csvPath, string.Empty);
+            File.WriteAllText(path, string.Empty);
         }
     }
 
     //read all the contractor info and then write that info into csv
     public void read_contractor_info()
     {
-        File.WriteAllText(csvPath, string.Empty);
+        Manager.Instance.scans += 1;
+
+        int count_edges = write_map_csv(csvPath);
+
+        Debug.Log("writting complete!! total edges - " + count_edges);
+
+        //setup the client for the matlab server to read
+        setupSocket();
+
+        call_reading();
+    }
+
+    //write into csv file
+    private int write_map_csv(string path, float maxProfit = 0f, float minTime = 0f)
+    {
+        File.WriteAllText(path, string.Empty);
 
         GameObject[] themRedEdges = GameObject.FindGameObjectsWithTag("redLine");
         GameObject[] themGreenEdges = GameObject.FindGameObjectsWithTag("greenLine");
@@ -47,7 +61,15 @@ public class contInfo_Matlab : classSocket
         string[] nodeInfo = new string[4];
         int count_edges = 0;
 
-        for(int i = 0 ; i < themRedEdges.Length ; i++)
+        //write down score on the first line if this is a scan file
+        if (maxProfit != 0f && minTime != 0f)
+        {
+            string newline = string.Format("{0},{1}", maxProfit, minTime);
+            csv.AppendLine(newline);
+        }
+
+        //read the current map and write that down onto csv
+        for (int i = 0; i < themRedEdges.Length; i++)
         {
             nodeInfo = themRedEdges[i].name.Split('_');
             if (nodeInfo.Length > 2)
@@ -60,7 +82,7 @@ public class contInfo_Matlab : classSocket
                 {
                     string newline = string.Format("{0},{1},{2}", from, to, nc);
                     csv.AppendLine(newline);
-                    File.WriteAllText(csvPath, csv.ToString());
+                    File.WriteAllText(path, csv.ToString());
                     count_edges += 1;
                 }
             }
@@ -79,7 +101,7 @@ public class contInfo_Matlab : classSocket
                 {
                     string newline = string.Format("{0},{1},{2}", from, to, nc);
                     csv.AppendLine(newline);
-                    File.WriteAllText(csvPath, csv.ToString());
+                    File.WriteAllText(path, csv.ToString());
                     count_edges += 1;
                 }
             }
@@ -98,20 +120,15 @@ public class contInfo_Matlab : classSocket
                 {
                     string newline = string.Format("{0},{1},{2}", from, to, nc);
                     csv.AppendLine(newline);
-                    File.WriteAllText(csvPath, csv.ToString());
+                    File.WriteAllText(path, csv.ToString());
                     count_edges += 1;
                 }
             }
         }
 
-        Debug.Log("writting complete!! total edges - " + count_edges);
+        return count_edges;
 
-        //setup the client for the matlab server to read
-        setupSocket();
-
-        call_reading();
     }
-
     /*
     private void call_mat()
     {
@@ -135,5 +152,11 @@ public class contInfo_Matlab : classSocket
 
         //start reading
         read.reading();
+
+        float maxProfit = Manager.Instance.maxProfit;
+        float minTime = Manager.Instance.minTime;
+
+        string exPath = Application.dataPath + "/Database/Output/P1_S1/Scan_" + Manager.Instance.scans + ".csv";
+        write_map_csv(exPath ,maxProfit, minTime);
     }
 }

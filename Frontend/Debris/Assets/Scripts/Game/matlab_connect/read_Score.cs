@@ -8,7 +8,6 @@ public class read_Score : MonoBehaviour
 {
     StreamReader readScore;
     string scorePath;
-    float minTime, maxProfit;
 
     private void Awake()
     {
@@ -29,7 +28,7 @@ public class read_Score : MonoBehaviour
         //File.WriteAllText(scorePath,"waiting...");
 
         //reset/init variables
-        minTime = 0; maxProfit = 0;
+        Manager.Instance.minTime = 0; Manager.Instance.maxProfit = 0;
     }
 
     //read the score file written by matlab algo server thingy
@@ -57,8 +56,8 @@ public class read_Score : MonoBehaviour
 
             scoreInfo = initRead.Split(',');
 
-            maxProfit = float.Parse(scoreInfo[0]);
-            minTime = float.Parse(scoreInfo[1]);
+            Manager.Instance.maxProfit = float.Parse(scoreInfo[0]);
+            Manager.Instance.minTime = float.Parse(scoreInfo[1]);
             return true;
         }
     }
@@ -86,9 +85,7 @@ public class read_Score : MonoBehaviour
         badEdge_blinkers read_bE = (badEdge_blinkers)map.GetComponent(typeof(badEdge_blinkers));
         read_bE.read_badEdges();
 
-        Debug.Log(maxProfit);
-        Debug.Log(minTime);
-
-        reset_score();
+        Debug.Log(Manager.Instance.maxProfit);
+        Debug.Log(Manager.Instance.minTime);
     }
 }

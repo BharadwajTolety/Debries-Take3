@@ -77,7 +77,8 @@ public class trig : MonoBehaviour {
 
 		created.name = lineName;
 
-        Manager.Instance.save_map(theSelectedObj);
+        Manager.Instance.save_map(Manager.Instance.map_version,theSelectedObj);
+        Manager.Instance.save_map(Manager.Instance.map_version + 1, created);
     }
 
     void AnimasignLine(string lineType, string lineName)

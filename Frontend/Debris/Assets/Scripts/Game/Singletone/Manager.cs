@@ -14,6 +14,8 @@ public class Manager : Singleton<Manager>
     public int map_version = 0;
     public bool flag = false; //flag checking whether map coloring has been changed or not
 
+    public int scans = 0; //number of scans done
+    public float maxProfit, minTime; //the scores for the game
 
     public Dictionary<string, string>[] map_info = new Dictionary<string, string>[]
     {
@@ -25,15 +27,15 @@ public class Manager : Singleton<Manager>
     };
 
     //save contractor information for the map 
-    public void save_map(GameObject edge)
+    public void save_map(int map_ver, GameObject edge)
     {
         string[] nodeInfo = new string[4];
 
-        if (map_version > 4)
+        if (map_ver > 4)
         {
             Array.Copy(map_info, 1, map_info, 0, map_info.Length - 1);
             map_info[4] = new Dictionary<string, string>();
-            map_version -= 1;
+            map_ver -= 1;
         }
 
         nodeInfo = edge.name.Split('_');
@@ -42,13 +44,13 @@ public class Manager : Singleton<Manager>
                 switch (edge.tag)
                 {
                     case "redLine":
-                        map_info[map_version].Add(edge.name, "LineRed");
+                        map_info[map_ver].Add(edge.name, "LineRed");
                         break;
                     case "blueLine":
-                        map_info[map_version].Add(edge.name, "LineBlue");
+                        map_info[map_ver].Add(edge.name, "LineBlue");
                         break;
                     case "greenLine":
-                        map_info[map_version].Add(edge.name, "LineGreen");
+                        map_info[map_ver].Add(edge.name, "LineGreen");
                         break;
                     default:
                         Debug.Log("not color line, some problem occured");
