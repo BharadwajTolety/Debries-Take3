@@ -392,7 +392,6 @@ MonoBehaviour:
   pos: {x: -78.5, y: 755.83, z: 0}
   reset_pos: {x: -20, y: 30, z: 0}
   zoom: 0.05
-  eye_mask: {fileID: 0}
 --- !u!114 &31297220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1497,7 +1496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 602467598}
   - component: {fileID: 602467599}
-  - component: {fileID: 602467600}
   m_Layer: 0
   m_Name: Node
   m_TagString: objNode
@@ -1564,17 +1562,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &602467600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 602467597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a92cd99190f1f44f2a7d767b959dcb3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &604058631
 GameObject:
   m_ObjectHideFlags: 0
@@ -4598,6 +4585,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1648344609}
+        m_MethodName: undo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1484917873
@@ -4866,6 +4864,7 @@ GameObject:
   - component: {fileID: 1648344610}
   - component: {fileID: 1648344611}
   - component: {fileID: 1648344612}
+  - component: {fileID: 1648344609}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -4908,6 +4907,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9647e41de187da3438902665759d222f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1648344609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1648344605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f5eff03bea7b5449a7d9fc898e0c78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1648344610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4934,6 +4944,11 @@ MonoBehaviour:
   brushSize: 20
   debrisList: []
   TimesList: []
+  map_version: 0
+  flag: 0
+  scans: 0
+  maxProfit: 0
+  minTime: 0
 --- !u!114 &1648344612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6201,6 +6216,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 13
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1648344609}
+        m_MethodName: redo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

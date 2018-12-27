@@ -256,7 +256,10 @@ end
     if fid < 0 
          error('Failed to open file "%s" because: "%s"', scoreFile, msg);
     else
-        nbytes = fprintf(fid,'%f,%f',MAXTIME2, MINPROFIT2);
+        fprintf(fid,'%f,%f',MAXTIME2, MINPROFIT2);
+        for i=1:no_contractor
+            fprintf(fid,'\r\n%d,%f,%f',i,Contractor{i}.TotalTime,Contractor{i}.TotalProfit);
+        end
     end
     fclose(fid);
     

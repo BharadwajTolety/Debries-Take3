@@ -34,7 +34,7 @@ public class read_Score : MonoBehaviour
     //read the score file written by matlab algo server thingy
     private bool read_score()
     {
-        string initRead;
+        string[] initRead = new string[4];
 
         if(!File.Exists(scorePath))
         {
@@ -44,7 +44,7 @@ public class read_Score : MonoBehaviour
         {
             try
             {
-                initRead = File.ReadAllText(scorePath);
+                initRead = File.ReadAllLines(scorePath);
             }
             catch (Exception e)
             {
@@ -52,12 +52,24 @@ public class read_Score : MonoBehaviour
                 return false;
             }
 
-            string[] scoreInfo = new string[2];
+            string[] scoreInfo = new string[3];
 
-            scoreInfo = initRead.Split(',');
+            foreach (string line in initRead)
+            {
+                scoreInfo = line.Split(',');
 
-            Manager.Instance.maxProfit = float.Parse(scoreInfo[0]);
-            Manager.Instance.minTime = float.Parse(scoreInfo[1]);
+                if (scoreInfo.Length > 2)
+                {
+                    Manager.Instance.cncProfit[int.Parse(scoreInfo[0])] = float.Parse(scoreInfo[1]);
+                    Manager.Instance.cncTime[int.Parse(scoreInfo[0])] = float.Parse(scoreInfo[2]);
+                }
+                else
+                {
+                    Manager.Instance.maxProfit = float.Parse(scoreInfo[0]);
+                    Manager.Instance.minTime = float.Parse(scoreInfo[1]);
+                }
+            }
+
             return true;
         }
     }
@@ -85,7 +97,13 @@ public class read_Score : MonoBehaviour
         badEdge_blinkers read_bE = (badEdge_blinkers)map.GetComponent(typeof(badEdge_blinkers));
         read_bE.read_badEdges();
 
-        Debug.Log(Manager.Instance.maxProfit);
-        Debug.Log(Manager.Instance.minTime);
+        Debug.Log("maxProfit : " + Manager.Instance.maxProfit);
+        Debug.Log("minTime : " + Manager.Instance.minTime);
+        
+        for(int i = 0; i<3; i++)
+        {
+            Debug.Log("cnc profit_" + i + " : " + Manager.Instance.cncProfit[i]);
+            Debug.Log("cnc time_" + i + " : " + Manager.Instance.cncTime[i]);
+        }
     }
 }

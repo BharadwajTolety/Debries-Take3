@@ -35,7 +35,7 @@ public class contInfo_Matlab : classSocket
     {
         Manager.Instance.scans += 1;
 
-        int count_edges = write_map_csv(csvPath);
+        int count_edges = write_map_csv(csvPath, false);
 
         Debug.Log("writting complete!! total edges - " + count_edges);
 
@@ -46,7 +46,7 @@ public class contInfo_Matlab : classSocket
     }
 
     //write into csv file
-    private int write_map_csv(string path, float maxProfit = 0f, float minTime = 0f)
+    private int write_map_csv(string path, bool score)
     {
         File.WriteAllText(path, string.Empty);
 
@@ -62,9 +62,16 @@ public class contInfo_Matlab : classSocket
         int count_edges = 0;
 
         //write down score on the first line if this is a scan file
-        if (maxProfit != 0f && minTime != 0f)
+        if (score)
         {
-            string newline = string.Format("{0},{1}", maxProfit, minTime);
+            csv.AppendLine("first three scores,then edgelist");
+            for (int i = 0; i < 3; i++)
+            {
+                string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], i);
+                csv.AppendLine(cncline);
+            }
+
+            string newline = string.Format("{0},{1},Fullscore", Manager.Instance.maxProfit, Manager.Instance.minTime);
             csv.AppendLine(newline);
         }
 
@@ -129,20 +136,6 @@ public class contInfo_Matlab : classSocket
         return count_edges;
 
     }
-    /*
-    private void call_mat()
-    {
-        //make a matlab instance
-        MLApp.MLApp matlab = new MLApp.MLApp();
-
-        //get the codes library in
-        matlab.Execute(@"cd C:\Users\Uttkarsh\Desktop\Debris_work_folder\Codes-debris\Codes");
-
-        object mlab_result = null;
-
-        matlab.Feval("unity_start", 0, out mlab_result);
-    }
-    */
 
     //read score sent from matlab
     private void call_reading()
@@ -157,6 +150,6 @@ public class contInfo_Matlab : classSocket
         float minTime = Manager.Instance.minTime;
 
         string exPath = Application.dataPath + "/Database/Output/P1_S1/Scan_" + Manager.Instance.scans + ".csv";
-        write_map_csv(exPath ,maxProfit, minTime);
+        write_map_csv(exPath , true);
     }
 }
