@@ -154,7 +154,7 @@ public class contInfo_Matlab : classSocket
         float maxProfit = Manager.Instance.maxProfit;
         float minTime = Manager.Instance.minTime;
 
-        string exPath = Application.dataPath + "/Database/Output/P1_S1/Scan_" + Manager.Instance.scans + ".csv";
+        string exPath = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + Manager.Instance.scans + ".csv";
         write_map_csv(exPath , true);
     }
 }

@@ -23,7 +23,7 @@ public class Manager : Singleton<Manager>
     public float[] cncTime = new float[3];
 
     //player id and session id 
-    public string playerId, sessionId;
+    public string playerId = "def" , sessionId = "def";
 
     //play time
     public float playTime; 
