@@ -34,6 +34,7 @@ public class contInfo_Matlab : classSocket
     public void read_contractor_info()
     {
         Manager.Instance.scans += 1;
+        Manager.Instance.edge_changes = 0;
 
         int count_edges = write_map_csv(csvPath, false);
 
@@ -64,10 +65,14 @@ public class contInfo_Matlab : classSocket
         //write down score on the first line if this is a scan file
         if (score)
         {
-            csv.AppendLine("first three scores,then edgelist");
+            csv.AppendLine("first time, three scores, then edgelist");
+
+            float timeLog = Time.fixedUnscaledTime;
+            csv.AppendLine(timeLog.ToString());
+
             for (int i = 0; i < 3; i++)
             {
-                string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], i);
+                string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], (i+1));
                 csv.AppendLine(cncline);
             }
 

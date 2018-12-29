@@ -9,27 +9,87 @@ public class BarChart : MonoBehaviour
 {
 
     [SerializeField] private Sprite dotSprite;
-    private RectTransform graphContainer;
-    private RectTransform labelTemplateX;
-    private RectTransform labelTemplateY;
-    private RectTransform dashTemplateX;
-    private RectTransform dashTemplateY;
+    public RectTransform graphContainer;
+    public RectTransform labelTemplateX;
+    public RectTransform labelTemplateY;
+    public RectTransform dashTemplateX;
+    public RectTransform dashTemplateY;
     private List<GameObject> gameObjectList;
+    private List<float> valueList;
+    private int maxVisibleValueAmount;
+    private float values;
 
     private void Awake()
     {
-        graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-        labelTemplateX = graphContainer.Find("lableTemplateX").GetComponent<RectTransform>();
-        labelTemplateY = graphContainer.Find("lableTemplateX").GetComponent<RectTransform>();
-        dashTemplateX = graphContainer.Find("dashTemplateX").GetComponent<RectTransform>();
-        dashTemplateY = graphContainer.Find("dashTemplateY").GetComponent<RectTransform>();
         gameObjectList = new List<GameObject>();
 
+        maxVisibleValueAmount = 0;
+
         //The input value
-        List<int> valueList = new List<int> { 5, 8, 16, 35, 42, 55, 31, 53, 26, 3, 11, 23, 40, 4, 26, 24 };
+        valueList = new List<float>();
 
         //Create the graph, labelTemplateX and labelTemplateY
-        ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+        //ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+    }
+
+    public void update_graph()
+    {
+        bool update = false;
+
+        if (this.name.Contains("profit_"))
+        {
+            if (this.name.Contains("total"))
+            {
+                values = Manager.Instance.maxProfit;
+            }
+            else if (this.name.Contains("1"))
+            {
+                values = Manager.Instance.cncProfit[0];
+            }
+            else if (this.name.Contains("2"))
+            {
+                values = Manager.Instance.cncProfit[1];
+            }
+            else if (this.name.Contains("3"))
+            {
+                values = Manager.Instance.cncProfit[2];
+            }
+            else
+                values = 0;
+
+            update = true;
+        }
+        else if (this.name.Contains("time_"))
+        {
+            if (this.name.Contains("total"))
+            {
+                values = Manager.Instance.minTime;
+            }
+            else if (this.name.Contains("1"))
+            {
+                values = Manager.Instance.cncTime[0];
+            }
+            else if (this.name.Contains("2"))
+            {
+                values = Manager.Instance.cncTime[1];
+            }
+            else if (this.name.Contains("3"))
+            {
+                values = Manager.Instance.cncTime[2];
+            }
+            else
+                values = 0;
+
+            update = true;
+        }
+
+        if (update)
+        {
+            valueList.Add(values);
+            maxVisibleValueAmount++;
+
+            ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+        }
     }
 
     private GameObject CreateDot(Vector2 anchoredPosition)
@@ -45,7 +105,7 @@ public class BarChart : MonoBehaviour
         return gameObject;
     }
 
-    private void ShowGraph(List<int> valueList, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
+    private void ShowGraph(List<float> valueList, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
         if (getAxisLableX == null)
         {
@@ -66,14 +126,12 @@ public class BarChart : MonoBehaviour
         float graphWidth = graphContainer.sizeDelta.x;
         float graphHeight = graphContainer.sizeDelta.y;
 
-        int maxVisibleValueAmount = 4;
-
         float yMaximum = valueList[0];
         float yMinimum = valueList[0];
 
         for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
         {
-            int value = valueList[i];
+            float value = valueList[i];
             if (value > yMaximum)
             {
                 yMaximum = value;

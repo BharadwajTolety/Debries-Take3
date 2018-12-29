@@ -2,8 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+
 public class trig : MonoBehaviour {
 
+    //not the best place to do this but whatevs, this works out well.
+    private GameObject scan;
+    private GameObject blinker;
+    private GameObject scan_off;
+    private GameObject scan_on;
+
+    private void Awake()
+    {
+        scan = GameObject.Find("Scan");
+        blinker = GameObject.Find("Toggle");
+        scan_off = GameObject.Find("scan_off");
+        scan_on = GameObject.Find("scan_on");
+    }
 
     private void OnTriggerStay2D(Collider2D col)
  	{
@@ -77,9 +92,38 @@ public class trig : MonoBehaviour {
 
 		created.name = lineName;
 
-        
         Manager.Instance.save_map(Manager.Instance.map_version,theSelectedObj);
         Manager.Instance.save_map(Manager.Instance.map_version + 1, created);
+
+        Manager.Instance.edge_changes += 1;
+
+        if(Input.GetMouseButtonUp(0))
+            deborah_check();
+    }
+
+    private void deborah_check()
+    {
+        if (Manager.Instance.edge_changes > 5)
+        {
+            blinker.GetComponent<Toggle>().interactable = false;
+            blinker.GetComponentInChildren<Image>().color = blinker.GetComponent<Toggle>().colors.disabledColor;
+        }
+        else
+        {
+            blinker.GetComponent<Toggle>().interactable = true;
+            blinker.GetComponentInChildren<Image>().color = blinker.GetComponent<Toggle>().colors.normalColor;
+        }
+
+        if (Manager.Instance.edge_changes < 2)
+        {
+            scan.GetComponent<Button>().interactable = false;
+            scan.GetComponent<Image>().sprite = scan_off.GetComponent<SpriteRenderer>().sprite;
+        }
+        else
+        {
+            scan.GetComponent<Button>().interactable = true;
+            scan.GetComponent<Image>().sprite = scan_on.GetComponent<SpriteRenderer>().sprite;
+        }
     }
 
     void AnimasignLine(string lineType, string lineName)

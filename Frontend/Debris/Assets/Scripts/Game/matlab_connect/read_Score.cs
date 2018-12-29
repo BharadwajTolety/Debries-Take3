@@ -60,8 +60,8 @@ public class read_Score : MonoBehaviour
 
                 if (scoreInfo.Length > 2)
                 {
-                    Manager.Instance.cncProfit[int.Parse(scoreInfo[0])] = float.Parse(scoreInfo[1]);
-                    Manager.Instance.cncTime[int.Parse(scoreInfo[0])] = float.Parse(scoreInfo[2]);
+                    Manager.Instance.cncProfit[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[1]);
+                    Manager.Instance.cncTime[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[2]);
                 }
                 else
                 {
@@ -102,8 +102,8 @@ public class read_Score : MonoBehaviour
         
         for(int i = 0; i<3; i++)
         {
-            Debug.Log("cnc profit_" + i + " : " + Manager.Instance.cncProfit[i]);
-            Debug.Log("cnc time_" + i + " : " + Manager.Instance.cncTime[i]);
+            Debug.Log("cnc profit_" + (i+1) + " : " + Manager.Instance.cncProfit[i]);
+            Debug.Log("cnc time_" + (i+1) + " : " + Manager.Instance.cncTime[i]);
         }
     }
 }

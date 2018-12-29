@@ -13,6 +13,7 @@ public class Manager : Singleton<Manager>
 
     public int map_version = 0;
     public bool flag = false; //flag checking whether map coloring has been changed or not
+    public int edge_changes = 0;
 
     public int scans = 0; //number of scans done
     public float maxProfit, minTime; //the scores for the game
@@ -21,15 +22,13 @@ public class Manager : Singleton<Manager>
     public float[] cncProfit = new float[3];
     public float[] cncTime = new float[3];
 
+    //player id and session id 
+    public string playerId, sessionId;
+
+    //play time
+    public float playTime; 
+
     public List<Dictionary<string, string>> map_info = new List<Dictionary<string, string>>();
-    /*
-    {
-        new Dictionary<string, string>(),
-        new Dictionary<string, string>(),
-        new Dictionary<string, string>(),
-        new Dictionary<string, string>(),
-        new Dictionary<string, string>()
-    };*/
 
     //save contractor information for the map 
     public void save_map(int map_ver, GameObject edge)
