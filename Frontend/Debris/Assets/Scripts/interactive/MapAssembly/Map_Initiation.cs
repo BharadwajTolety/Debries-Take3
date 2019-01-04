@@ -167,12 +167,12 @@ public class Map_Initiation : MonoBehaviour
             //Debug.Log(dest);
             edgeNumber = i + 1;
 
-            if (contractorCode == 1)
-            {
-                AddEdge(edgeNumber, source, dest, "LineRed");
-            }
-
+            if (contractorCode == 0) { AddEdge(edgeNumber, source, dest, "LineWhite"); }
+            else
+            if (contractorCode == 1) { AddEdge(edgeNumber, source, dest, "LineRed"); }
+            else
             if (contractorCode == 2) { AddEdge(edgeNumber, source, dest, "LineBlue"); }
+            else
             if (contractorCode == 3) { AddEdge(edgeNumber, source, dest, "LineGreen"); }
 
 

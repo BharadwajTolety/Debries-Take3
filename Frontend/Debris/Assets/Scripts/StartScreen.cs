@@ -11,8 +11,16 @@ public class StartScreen : MonoBehaviour {
 
     public void StartGame()
     {
-        Manager.Instance.playerId = player_info.GetComponent<InputField>().text;
-        Manager.Instance.sessionId = session_info.GetComponent<InputField>().text;
+        if(player_info.GetComponent<InputField>().text == "" || session_info.GetComponent<InputField>().text == "")
+        {
+            Manager.Instance.playerId   =   "def";
+            Manager.Instance.sessionId  =   "def";
+        }
+        else
+        {
+            Manager.Instance.playerId = player_info.GetComponent<InputField>().text;
+            Manager.Instance.sessionId = session_info.GetComponent<InputField>().text;
+        }
 
         string log_directory = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
 

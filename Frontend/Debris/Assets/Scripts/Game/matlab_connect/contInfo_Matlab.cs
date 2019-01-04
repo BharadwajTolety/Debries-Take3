@@ -33,17 +33,23 @@ public class contInfo_Matlab : classSocket
     //read all the contractor info and then write that info into csv
     public void read_contractor_info()
     {
-        Manager.Instance.scans += 1;
-        Manager.Instance.edge_changes = 0;
+        GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("whiteLine");
+        if (themWhiteEdges.Length == 1 && themWhiteEdges[0].name == "LineWhite")
+        {
+            Manager.Instance.scans += 1;
+            Manager.Instance.edge_changes = 0;
 
-        int count_edges = write_map_csv(csvPath, false);
+            int count_edges = write_map_csv(csvPath, false);
 
-        Debug.Log("writting complete!! total edges - " + count_edges);
+            Debug.Log("writting complete!! total edges - " + count_edges);
 
-        //setup the client for the matlab server to read
-        setupSocket();
+            //setup the client for the matlab server to read
+            setupSocket();
 
-        call_reading();
+            call_reading();
+
+            update_graphs();
+        }
     }
 
     //write into csv file
@@ -156,5 +162,17 @@ public class contInfo_Matlab : classSocket
 
         string exPath = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + Manager.Instance.scans + ".csv";
         write_map_csv(exPath , true);
+    }
+
+    private void update_graphs()
+    {
+        GameObject.Find("profit_total").GetComponent<LineChart>().update_graph();
+        GameObject.Find("time_total").GetComponent<LineChart>().update_graph();
+
+        for(int i = 1; i < 4; i++)
+        {
+            GameObject.Find("profit_" + i).GetComponent<BarChart>().update_graph();
+            GameObject.Find("time_" + i).GetComponent<BarChart>().update_graph();
+        }
     }
 }

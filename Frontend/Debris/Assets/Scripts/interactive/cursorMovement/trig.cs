@@ -58,6 +58,8 @@ public class trig : MonoBehaviour {
 
             Manager.Instance.map_version += 1;
             Manager.Instance.flag = false;
+
+            deborah_check();
         }
     }
 
@@ -96,14 +98,14 @@ public class trig : MonoBehaviour {
         Manager.Instance.save_map(Manager.Instance.map_version + 1, created);
 
         Manager.Instance.edge_changes += 1;
-
-        if(Input.GetMouseButtonUp(0))
-            deborah_check();
+            
     }
 
     private void deborah_check()
     {
-        if (Manager.Instance.edge_changes > 5)
+        GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("whiteLine");
+
+        if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1)
         {
             blinker.GetComponent<Toggle>().interactable = false;
             blinker.GetComponentInChildren<Image>().color = blinker.GetComponent<Toggle>().colors.disabledColor;
@@ -114,7 +116,7 @@ public class trig : MonoBehaviour {
             blinker.GetComponentInChildren<Image>().color = blinker.GetComponent<Toggle>().colors.normalColor;
         }
 
-        if (Manager.Instance.edge_changes < 2)
+        if (Manager.Instance.edge_changes < 2 || themWhiteLines.Length > 1)
         {
             scan.GetComponent<Button>().interactable = false;
             scan.GetComponent<Image>().sprite = scan_off.GetComponent<SpriteRenderer>().sprite;
