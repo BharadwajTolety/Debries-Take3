@@ -27,6 +27,11 @@ TagManager:
   - redClose
   - blueClose
   - greenClose
+  - ver_1
+  - ver_2
+  - ver_3
+  - ver_4
+  - ver_5
   layers:
   - Default
   - TransparentFX

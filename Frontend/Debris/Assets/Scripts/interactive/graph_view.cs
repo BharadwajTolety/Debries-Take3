@@ -11,6 +11,7 @@ public class graph_view : MonoBehaviour {
     GameObject mapscreen;
     GameObject scan;
 
+    bool profit_active, time_active, intersect_active;
 
     private void Awake()
     {
@@ -20,50 +21,78 @@ public class graph_view : MonoBehaviour {
         intersect_view = GameObject.Find("intersect_view");
 
         GameObject.Find("notification_whiteLines").SetActive(false);
+        profit_active = false;
+        time_active = false;
+        intersect_active = false;
         scan_disable();
-
-        profit_view.SetActive(false);
-        time_view.SetActive(false);
     }
 
     public void toggle_view(bool profit)
     {
         if (profit)
-            if (!profit_view.activeSelf)
+            if (!profit_active)
             {
-                profit_view.SetActive(true);
-                time_view.SetActive(false);
+                profit_view.transform.position = new Vector3(0, 0, 0);
+                intersect_view.transform.position = new Vector3(251, 1188, 0);
+                time_view.transform.position = new Vector3(-2554, 0, 0);
                 mapscreen.SetActive(false);
+
+                profit_active = true;
+                time_active = false;
+                intersect_active = false;
             }
             else
             {
-                profit_view.SetActive(false);
-                time_view.SetActive(false);
+                profit_view.transform.position = new Vector3(1957, 0, 0);
+                time_view.transform.position = new Vector3(-2554, 0, 0);
+                intersect_view.transform.position = new Vector3(251, 1188, 0);
                 mapscreen.SetActive(true);
+
+                time_active = false;
+                intersect_active = false;
+                profit_active = false;
             }
         else
-            if (!time_view.activeSelf)
+            if (!time_active)
             {
-                profit_view.SetActive(false);
-                time_view.SetActive(true);
+                profit_view.transform.position = new Vector3(1957, 0, 0);
+                time_view.transform.position = new Vector3(0, 0, 0);
+                intersect_view.transform.position = new Vector3(251, 1188, 0);
                 mapscreen.SetActive(false);
+                
+                time_active = true;
+                profit_active = false;
+                intersect_active = false;
             }
             else
             {
-                profit_view.SetActive(false);
-                time_view.SetActive(false);
+                profit_view.transform.position = new Vector3(1957, 0, 0);
+                time_view.transform.position = new Vector3(-2554, 0, 0);
+                intersect_view.transform.position = new Vector3(251, 1188, 0);
                 mapscreen.SetActive(true);
+                
+                time_active = false;
+                intersect_active = false;
+                profit_active = false;
             }
     }
 
     public void toggle_intersect()
     {
-        GameObject red_text = GameObject.Find("red_text");
-        GameObject blue_text = GameObject.Find("blue_text");
-        GameObject green_text = GameObject.Find("green_text");
-
-        if (!intersect_view.activeSelf)
+        if (!intersect_active)
         {
+            intersect_active = true;
+            time_active = false;
+            profit_active = false;
+
+            intersect_view.transform.position = new Vector3(251, 65, 0);
+            profit_view.transform.position = new Vector3(1957, 0, 0);
+            time_view.transform.position = new Vector3(-2554, 0, 0);
+
+            GameObject red_text = GameObject.Find("red_text");
+            GameObject blue_text = GameObject.Find("blue_text");
+            GameObject green_text = GameObject.Find("green_text");
+
             GameObject[] themRedEdges = GameObject.FindGameObjectsWithTag("redLine");
             GameObject[] themBlueEdges = GameObject.FindGameObjectsWithTag("blueLine");
             GameObject[] themGreenEdges = GameObject.FindGameObjectsWithTag("greenLine");
@@ -118,19 +147,19 @@ public class graph_view : MonoBehaviour {
                 }
             }
 
-            intersect_view.SetActive(true);
             mapscreen.SetActive(false);
         }
         else
         {
-            intersect_view.SetActive(false);
+            profit_view.transform.position = new Vector3(1957, 0, 0);
+            time_view.transform.position = new Vector3(-2554, 0, 0);
+            intersect_view.transform.position = new Vector3(251, 1188, 0);
             mapscreen.SetActive(true);
+
+            time_active = false;
+            intersect_active = false;
+            profit_active = false;
         }
-    }
-
-    private void count_nodes()
-    {
-
     }
 
     public void toggle_noti(GameObject notification)
@@ -150,8 +179,6 @@ public class graph_view : MonoBehaviour {
         GameObject scan_off = GameObject.Find("scan_off");
 
         scan.GetComponent<Button>().interactable = false;
-        scan.GetComponent<Image>().sprite = scan_off.GetComponent<SpriteRenderer>().sprite;
         blinker.GetComponent<Toggle>().interactable = false;
-        blinker.GetComponentInChildren<Image>().color = blinker.GetComponent<Toggle>().colors.disabledColor;
     }
 }

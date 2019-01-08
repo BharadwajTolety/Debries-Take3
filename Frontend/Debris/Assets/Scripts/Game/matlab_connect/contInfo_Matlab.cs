@@ -49,6 +49,8 @@ public class contInfo_Matlab : classSocket
             call_reading();
 
             update_graphs();
+
+            update_verCont();
         }
     }
 
@@ -174,5 +176,11 @@ public class contInfo_Matlab : classSocket
             GameObject.Find("profit_" + i).GetComponent<BarChart>().update_graph();
             GameObject.Find("time_" + i).GetComponent<BarChart>().update_graph();
         }
+    }
+
+    //just update version control scores every scan
+    private void update_verCont()
+    {
+        GameObject.Find("ver_control").GetComponent<ver_control>().update_verList();
     }
 }

@@ -34,6 +34,8 @@ public class Manager : Singleton<Manager>
     public void save_map(int map_ver, GameObject edge)
     {
         string[] nodeInfo = new string[4];
+        bool remove = false;
+        bool add = false;
 
         //we only want 5 versions of map save
         if (map_ver > 4)
@@ -45,47 +47,58 @@ public class Manager : Singleton<Manager>
             }
                 
             map_info.RemoveAt(4);
-            map_ver -= 1;
+            map_version -= 1;
         }
 
         nodeInfo = edge.name.Split('_');
-        if (nodeInfo.Length > 2)
+        try
         {
-            //intialise them dictionaries for current saves only
-            if (map_info.Count <= map_ver)
-                map_info.Add(new Dictionary<string, string>());
-
-            if (map_info.Count>map_ver && Input.GetMouseButtonUp(0))
+            if (nodeInfo.Length > 2)
             {
-                //delete map info for older map versions existing over the current save version
-                for (int i = map_info.Count - 1; i > map_ver; i--)
+                //intialise them dictionaries for current saves only
+                if (map_info.Count <= map_ver+1)
                 {
-                    map_info.RemoveAt(i);
+                    map_info.Add(new Dictionary<string, string>());
+                        add = true;
+                }
+
+                if (map_info.Count > map_ver && Input.GetMouseButtonUp(0))
+                {
+                    //delete map info for older map versions existing over the current save version
+                    for (int i = map_info.Count - 1; i > map_ver; i--)
+                    {
+                        map_info.RemoveAt(i);
+                    }
+                }
+
+                //delete present keys when needed - correction for when you overwrite colors on the same turn
+                if (map_info[map_ver].ContainsKey(edge.name))
+                {
+                    map_info[map_ver].Remove(edge.name);
+                    remove = true;
+                }
+
+                //save current map version
+                switch (edge.tag)
+                {
+                    case "redLine":
+                        map_info[map_ver].Add(edge.name, "LineRed");
+                        break;
+                    case "blueLine":
+                        map_info[map_ver].Add(edge.name, "LineBlue");
+                        break;
+                    case "greenLine":
+                        map_info[map_ver].Add(edge.name, "LineGreen");
+                        break;
+                    default:
+                        Debug.Log("not color line, white line not required");
+                        break;
                 }
             }
-
-            //delete present keys when needed - correction for when you overwrite colors on the same turn
-            if (map_info[map_ver].ContainsKey(edge.name))
-            {
-                map_info[map_ver].Remove(edge.name);
-            }
-
-            //save current map version
-            switch (edge.tag)
-            {
-                case "redLine":
-                    map_info[map_ver].Add(edge.name, "LineRed");
-                    break;
-                case "blueLine":
-                    map_info[map_ver].Add(edge.name, "LineBlue");
-                    break;
-                case "greenLine":
-                    map_info[map_ver].Add(edge.name, "LineGreen");
-                    break;
-                default:
-                    Debug.Log("not color line, some problem occured");
-                    break;
-            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("wrong : " + edge.tag + " " + map_ver + "map_info :" + map_info.Count + " " + add + remove + " " + e.Message);
         }
     }
 }

@@ -31,6 +31,19 @@ public class LineChart : MonoBehaviour {
         //ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
     }
 
+    public void reUpdate(float[] valueUpdate)
+    {
+        valueList.Clear();
+
+        foreach (float value in valueUpdate)
+        {
+            valueList.Add(value);
+        }
+
+        maxVisibleValueAmount = valueList.Count;
+        ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+    }
+
     public void update_graph()
     {
         bool update = false;
