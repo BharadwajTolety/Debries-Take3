@@ -9,7 +9,6 @@ public class graph_view : MonoBehaviour {
     GameObject time_view;
     GameObject intersect_view;
     GameObject mapscreen;
-    GameObject scan;
 
     bool profit_active, time_active, intersect_active;
 
@@ -165,10 +164,22 @@ public class graph_view : MonoBehaviour {
     public void toggle_noti(GameObject notification)
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("whiteLine");
-        if(themWhiteLines.Length > 1)
+        if (themWhiteLines.Length > 1)
         {
             notification.SetActive(true);
             scan_disable();
+        }
+        else
+        {
+            GameObject.Find("Toggle").GetComponent<Toggle>().interactable = true;
+            //GameObject.Find("scanning_notification").GetComponent<SpriteRenderer>().enabled = true;
+
+            //not the most elegant way to make sure everything is on screen but hey it works = wait till the notification is on the screen then read contractor info
+            //do
+            //{
+           //     if (GameObject.Find("scanning_notification").GetComponent<SpriteRenderer>().isVisible)
+            //        GameObject.Find("GameManager").GetComponent<contInfo_Matlab>().read_contractor_info();
+           // } //while (!GameObject.Find("scanning_notification").GetComponent<SpriteRenderer>().isVisible);
         }
     }
 
@@ -176,7 +187,6 @@ public class graph_view : MonoBehaviour {
     {
         GameObject scan = GameObject.Find("Scan");
         GameObject blinker = GameObject.Find("Toggle");
-        GameObject scan_off = GameObject.Find("scan_off");
 
         scan.GetComponent<Button>().interactable = false;
         blinker.GetComponent<Toggle>().interactable = false;

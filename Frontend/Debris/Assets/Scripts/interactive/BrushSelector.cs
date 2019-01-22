@@ -12,7 +12,8 @@ public class BrushSelector : MonoBehaviour {
 
     //move the other brushes out of the way and set the current brush ON!!
 
-	public void setBrushRed(){
+	public void setBrushRed()
+    {
 		Manager.Instance.mySelection = 1;
         
 		GameObject.FindGameObjectWithTag ("blueCursor").transform.position = new Vector3 (10000, 0, 0);
@@ -55,18 +56,18 @@ public class BrushSelector : MonoBehaviour {
     {
         try
         {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (Manager.Instance.brushSize > 10)
+                if (Manager.Instance.brushSize > 3)
                 {
-                    Manager.Instance.brushSize -= 5;
+                    Manager.Instance.brushSize -= 1;
                 }
             }
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (Manager.Instance.brushSize < 50)
+                if (Manager.Instance.brushSize < 20)
                 {
-                    Manager.Instance.brushSize += 5;
+                    Manager.Instance.brushSize += 1;
                 }
             }
         }

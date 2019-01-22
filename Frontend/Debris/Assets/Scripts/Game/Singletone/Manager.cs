@@ -6,7 +6,7 @@ using UnityEngine;
 public class Manager : Singleton<Manager>
 {
     public int mySelection = 1;
-    public float brushSize = 50;
+    public float brushSize = 70;
 
     public List<float> debrisList;
     public List<float> TimesList;
@@ -90,8 +90,11 @@ public class Manager : Singleton<Manager>
                     case "greenLine":
                         map_info[map_ver].Add(edge.name, "LineGreen");
                         break;
+                    case "whiteLine":
+                        map_info[map_ver].Add(edge.name, "LineWhite");
+                        break;
                     default:
-                        Debug.Log("not color line, white line not required");
+                        Debug.Log("something went wrong with edge mapping for undo/redo");
                         break;
                 }
             }

@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GreenCursor : MonoBehaviour {
-  private Vector3 mousePosition;
+    private Vector3 mousePosition;
 
-  // Update is called once per frame
+    public Sprite green, none;
+
+    // Update is called once per frame
     void Update () {
 		Vector3 newSize = new Vector3 (Manager.Instance.brushSize, Manager.Instance.brushSize, 1);
 
       float moveSpeed = 1f;
         if (Manager.Instance.mySelection==2) {
-			mousePosition = Input.mousePosition;
-			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-			transform.position = Vector2.Lerp(transform.position, mousePosition, moveSpeed);
-			transform.localScale = newSize;
+            mousePosition = Input.mousePosition;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            transform.position = Vector2.Lerp(transform.position, mousePosition, moveSpeed);
+            transform.localScale = newSize;
         }
     }
 }

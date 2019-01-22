@@ -12,8 +12,10 @@ public class trig : MonoBehaviour {
     private GameObject scan_off;
     private GameObject scan_on;
 
-    //checking scans 
-    int scanned;
+    //checking scans and cursor size
+    private int scanned;
+    private float size_check;
+    private bool cursorOff;
 
     private void Awake()
     {
@@ -27,30 +29,50 @@ public class trig : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D col)
  	{
-        //Debug.Log(this.tag + " " + col.tag);
-		if (col.tag == "redCursor" || col.tag == "greenCursor" || col.tag == "blueCursor" || col.tag == "whiteCursor")
+
+        if (col.tag == "redLine" || col.tag == "greenLine" || col.tag == "blueLine" || col.tag == "whiteLine")
         {
-            if (Input.GetMouseButton (0) == true && this.tag != "redLine" && col.tag == "redCursor") {
+            if (Input.GetMouseButton (0) == true && this.tag == "redCursor" && col.tag != "redLine") {
                 //Debug.Log("works red");
-				AssignLine ("LineRed", this.name);
+				AssignLine ("LineRed", col.name);
                 Manager.Instance.flag = true;
             }
-            else if (Input.GetMouseButton(0) == true && this.tag != "greenLine" && col.tag == "greenCursor")
+            else if (Input.GetMouseButton(0) == true && this.tag == "greenCursor" && col.tag != "greenLine")
             {
                 //Debug.Log("works green");
-                AssignLine("LineGreen", this.name);
+                AssignLine("LineGreen", col.name);
                 Manager.Instance.flag = true;
             }
-            else if (Input.GetMouseButton(0) == true && this.tag != "blueLine" && col.tag == "blueCursor")
+            else if (Input.GetMouseButton(0) == true && this.tag == "blueCursor" && col.tag != "blueLine")
             {
                 //Debug.Log("works blue");
-                AssignLine("LineBlue", this.name);
+                AssignLine("LineBlue", col.name);
                 Manager.Instance.flag = true;
             }
-            else if (Input.GetMouseButton(0) == true && this.tag != "whiteLine" && col.tag == "whiteCursor")
+            else if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "whiteLine")
             {
-                AssignLine("LineWhite", this.name);
+                AssignLine("LineWhite", col.name);
                 Manager.Instance.flag = true;
+            }
+        }
+        else
+        {
+            if (col.name == "no Cursor")
+            {
+                if (!cursorOff)
+                {
+                    cursorOff = true;
+                    size_check = Manager.Instance.brushSize;
+                    Manager.Instance.brushSize = 4;
+                }
+            }
+            else if(col.name == "on Cursor")
+            {
+                if (cursorOff)
+                {
+                    Manager.Instance.brushSize = size_check;
+                    cursorOff = false;
+                }
             }
         }
     }
@@ -71,6 +93,7 @@ public class trig : MonoBehaviour {
         {
             scanned = Manager.Instance.scans;
             deborah_check();
+            GameObject.Find("scanning_notification").GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 

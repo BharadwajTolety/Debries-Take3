@@ -49,7 +49,7 @@ public class ver_control : MonoBehaviour {
                 ver_cont++;
         }
 
-        for(int i = 0, j = count_ver; i<ver_cont; i++, j--)
+        for(int i = 0, j = count_ver-1; i<ver_cont; i++, j--)
         {
             GameObject vers_button = GameObject.FindGameObjectWithTag("ver_" + (i + 1));
             vers_button.GetComponent<Button>().interactable = true;

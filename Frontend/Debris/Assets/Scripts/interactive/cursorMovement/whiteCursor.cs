@@ -5,6 +5,8 @@ using UnityEngine;
 public class whiteCursor : MonoBehaviour {
     private Vector3 mousePosition;
 
+    public Sprite white, none;
+
     void Update()
     {
         Vector3 newSize = new Vector3(Manager.Instance.brushSize, Manager.Instance.brushSize, 1);
