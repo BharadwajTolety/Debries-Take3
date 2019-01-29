@@ -167,13 +167,13 @@ public class Map_Initiation : MonoBehaviour
             //Debug.Log(dest);
             edgeNumber = i + 1;
 
-            if (contractorCode == 0) { AddEdge(edgeNumber, source, dest, "LineWhite"); }
+            if (contractorCode == 0) { AddEdge(edgeNumber, source, dest, "white"); }
             else
-            if (contractorCode == 1) { AddEdge(edgeNumber, source, dest, "LineRed"); }
+            if (contractorCode == 1) { AddEdge(edgeNumber, source, dest, "red"); }
             else
-            if (contractorCode == 2) { AddEdge(edgeNumber, source, dest, "LineBlue"); }
+            if (contractorCode == 2) { AddEdge(edgeNumber, source, dest, "blue"); }
             else
-            if (contractorCode == 3) { AddEdge(edgeNumber, source, dest, "LineGreen"); }
+            if (contractorCode == 3) { AddEdge(edgeNumber, source, dest, "green"); }
 
 
             debrivalue = float.Parse(itemData["EdgeData"][i]["debris"].ToString());
@@ -201,7 +201,6 @@ public class Map_Initiation : MonoBehaviour
 
             float distance = between.magnitude;
             float tetha = 90 + Mathf.Atan((startPoint.y - endPoint.y) / (startPoint.x - endPoint.x)) * 180 / Mathf.PI;
-            string name = "E_" + EdgeNumber + "_" + nFrom + "_" + nTo;
             //print (name);
             GameObject theSelectedObj;
             GameObject NewObj;
@@ -210,6 +209,8 @@ public class Map_Initiation : MonoBehaviour
             NewObj.transform.localScale = new Vector3(0.3f, distance, 0.0f); // Parameter1: the scale relative to the parent
             NewObj.transform.Rotate(Vector3.forward * 1 * tetha);//Rotate (startPoint, tetha);
             NewObj.transform.parent = gameObject.transform;
+
+            string name = "E_" + EdgeNumber + "_" + nFrom + "_" + nTo;
             NewObj.name = name;
 
         }
