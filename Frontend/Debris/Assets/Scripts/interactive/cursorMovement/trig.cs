@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class trig : MonoBehaviour {
+public class trig : mapBrushing {
 
     //not the best place to do this but whatevs, this works out well.
     private GameObject scan;
@@ -30,28 +30,36 @@ public class trig : MonoBehaviour {
     private void OnTriggerStay2D(Collider2D col)
  	{
 
-        if (col.tag == "redLine" || col.tag == "greenLine" || col.tag == "blueLine" || col.tag == "whiteLine")
+        if (col.tag == "red" || col.tag == "green" || col.tag == "blue" || col.tag == "white" || col.tag.Contains("+"))
         {
-            if (Input.GetMouseButton (0) == true && this.tag == "redCursor" && col.tag != "redLine") {
+            if (Input.GetMouseButton (0) == true && this.tag == "redCursor" && !col.tag.Contains("red")) {
                 //Debug.Log("works red");
-				AssignLine ("LineRed", col.name);
+				AssignLine ("red", col.name);
                 Manager.Instance.flag = true;
             }
-            else if (Input.GetMouseButton(0) == true && this.tag == "greenCursor" && col.tag != "greenLine")
+            else if (Input.GetMouseButton(0) == true && this.tag == "greenCursor" && !col.tag.Contains("green"))
             {
                 //Debug.Log("works green");
-                AssignLine("LineGreen", col.name);
+                AssignLine("green", col.name);
                 Manager.Instance.flag = true;
             }
-            else if (Input.GetMouseButton(0) == true && this.tag == "blueCursor" && col.tag != "blueLine")
+            else if (Input.GetMouseButton(0) == true && this.tag == "blueCursor" && !col.tag.Contains("blue"))
             {
                 //Debug.Log("works blue");
-                AssignLine("LineBlue", col.name);
+                AssignLine("blue", col.name);
                 Manager.Instance.flag = true;
             }
-            else if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "whiteLine")
+            else if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
             {
-                AssignLine("LineWhite", col.name);
+                AssignLine("white", col.name);
+                Manager.Instance.flag = true;
+            }
+        }
+        else if(col.tag == "AllColor")
+        {
+            if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
+            {
+                AssignLine("white", col.name);
                 Manager.Instance.flag = true;
             }
         }
@@ -97,47 +105,9 @@ public class trig : MonoBehaviour {
         }
     }
 
-    void AssignLine(string lineType,string lineName){
-
-		//Debug.Log (lineType);
-
-		GameObject theSelectedObj;
-		GameObject NewObj=GameObject.Find(lineType);
-		theSelectedObj = GameObject.Find(lineName);
-
-		Vector3 distance = theSelectedObj.transform.localScale;
-			
-
-		Vector3 objScale = theSelectedObj.transform.localScale;
-		Vector3 between2 = theSelectedObj.transform.position;
-		Quaternion tetha = theSelectedObj.transform.rotation;
-
-
-        // make sure you are deleting a line
-        string objectName = theSelectedObj.name;
-        
-        if (objectName.Contains("E_")) {
-            //print(objectName);
-            Destroy(theSelectedObj);
-        }
-
-		GameObject created= Instantiate (NewObj, between2, Quaternion.identity);
-		created.transform.rotation=tetha;//Rotate (startPoint, tetha);
-		created.transform.parent =GameObject.Find("MapScreen").gameObject.transform ;
-		created.transform.localScale = distance;
-
-		created.name = lineName;
-
-        Manager.Instance.save_map(Manager.Instance.map_version,theSelectedObj);
-        Manager.Instance.save_map(Manager.Instance.map_version + 1, created);
-
-        Manager.Instance.edge_changes += 1;
-            
-    }
-
     private void deborah_check()
     {
-        GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("whiteLine");
+        GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
 
         if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1)
         {
@@ -156,31 +126,5 @@ public class trig : MonoBehaviour {
         {
             scan.GetComponent<Button>().interactable = true;
         }
-    }
-
-    void AnimasignLine(string lineType, string lineName)
-    {
-
-        //Debug.Log (lineType);
-
-        GameObject theSelectedObj;
-        GameObject NewObj = GameObject.Find(lineType);
-        theSelectedObj = GameObject.Find(lineName);
-
-        Vector3 distance = theSelectedObj.transform.localScale;
-
-
-        Vector3 objScale = theSelectedObj.transform.localScale;
-        Vector3 between2 = theSelectedObj.transform.position;
-        Quaternion tetha = theSelectedObj.transform.rotation;
-        Destroy(theSelectedObj);
-
-
-        GameObject created = Instantiate(NewObj, between2, Quaternion.identity);
-        created.transform.rotation = tetha;//Rotate (startPoint, tetha);
-        created.transform.parent = GameObject.Find("MapScreen").gameObject.transform;
-        created.transform.localScale = distance;
-
-        created.name = lineName;
     }
 }
