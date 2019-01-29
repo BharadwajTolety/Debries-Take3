@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ver_control : MonoBehaviour {
+public class ver_control : mapBrushing {
 
     private List<float> maxProfit   = new List<float>();
     private List<float> minTime     = new List<float>();
@@ -63,7 +63,7 @@ public class ver_control : MonoBehaviour {
         //the version name should only be the version number
         if(read_scanFile(ver.name))
         {
-            map_update(map);
+            map_update_ver(map);
             reUpdate_graphs(int.Parse(ver.name));
         }
     }
@@ -86,6 +86,7 @@ public class ver_control : MonoBehaviour {
         }
     }
 
+    //this needs to be updated for multiple edge contractors
     private bool read_scanFile(string ver)
     {
         map.Clear();
@@ -106,13 +107,13 @@ public class ver_control : MonoBehaviour {
                 switch(int.Parse(scoreInfo[2]))
                 {
                     case 1:
-                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "LineRed");
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "red");
                         break;
                     case 2:
-                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "LineGreen");
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "green");
                         break;
                     case 3:
-                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "LineBlue");
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "blue");
                         break;
                     default:
                         Debug.Log("prob in ver control read scanfile, white line maybe");
@@ -121,58 +122,5 @@ public class ver_control : MonoBehaviour {
             }
             return true;
         }
-    }
-
-    //call this to update the map contractors/coloring
-    private void map_update(Dictionary<string, string> updateEdges)
-    {
-        GameObject[] allGameObjects = (GameObject[])FindObjectsOfType(typeof(GameObject));
-
-        foreach (var updateEdge in updateEdges)
-        {
-            bool objSelected = false;
-            string edgeName = updateEdge.Key;
-            
-            GameObject NewObj = GameObject.Find(updateEdge.Value);
-            GameObject theSelectedObj = new GameObject();
-
-            foreach (GameObject go in allGameObjects)
-            {
-                if (go.name.EndsWith(updateEdge.Key))
-                {
-                    theSelectedObj = go;
-                    edgeName = go.name;
-                    objSelected = true;
-                    break;
-                }
-            }
-
-            //if no objected not found GTFO
-            if (!objSelected)
-                break;
-
-            Vector3 distance = theSelectedObj.transform.localScale;
-
-            Vector3 objScale = theSelectedObj.transform.localScale;
-            Vector3 between2 = theSelectedObj.transform.position;
-            Quaternion tetha = theSelectedObj.transform.rotation;
-
-            // make sure you are deleting a line
-            string objectName = theSelectedObj.name;
-
-            if (objectName.Contains("E_"))
-            {
-                //print(objectName);
-                Destroy(theSelectedObj);
-            }
-
-            GameObject created = Instantiate(NewObj, between2, Quaternion.identity);
-            created.transform.rotation = tetha;//Rotate (startPoint, tetha);
-            created.transform.parent = GameObject.Find("MapScreen").gameObject.transform;
-            created.transform.localScale = distance;
-
-            created.name = edgeName;
-        }
-        Debug.Log("Map Updated version control");
     }
 }
