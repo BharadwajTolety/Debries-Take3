@@ -5,6 +5,9 @@
 clear X
 X = importdata('C:/Users/Uttkarsh/Desktop/Debris_work_folder/work_debris/Frontend/Debris/Assets/Database/Output/edgelist_forMatlab.csv');
 
-EdgeList = X;
+header = X(1,:);
+X(1,:) = [];
+
+brushed_edges = X;
 
 Main3(); 

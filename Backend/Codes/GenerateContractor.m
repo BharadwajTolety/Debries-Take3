@@ -38,6 +38,8 @@ Adjacency=Time>0;
 %%%%%%%%%%%%%% Creating different initial solutions by changing the 
 %%%% Edge assingment
 
+%%%%!!!!!!!!!!!!!!!!USER INOPUT
+
 random_edge_assignment = randi(3,[no_roads,1]);
 EdgeAssignment(:,1)=random_edge_assignment;
 
@@ -183,12 +185,13 @@ end
 [MAXTIME, contmaxtime]= max(time_vec);
 [MINPROFIT2, contminprofit] = min(profit_vec);
 
-% pr=0.1;int=0.1;
-% [Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
-%     
-% save('Contractor2.mat', 'Contractor')
-% 
-% save('IntersectionValue.mat', 'OVERLAP1')
-% save('DeletedCycles_2.mat', 'BadCycles_profit', 'BadCycles_intersection')
-Main3();
+%%check with ayibike how these play into the algorithm
+pr=0.1;int=0.1;
+[Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
+     
+save('Contractor2.mat', 'Contractor')
+ 
+save('IntersectionValue.mat', 'OVERLAP1')
+save('DeletedCycles_2.mat', 'BadCycles_profit', 'BadCycles_intersection')
+main4_unity();
 %toc

@@ -34,7 +34,7 @@ if ti== true
         
         if in == true
             %Time + Profit + intersection
-            
+            %NOT WORKING - USER CANT CLICK All 3 options
             [Contractor] = Repair_profitTimeIntersection(Contractor, q_p, edge_change, TimeMatrix, profit_vec,...
                 time_vec, revenue_per_debris,  capacity, depot, gas_per_distance, time_per_debris,...
                 node_intersection_matrix);

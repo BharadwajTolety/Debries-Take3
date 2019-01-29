@@ -1,25 +1,14 @@
 
 %This loops through the repair solution with different objectives
-
-
-
-
 % After user makes the changes - repair algorithm
 
-%clc
-%clear
-
-%[time, profit, intersection]
 obj_category={[1,0,0],[1,0,1], [0,0,1],[0,1,0], [0,1,1],[1,1,0],[1,1,1]};
 obj_cat_name= {'Time', 'Time + Int', 'Int', 'Profit', 'Profit+Int', 'Profit+Time', 'Profit+Time+Int'};
 persona_name = {'All bad cycles Profit/time',' Bad cycles Intersection', 'Visual Convex Hull', 'Visual C.H. with erasing'};
-for persona =1:1 %Persona 1 bad cycles profit/time - persona 2 bad cycles intersection - persona 3 convex hull overlap
-    
-for o = 1:1 %There are a total of 7 combinations of objectives
-   oo = obj_category{o};
-    time_selected = oo(1);
-    profit_selected = oo(2);
-    intersection_selected = oo(3);
+ 
+time_selected = header(1);
+profit_selected = header(2);
+intersection_selected = header(3);
 
 %Get a profit and time vec to see the relative difference of contractor's
 %values
@@ -51,7 +40,7 @@ NODES=1:no_nodes;
 %When human assigns a contractor on an edge it automatically divides the debris
 %on the edge. If computer is asked to repair based on an objective than you
 %can see only traversing contractors on edges
-load('brushed_edges.mat')
+%load('brushed_edges.mat')
 
 % obj_selected = [1, 0 , 0]; %Time- Profit-Intersection selections indicated with 1 if selected
 % [Contractor] = fixBrushingErasing(EdgeListMatrix, Contractor, brushed_edges, obj_selected, time_vec, ...
@@ -214,8 +203,7 @@ PROFIT_VEC = MINPROFIT1;
 %             
 %         end
         EdgeListMatrix = GenerateEdgeList( Contractor );
-    end
-    
+
 %     Rep(o).obj(persona).profit = PROFIT_VEC;
 %     Rep(o).obj(persona).time = TIME_VEC;
 %     Rep(o).obj(persona).int = OVERLAP_VEC;
@@ -264,5 +252,3 @@ PROFIT_VEC = MINPROFIT1;
         end
     end
     fclose(fid);
-    
-end
