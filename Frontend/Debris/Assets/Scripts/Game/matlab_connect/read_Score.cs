@@ -62,6 +62,7 @@ public class read_Score : MonoBehaviour
                 {
                     Manager.Instance.cncProfit[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[1]);
                     Manager.Instance.cncTime[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[2]);
+                    Manager.Instance.intersect = float.Parse(scoreInfo[3]);
                 }
                 else
                 {
