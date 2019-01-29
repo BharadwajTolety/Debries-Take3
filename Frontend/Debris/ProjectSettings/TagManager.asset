@@ -5,13 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - objNode
-  - redLine
-  - blueLine
-  - greenLine
-  - whiteLine
-  - txtRed
-  - txtBlue
-  - txtGreen
   - ALLOBJECTS
   - redCursor
   - blueCursor
@@ -32,6 +25,15 @@ TagManager:
   - ver_3
   - ver_4
   - ver_5
+  - Edge
+  - red
+  - green
+  - blue
+  - red+green
+  - green+blue
+  - AllColor
+  - white
+  - red+blue
   layers:
   - Default
   - TransparentFX
