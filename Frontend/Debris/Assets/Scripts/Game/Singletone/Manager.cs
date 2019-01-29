@@ -16,7 +16,7 @@ public class Manager : Singleton<Manager>
     public int edge_changes = 0;
 
     public int scans = 0; //number of scans done
-    public float maxProfit, minTime; //the scores for the game
+    public float maxProfit, minTime, intersect; //the scores for the game
 
     //the scores for individual contractors
     public float[] cncProfit = new float[3];
@@ -81,17 +81,29 @@ public class Manager : Singleton<Manager>
                 //save current map version
                 switch (edge.tag)
                 {
-                    case "redLine":
-                        map_info[map_ver].Add(edge.name, "LineRed");
+                    case "red":
+                        map_info[map_ver].Add(edge.name, "red");
                         break;
-                    case "blueLine":
-                        map_info[map_ver].Add(edge.name, "LineBlue");
+                    case "blue":
+                        map_info[map_ver].Add(edge.name, "blue");
                         break;
-                    case "greenLine":
-                        map_info[map_ver].Add(edge.name, "LineGreen");
+                    case "green":
+                        map_info[map_ver].Add(edge.name, "green");
                         break;
-                    case "whiteLine":
-                        map_info[map_ver].Add(edge.name, "LineWhite");
+                    case "white":
+                        map_info[map_ver].Add(edge.name, "white");
+                        break;
+                    case "red+green":
+                        map_info[map_ver].Add(edge.name, "red+green");
+                        break;
+                    case "red+blue":
+                        map_info[map_ver].Add(edge.name, "red+blue");
+                        break;
+                    case "green+blue":
+                        map_info[map_ver].Add(edge.name, "green+blue");
+                        break;
+                    case "AllColor":
+                        map_info[map_ver].Add(edge.name, "red+blue+green");
                         break;
                     default:
                         Debug.Log("something went wrong with edge mapping for undo/redo");
