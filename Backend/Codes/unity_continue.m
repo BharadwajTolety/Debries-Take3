@@ -3,6 +3,7 @@
 
 %% run main
 clear X
+clear brushed_edges
 X = importdata('C:/Users/Uttkarsh/Desktop/Debris_work_folder/work_debris/Frontend/Debris/Assets/Database/Output/edgelist_forMatlab.csv');
 load('brushed_edges.mat');
 
