@@ -95,40 +95,75 @@ public class contInfo_Matlab : classSocket
         string objline = string.Format("{0},{1},{2}", profit_obj, time_obj, intersect_obj);
         csv.AppendLine(objline);
 
+        string csv_input;
         //write edges here
-        write_edges(path , themRedEdges);
-        write_edges(path , themGreenEdges);
-        write_edges(path , themBlueEdges);
-        write_edges(path , red_blue);
-        write_edges(path , red_green);
-        write_edges(path , green_blue);
-        write_edges(path , all_color);
+        csv_input = write_edges(path , themRedEdges);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
 
+        csv_input = write_edges(path , themGreenEdges);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
+
+        csv_input = write_edges(path , themBlueEdges);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
+
+        csv_input = write_edges(path , red_blue);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
+
+        csv_input = write_edges(path , red_green);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
+
+        csv_input = write_edges(path , green_blue);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
+
+        csv_input = write_edges(path , all_color);
+        if (csv_input.EndsWith("\r\n"))
+        {
+            csv_input = csv_input.Substring(0, csv_input.Length - 2);
+            csv.AppendLine(csv_input);
+        }
+
+        File.WriteAllText(path, csv.ToString());
         return count_edges;
     }
 
-    private void write_edges(string path, GameObject[] edges)
+    private string write_edges(string path, GameObject[] edges)
     {
         string from = "-";
         string to = "-";
-        string nc = "-";
+        string nc = "";
         StringBuilder csv = new StringBuilder();
         string[] nodeInfo = new string[4];
 
-        if (edges[0].tag == "red")
-            nc = "[1]";
-        else if (edges[0].tag == "green")
-            nc = "[2]";
-        else if (edges[0].tag == "blue")
-            nc = "[3]";
-        else if (edges[0].tag == "red+green")
-            nc = "[1,2]";
-        else if (edges[0].tag == "red+blue")
-            nc = "[1,3]";
-        else if (edges[0].tag == "green+blue")
-            nc = "[2,3]";
-        else if (edges[0].tag == "AllColor")
-            nc = "[1,2,3]";
+        if (edges[0].name.Contains("red"))
+            nc += "1";
+        if (edges[0].name.Contains("green"))
+            nc += "2";
+        if (edges[0].name.Contains("blue"))
+            nc += "3";
 
         for (int i = 0; i < edges.Length; i++)
         {
@@ -138,7 +173,7 @@ public class contInfo_Matlab : classSocket
                 from = nodeInfo[2];
                 to = nodeInfo[3];
 
-                if (from != "-" || to != "-" || nc != "-")
+                if (from != "-" || to != "-")
                 {
                     string newline = string.Format("{0},{1},{2}", from, to, nc);
                     csv.AppendLine(newline);
@@ -147,7 +182,7 @@ public class contInfo_Matlab : classSocket
             }
         }
 
-        File.WriteAllText(path, csv.ToString());
+        return csv.ToString();
     }
 
     //read score sent from matlab
@@ -157,7 +192,7 @@ public class contInfo_Matlab : classSocket
         read_Score read = (read_Score)gameManager.GetComponent(typeof(read_Score));
 
         //start reading
-        read.reading();
+       // read.reading();
 
         float maxProfit = Manager.Instance.maxProfit;
         float minTime = Manager.Instance.minTime;

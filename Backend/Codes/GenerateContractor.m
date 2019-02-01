@@ -186,12 +186,12 @@ end
 [MINPROFIT2, contminprofit] = min(profit_vec);
 
 %%check with ayibike how these play into the algorithm
-pr=0.1;int=0.1;
-[Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
+%pr=0.1;int=0.1;
+%[Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
      
-save('Contractor2.mat', 'Contractor')
+%save('Contractor2.mat', 'Contractor')
  
-save('IntersectionValue.mat', 'OVERLAP1')
-save('DeletedCycles_2.mat', 'BadCycles_profit', 'BadCycles_intersection')
+%save('IntersectionValue.mat', 'OVERLAP1')
+%save('DeletedCycles_2.mat', 'BadCycles_profit', 'BadCycles_intersection')
 main4_unity();
 %toc
