@@ -68,13 +68,13 @@ public class ver_control : mapBrushing {
         }
     }
 
+    //fix this
     private void reUpdate_graphs(int total)
     {
         float[] profit_verCont = maxProfit.GetRange(0,total).ToArray();
         float[] time_verCont = minTime.GetRange(0, total).ToArray();
 
-        GameObject.Find("profit_total").GetComponent<LineChart>().reUpdate(profit_verCont);
-        GameObject.Find("time_total").GetComponent<LineChart>().reUpdate(time_verCont);
+        GameObject.Find("score_total").GetComponent<LineChart>().reUpdate(profit_verCont, time_verCont);
 
         for (int i = 0; i < 3; i++)
         {
