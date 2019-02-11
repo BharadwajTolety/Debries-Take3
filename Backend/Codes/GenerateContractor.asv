@@ -20,7 +20,7 @@ min_debris = min(debris);
 %Uniformly draw integers 
 random_debris1 = randsample(ceil(max_debris),no_roads);
 %Uniformly distribute the debris to different roads
-%random_debris2 = debris(randperm(no_roads));
+random_debris2 = debris(randperm(no_roads));
 
 %debris = random_debris2;
 debris = random_debris1;
@@ -38,7 +38,8 @@ Adjacency=Time>0;
 %%%%%%%%%%%%%% Creating different initial solutions by changing the 
 %%%% Edge assingment
 
-%%%%!!!!!!!!!!!!!!!!USER INOPUT!!!!!!!!!!!!!!!!!!!!!!!!!
+%%%%!!!!!!!!!!!!!!!!USER INOPUT
+
 random_edge_assignment = randi(3,[no_roads,1]);
 EdgeAssignment(:,1)=random_edge_assignment;
 
@@ -184,62 +185,12 @@ end
 [MAXTIME, contmaxtime]= max(time_vec);
 [MINPROFIT2, contminprofit] = min(profit_vec);
 
-%%calculate bad edges. 
-pr=0.1;int=0.1;
- [Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
-EdgeListMatrix = GenerateEdgeList( Contractor );
-
- par3 = 0.25;
-[ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, par3, EdgeList );
+% pr=0.1;int=0.1;
+% [Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
      
 %save('Contractor2.mat', 'Contractor')
  
 %save('IntersectionValue.mat', 'OVERLAP1')
 %save('DeletedCycles_2.mat', 'BadCycles_profit', 'BadCycles_intersection')
 %main4_unity();
-
-    pathSplit=regexp(pwd,'\','split');
-    initPath = '';
-
-    for n = 1:numel(pathSplit)
-    if(strcmp(pathSplit(n),'Backend'))
-          break;
-    end
-   
-        if n == 1
-            initPath = strcat(initPath,pathSplit(n));
-        else
-            initPath = strcat(initPath,'\',pathSplit(n));
-        end
-   
-    end
-
-    badFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\badEdges_from_Matlab.csv');
-    badFile = char(badFile);
-
-    fprintf('%s',badFile);
-    [fid, msg] = fopen(badFile,'w');
-    if fid < 0 
-         error('Failed to open file "%s" because: "%s"', badFile, msg);
-    else
-        csvwrite(badFile,BadEdges);
-    end
-    fclose(fid);
-    
-    scoreFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\score_info_fromMatlab.txt');
-    scoreFile = char(scoreFile);
-
-    fprintf('%s',scoreFile);
-    [fid, msg] = fopen(scoreFile,'w');
-    if fid < 0 
-         error('Failed to open file "%s" because: "%s"', scoreFile, msg);
-    else
-        fprintf(fid,'%f,%f',MAXTIME, MINPROFIT2);
-        for i=1:no_contractor
-            fprintf(fid,'\r\n%d,%f,%f,%f',i,Contractor{i}.TotalTime,Contractor{i}.TotalProfit, OVERLAP);
-        end
-    end
-    fclose(fid);
-    fprintf('\r\n closed file');
-    
 %toc

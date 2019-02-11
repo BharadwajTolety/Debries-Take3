@@ -5,9 +5,7 @@
 time_selected = header(1);
 profit_selected = header(2);
 intersection_selected = header(3);
-
-oo = [time_selected, profit_selected, intersection_selected];
-
+load('brushed_edges.mat')
 %Get a profit and time vec to see the relative difference of contractor's
 %values
 profit_vec=zeros(1,no_contractor);

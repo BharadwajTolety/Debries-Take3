@@ -1,6 +1,7 @@
 %unity connection - matlab server
 
 clc
+clear
 tcpipServer = tcpip('0.0.0.0',55002,'NetworkRole','Server');
 fprintf('matlab is listening for unity now...');
 flag = false;
