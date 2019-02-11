@@ -56,7 +56,7 @@ public class map_transformations : MonoBehaviour {
                         };
 
         string[] eyes = { "RedEye", "BlueEye", "GreenEye" };
-        string[] edges = { "redLine", "blueLine" , "greenLine" };
+        string[] edges = { "red", "blue" , "green" };
 
         for(int i = 0 ; i < eyes.Length ; i++)
         {
@@ -87,11 +87,11 @@ public class map_transformations : MonoBehaviour {
     //mask the other edges out based on eye buttons
     private void mask_edges(string edg)
     {
-        string[] what_edge  = {"redLine" , "blueLine" , "greenLine"};
+        string[] what_edge  = {"red" , "blue" , "green", "red+green" , "green+blue" , "red+blue" , "red+blue+green" };
 
         for( int i = 0; i<what_edge.Length; i++)
         {   
-            if(edg != what_edge[i])
+            if(!what_edge[i].Contains(edg))
             {
                 GameObject[] edges = GameObject.FindGameObjectsWithTag(what_edge[i]);
                 foreach (GameObject edge in edges)
