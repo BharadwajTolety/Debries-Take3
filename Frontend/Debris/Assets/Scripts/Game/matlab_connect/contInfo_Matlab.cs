@@ -50,11 +50,12 @@ public class contInfo_Matlab : classSocket
             setupSocket();
 
             call_reading(profit, time, intersect);
-
-            update_graphs();
-
-            update_verCont();
         }
+    }
+
+    public void write_log(string path, int profit_obj, int time_obj, int intersect_obj)
+    {
+        write_map_csv(path, true, profit_obj, time_obj, intersect_obj);
     }
 
     //write into csv file
@@ -192,30 +193,6 @@ public class contInfo_Matlab : classSocket
         read_Score read = (read_Score)gameManager.GetComponent(typeof(read_Score));
 
         //start reading
-       // read.reading();
-
-        float maxProfit = Manager.Instance.maxProfit;
-        float minTime = Manager.Instance.minTime;
-
-        string exPath = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + Manager.Instance.scans + ".csv";
-        write_map_csv(exPath , true, profit_obj, time_obj, intersect_obj);
-    }
-
-    private void update_graphs()
-    {
-        GameObject.Find("profit_total").GetComponent<LineChart>().update_graph();
-        GameObject.Find("time_total").GetComponent<LineChart>().update_graph();
-
-        for(int i = 1; i < 4; i++)
-        {
-            GameObject.Find("profit_" + i).GetComponent<BarChart>().update_graph();
-            GameObject.Find("time_" + i).GetComponent<BarChart>().update_graph();
-        }
-    }
-
-    //just update version control scores every scan
-    private void update_verCont()
-    {
-        GameObject.Find("ver_control").GetComponent<ver_control>().update_verList();
+        read.reading(profit_obj, time_obj, intersect_obj);   
     }
 }

@@ -10,6 +10,7 @@ using System;
 
 public class BrushSelector : MonoBehaviour {
 
+    public Slider brush_slider;
     //move the other brushes out of the way and set the current brush ON!!
 
 	public void setBrushRed()
@@ -70,10 +71,18 @@ public class BrushSelector : MonoBehaviour {
                     Manager.Instance.brushSize += 1;
                 }
             }
+
+            brush_slider.value = Manager.Instance.brushSize;
         }
         catch (NullReferenceException ex)
         {
             Debug.Log("Null" + ex.Message);
         }
+    }
+
+    public void slide_brushsize(float size)
+    {
+        if( 3 < size && size < 20 )
+            Manager.Instance.brushSize = size;
     }
 }

@@ -7,22 +7,28 @@ public class scan_controls : MonoBehaviour
 {
     public Button profit_button, time_button, intersect_button;
     public Sprite[] profit_sprite, time_sprite, intersect_sprite;
-    private int profit_obj, time_obj, intersect_obj, scan;
+    private int profit_obj, time_obj, intersect_obj, total;
 
     private void Awake()
     {
         profit_obj = 0;
         time_obj = 0;
         intersect_obj = 0;
-        scan = 0;
+        total = 0;
     }
 
     public void profit_check()
     {
         if (profit_obj == 1)
+        {
+            total--;
             profit_obj = 0;
-        else
+        }
+        else if (total > 1)
+        {
+            total++;
             profit_obj = 1;
+        }
 
         update_button(profit_button, profit_sprite, profit_obj);
     }
@@ -30,9 +36,15 @@ public class scan_controls : MonoBehaviour
     public void time_check()
     {
         if (time_obj == 1)
+        {
+            total--;
             time_obj = 0;
-        else
+        }
+        else if (total > 1)
+        {
+            total++;
             time_obj = 1;
+        }
 
         update_button(time_button, time_sprite, time_obj);
     }
@@ -40,9 +52,15 @@ public class scan_controls : MonoBehaviour
     public void intersect_check()
     {
         if (intersect_obj == 1)
+        {
+            total--;
             intersect_obj = 0;
-        else
+        }
+        else if(total > 1)
+        {
+            total++;
             intersect_obj = 1;
+        }
 
         update_button(intersect_button, intersect_sprite, intersect_obj);
     }

@@ -10,7 +10,6 @@ public class graph_view : MonoBehaviour {
     GameObject intersect_view;
     GameObject mapscreen;
 
-    //the name doesn't make sense cause the functionality has been deprecated but it works on scan_disable stuff so it's still here.
     private void Awake()
     {
         mapscreen = GameObject.Find("MapScreen");
@@ -38,5 +37,27 @@ public class graph_view : MonoBehaviour {
 
         scan.GetComponent<Button>().interactable = false;
         blinker.GetComponent<Toggle>().interactable = false;
+    }
+
+    public void update_log(int profit_obj, int time_obj, int intersect_obj)
+    {
+        string exPath = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + Manager.Instance.scans + ".csv";
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
+
+        update_graphs();
+        update_verCont();
+    }
+
+    private void update_graphs()
+    {
+        GameObject.Find("current_time").GetComponent<BarChart>().update_graph();
+        GameObject.Find("current_profit").GetComponent<BarChart>().update_graph();
+        GameObject.Find("current_total").GetComponent<LineChart>().update_graph();
+    }
+
+    //just update version control scores every scan
+    private void update_verCont()
+    {
+        GameObject.Find("ver_control").GetComponent<ver_control>().update_verList();
     }
 }

@@ -8,12 +8,60 @@ public class read_Score : MonoBehaviour
 {
     StreamReader readScore;
     string scorePath;
+    float start_time, timespent;
+    bool reading_check;
+    int profit_obj, time_obj, intersect_obj;
 
     private void Awake()
     {
         scorePath = Application.dataPath + "/Database/Input/score_info_fromMatlab.txt";
         
         reset_score();
+
+        //initialize log items : error check based on time; profit obj,time obj, intersect obj based on the buttons 
+        //from scan control maybe I should move these manager? Fine for now.
+        profit_obj = 0;
+        time_obj = 0;
+        intersect_obj = 0;
+        reading_check = false;
+        start_time = 0f;
+        timespent = 0f;
+    }
+
+    private void Update()
+    {
+        if (reading_check)
+        {
+            timespent = Time.time - start_time;
+            if(read_score())
+            {
+                GameObject map = GameObject.FindGameObjectWithTag("ALLOBJECTS");
+                badEdge_blinkers read_bE = (badEdge_blinkers)map.GetComponent(typeof(badEdge_blinkers));
+                read_bE.read_badEdges();
+
+                Debug.Log("maxProfit : " + Manager.Instance.maxProfit);
+                Debug.Log("minTime : " + Manager.Instance.minTime);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    Debug.Log("cnc profit_" + (i + 1) + " : " + Manager.Instance.cncProfit[i]);
+                    Debug.Log("cnc time_" + (i + 1) + " : " + Manager.Instance.cncTime[i]);
+                }
+                Debug.Log("intersect overlap_" + Manager.Instance.intersect);
+
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().update_log(profit_obj, time_obj, intersect_obj);
+
+                //not reading anymore
+                reading_check = false;              
+            }
+            else if (timespent > 15)
+            {
+                Debug.Log("Matlab taking too long something wrong - " + timespent);
+
+                //not reading anymore
+                reading_check = false;
+            }
+        }
     }
 
     //reset score file so that matlab can rewrite it
@@ -76,35 +124,21 @@ public class read_Score : MonoBehaviour
     }
      
     //keep reading the score file while matlab is calculating and done writing the score file
-    public void reading()
+    public void reading(int profit, int time, int intersect)
     {
         //reset score file so it be waiting for matlab new scores
         reset_score();
         Debug.Log("waiting on score...");
 
-        float timespent = 1f;
-        while (!read_score())
-        {
-            timespent *= Time.unscaledDeltaTime;
-            if (timespent > 5)
-            {
-                Debug.Log("Matlab taking too long something wrong - " + timespent);
-                break;
-            }
-                
-        };
+        start_time = Time.time;
+        timespent = 0f;
 
-        GameObject map = GameObject.FindGameObjectWithTag("ALLOBJECTS");
-        badEdge_blinkers read_bE = (badEdge_blinkers)map.GetComponent(typeof(badEdge_blinkers));
-        read_bE.read_badEdges();
+        profit_obj = profit;
+        time_obj = time;
+        intersect_obj = intersect;
 
-        Debug.Log("maxProfit : " + Manager.Instance.maxProfit);
-        Debug.Log("minTime : " + Manager.Instance.minTime);
-        
-        for(int i = 0; i<3; i++)
-        {
-            Debug.Log("cnc profit_" + (i+1) + " : " + Manager.Instance.cncProfit[i]);
-            Debug.Log("cnc time_" + (i+1) + " : " + Manager.Instance.cncTime[i]);
-        }
+        //start reading
+        reading_check = true;
+        //continues in UPDATE;
     }
 }
