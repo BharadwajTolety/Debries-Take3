@@ -15,18 +15,20 @@ public class BarChart : MonoBehaviour
     public RectTransform dashTemplateX;
     public RectTransform dashTemplateY;
     private List<GameObject> gameObjectList;
-    private List<float> valueList;
-    private int maxVisibleValueAmount;
+    private List<float> valueList, valueList2;
+    private int maxVisibleValue, maxVisibleValue2;
     private float values;
 
     private void Awake()
     {
         gameObjectList = new List<GameObject>();
 
-        maxVisibleValueAmount = 0;
+        maxVisibleValue = 0;
+        maxVisibleValue2 = 0;
 
         //The input value
         valueList = new List<float>();
+        valueList2 = new List<float>();
 
         //Create the graph, labelTemplateX and labelTemplateY
         //ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
@@ -41,67 +43,53 @@ public class BarChart : MonoBehaviour
             valueList.Add(value);
         }
 
-        maxVisibleValueAmount = valueList.Count;
-        ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+        maxVisibleValue = valueList.Count;
+        ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
     }
 
     public void update_graph()
     {
-        bool update = false;
-
-        if (this.name.Contains("profit_"))
+        if (this.name.Contains("current_"))
         {
-            if (this.name.Contains("total"))
+            if (this.name.EndsWith("time"))
             {
-                values = Manager.Instance.maxProfit;
+                valueList.Add(Manager.Instance.cncTime[0]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncTime[1]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncTime[2]);
+                maxVisibleValue++;
+
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
             }
-            else if (this.name.Contains("1"))
+            else if (this.name.EndsWith("profit"))
             {
-                values = Manager.Instance.cncProfit[0];
+                valueList.Add(Manager.Instance.cncProfit[0]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncProfit[1]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncProfit[2]);
+                maxVisibleValue++;
+
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
             }
-            else if (this.name.Contains("2"))
+            else if (this.name.EndsWith("total"))
             {
-                values = Manager.Instance.cncProfit[1];
-            }
-            else if (this.name.Contains("3"))
-            {
-                values = Manager.Instance.cncProfit[2];
+                valueList.Add(Manager.Instance.maxProfit);
+                maxVisibleValue++;
+                valueList2.Add(Manager.Instance.minTime);
+                maxVisibleValue++;
+
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
+                ShowGraph(valueList2, maxVisibleValue2, (int _i) => "Iter." + (_i + 1));
             }
             else
+            {
                 values = 0;
-
-            update = true;
-        }
-        else if (this.name.Contains("time_"))
-        {
-            if (this.name.Contains("total"))
-            {
-                values = Manager.Instance.minTime;
+                valueList.Add(Manager.Instance.maxProfit);
+                maxVisibleValue++;
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
             }
-            else if (this.name.Contains("1"))
-            {
-                values = Manager.Instance.cncTime[0];
-            }
-            else if (this.name.Contains("2"))
-            {
-                values = Manager.Instance.cncTime[1];
-            }
-            else if (this.name.Contains("3"))
-            {
-                values = Manager.Instance.cncTime[2];
-            }
-            else
-                values = 0;
-
-            update = true;
-        }
-
-        if (update)
-        {
-            valueList.Add(values);
-            maxVisibleValueAmount++;
-
-            ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
         }
     }
 
@@ -118,7 +106,7 @@ public class BarChart : MonoBehaviour
         return gameObject;
     }
 
-    private void ShowGraph(List<float> valueList, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
+    private void ShowGraph(List<float> valueList, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
         if (getAxisLableX == null)
         {
@@ -168,13 +156,20 @@ public class BarChart : MonoBehaviour
         int xIndex = 0;
 
         //GameObject lastDotGameObject = null;
-        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
+        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0), j = 0; i < valueList.Count; i++, j++)
         {
             float xPosition = xSize * 0.5f + xIndex * xSize;
             float yPosition = ((valueList[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
-            GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * 0.8f);
+            GameObject barGameObject = CreateBar(new Vector2(xPosition, yPosition), xSize * 0.8f, j);           
             gameObjectList.Add(barGameObject);
 
+            //Create the label for y axis info over bar
+            RectTransform labelY = Instantiate(labelTemplateY);
+            labelY.SetParent(barGameObject.GetComponent<RectTransform>(), false);
+            labelY.gameObject.SetActive(true);
+            labelY.anchoredPosition = new Vector2(xPosition, yPosition + 10);
+            labelY.GetComponent<Text>().text = getAxisLableY(yMaximum);
+            gameObjectList.Add(labelY.gameObject);
 
             //Create the label for x axis
             RectTransform labelX = Instantiate(labelTemplateX);
@@ -197,29 +192,24 @@ public class BarChart : MonoBehaviour
         int separatorCount = 15;
         for (int i = 0; i <= separatorCount; i++)
         {
-            //Create the label for y axis
-            RectTransform labelY = Instantiate(labelTemplateY);
-            labelY.SetParent(graphContainer, false);
-            labelY.gameObject.SetActive(true);
             float normalizeValue = i * 1f / separatorCount;
-            labelY.anchoredPosition = new Vector2(-7f, normalizeValue * graphHeight);
-            labelY.GetComponent<Text>().text = getAxisLableY(yMinimum + normalizeValue * (yMaximum - yMinimum));
-            gameObjectList.Add(labelY.gameObject);
-
             //Create the horizontal dash
             RectTransform dashY = Instantiate(dashTemplateY);
             dashY.SetParent(graphContainer, false);
             dashY.gameObject.SetActive(true);
             dashY.anchoredPosition = new Vector2(-4f, normalizeValue * graphHeight);
             gameObjectList.Add(dashY.gameObject);
-
         }
     }
 
 
-    private GameObject CreateBar(Vector2 graphPosition, float barWidth) {
+    private GameObject CreateBar(Vector2 graphPosition, float barWidth, int cnc)
+    { 
+        Color[] cnc_color = { Color.red, Color.green, Color.blue };
         GameObject gameObject = new GameObject("Bar", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
+        if(cnc < 3)
+            gameObject.GetComponent<Image>().color = cnc_color[cnc];
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector2(graphPosition.x, 0f);
         rectTransform.sizeDelta = new Vector2(barWidth, graphPosition.y);
@@ -227,7 +217,6 @@ public class BarChart : MonoBehaviour
         rectTransform.anchorMax = new Vector2(0, 0);
         rectTransform.pivot = new Vector2(0.5f, 0f);
         return gameObject;
-
     }
 }
 

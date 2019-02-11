@@ -14,93 +14,91 @@ public class LineChart : MonoBehaviour {
     public RectTransform dashTemplateX;
     public RectTransform dashTemplateY;
     private List<GameObject> gameObjectList;
-    private List<float> valueList;
-    private int maxVisibleValueAmount;
+    private List<float> valueList, valueList2;
+    private int maxVisibleValue, maxVisibleValue2;
     private float values;
 
     private void Awake()
     {
         gameObjectList = new List<GameObject>();
 
-        maxVisibleValueAmount = 0;
+        maxVisibleValue = 0;
+        maxVisibleValue2 = 0;
 
         //The value to be input into the chart
-        valueList = new List<float>();
+        valueList = new List<float>(); //profit
+        valueList2 = new List<float>(); //time
+
 
         //Create the graph, labelTemplateX and labelTemplateY
         //ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
     }
 
-    public void reUpdate(float[] valueUpdate)
+    //profit and then time
+    public void reUpdate(float[] valueUpdate, float[] valueUpdate2)
     {
         valueList.Clear();
+        valueList2.Clear();
 
         foreach (float value in valueUpdate)
         {
             valueList.Add(value);
         }
 
-        maxVisibleValueAmount = valueList.Count;
-        ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+        foreach(float value in valueUpdate2)
+        {
+            valueList2.Add(value);
+        }
+
+        maxVisibleValue = valueList.Count;
+        ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
+        ShowGraph(valueList2, maxVisibleValue2, (int _i) => "Iter." + (_i + 1));
     }
 
+    //fix this function for new names
     public void update_graph()
     {
-        bool update = false;
-
-        if(this.name.Contains("profit_"))
+        if (this.name.Contains("current_"))
         {
-            if (this.name.Contains("total"))
+            if (this.name.EndsWith("time"))
             {
-                values = Manager.Instance.maxProfit;
+                valueList.Add(Manager.Instance.cncTime[0]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncTime[1]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncTime[2]);
+                maxVisibleValue++;
+
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
             }
-            else if (this.name.Contains("1"))
+            else if (this.name.EndsWith("profit"))
             {
-                values = Manager.Instance.cncProfit[0];
+                valueList.Add(Manager.Instance.cncProfit[0]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncProfit[1]);
+                maxVisibleValue++;
+                valueList.Add(Manager.Instance.cncProfit[2]);
+                maxVisibleValue++;
+
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
             }
-            else if (this.name.Contains("2"))
+            else if (this.name.EndsWith("total"))
             {
-                values = Manager.Instance.cncProfit[1];
-            }
-            else if (this.name.Contains("3"))
-            {
-                values = Manager.Instance.cncProfit[2];
+                valueList.Add(Manager.Instance.maxProfit);
+                maxVisibleValue++;
+                valueList2.Add(Manager.Instance.minTime);
+                maxVisibleValue++;
+
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
+                ShowGraph(valueList2, maxVisibleValue2, (int _i) => "Iter." + (_i + 1));
             }
             else
+            {
                 values = 0;
-
-            update = true;
-        }
-        else if(this.name.Contains("time_"))
-        {
-            if (this.name.Contains("total"))
-            {
-                values = Manager.Instance.minTime;
+                valueList.Add(Manager.Instance.maxProfit);
+                maxVisibleValue++;
+                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
             }
-            else if (this.name.Contains("1"))
-            {
-                values = Manager.Instance.cncTime[0];
-            }
-            else if (this.name.Contains("2"))
-            {
-                values = Manager.Instance.cncTime[1];
-            }
-            else if (this.name.Contains("3"))
-            {
-                values = Manager.Instance.cncTime[2];
-            }
-            else
-                values = 0;
-
-            update = true;
-        }
-
-        if(update)
-        {
-            valueList.Add(values);
-            maxVisibleValueAmount++;
-
-            ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
         }
     }
 
@@ -117,7 +115,7 @@ public class LineChart : MonoBehaviour {
         return gameObject;
     }
 
-    private void ShowGraph(List<float> valueList, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
+    private void ShowGraph(List<float> valueList, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
         if (getAxisLableX == null) {
             getAxisLableX = delegate (int _i) { return _i.ToString(); };
@@ -194,14 +192,17 @@ public class LineChart : MonoBehaviour {
         int separatorCount = 15;
         for (int i = 0; i <= separatorCount; i++) 
         {
+            float normalizeValue = i * 1f / separatorCount;
+
             //Create the label for y axis
+            /*
             RectTransform labelY = Instantiate(labelTemplateY);
             labelY.SetParent(graphContainer, false);
             labelY.gameObject.SetActive(true);
-            float normalizeValue = i * 1f / separatorCount;
             labelY.anchoredPosition = new Vector2(-7f, normalizeValue * graphHeight);
             labelY.GetComponent<Text>().text = getAxisLableY(yMinimum + normalizeValue * (yMaximum - yMinimum));
             gameObjectList.Add(labelY.gameObject);
+            */
 
             //Create the horizontal dash
             RectTransform dashY = Instantiate(dashTemplateY);
