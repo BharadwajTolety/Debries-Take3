@@ -12,7 +12,7 @@ fopen(tcpipServer);
 rawData = fread(tcpipServer,24,'char');
 for i=1:24 rawwData(i)= char(rawData(i));
     if strcmp(rawwData, 'matlab can read CSV now!')
-        fprintf('start reading csv now!');
+        fprintf('\nstart reading csv now!');
         tic
         if flag == false 
             unity_start();

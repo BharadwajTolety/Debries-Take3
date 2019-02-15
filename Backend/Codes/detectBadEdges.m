@@ -1,4 +1,4 @@
-function [ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, par_threshold, EdgeList )
+function [ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par_threshold, EdgeList )
 
 %BadEdges will have the same format as edge_change
 %from - to -nc - cl- trip - collected debris
@@ -26,7 +26,8 @@ for e = 1:no_edges
         cl = all_trips(t,2);
         tr = all_trips(t,3);
         int_ratio = cell2mat(Contractor{nc}.trips{1,cl}(tr,6));
-        time_ratio = cell2mat(Contractor{nc}.trips{1,cl}(tr,5));
+        time_ratio = Contractor{1,nc}.trips{1,cl}{tr,3} / (capacity - Contractor{1,nc}.trips{1,cl}{tr,4});
+        Contractor{1,nc}.trips{1,cl}{tr,5} = time_ratio;
         
         sum_int = sum_int + int_ratio;
         sum_time = sum_time + time_ratio;

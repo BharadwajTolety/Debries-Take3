@@ -3,7 +3,12 @@ function [ Contractor ] = ReconstructContractor( Contractor,distLabel,Predecesso
 for nc = 1:length(Contractor)
     %this function we had - based on the contractor assignment find the
     %connected clusters for each contractor and update Contractor
-    [Contractor] = findClusters(1, Contractor{nc}.TimeMatrix, nc, Contractor);
+    try
+        [Contractor] = findClusters(1, Contractor{nc}.TimeMatrix, nc, Contractor);
+    catch
+        [Contractor] = findClusters(1, Contractor{nc}.TimeMatrix, nc, Contractor);
+    end
+        
     traversaltime_contractor = 0; total_debris = 0;
     pathToDepot_C = 0;
     

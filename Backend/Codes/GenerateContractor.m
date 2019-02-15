@@ -39,8 +39,8 @@ Adjacency=Time>0;
 %%%% Edge assingment
 
 %%%%!!!!!!!!!!!!!!!!USER INOPUT!!!!!!!!!!!!!!!!!!!!!!!!!
-random_edge_assignment = randi(3,[no_roads,1]);
-EdgeAssignment(:,1)=random_edge_assignment;
+% random_edge_assignment = randi(3,[no_roads,1]);
+% EdgeAssignment(:,1)=random_edge_assignment;
 
 %% ============== NEW ============
 % convert the EdgeAssignment to a cell array - in the future I will add
@@ -185,12 +185,12 @@ end
 [MINPROFIT2, contminprofit] = min(profit_vec);
 
 %%calculate bad edges. 
-pr=0.1;int=0.1;
- [Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
+%pr=0.1;int=0.1;
+% [Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
 EdgeListMatrix = GenerateEdgeList( Contractor );
 
  par3 = 0.25;
-[ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, par3, EdgeList );
+[ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par3, EdgeList );
      
 %save('Contractor2.mat', 'Contractor')
  
@@ -229,7 +229,7 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
     scoreFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\score_info_fromMatlab.txt');
     scoreFile = char(scoreFile);
 
-    fprintf('%s',scoreFile);
+    fprintf('\n%s',scoreFile);
     [fid, msg] = fopen(scoreFile,'w');
     if fid < 0 
          error('Failed to open file "%s" because: "%s"', scoreFile, msg);
@@ -240,6 +240,6 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
         end
     end
     fclose(fid);
-    fprintf('\r\n closed file');
+    fprintf('\nclosed file');
     
 %toc

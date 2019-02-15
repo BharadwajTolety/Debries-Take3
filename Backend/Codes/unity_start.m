@@ -17,9 +17,9 @@ B = [];
 
 for k = 1:size(X)
     B = str2double(regexp(num2str(X(k,3)),'\d','match'));
-%    brushed_edges{k,1} = X(k,1);
-%    brushed_edges{k,2} = X(k,2);
-%    brushed_edges{k,3} = num2cell(B);
+    brushed_edges{k,1} = X(k,1);
+    brushed_edges{k,2} = X(k,2);
+    brushed_edges{k,3} = B;
 end
 
 EdgeList = X;

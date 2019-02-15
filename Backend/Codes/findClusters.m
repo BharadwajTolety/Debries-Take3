@@ -5,8 +5,12 @@ max_node=max(remaining_nodes);
 explored=ones(1,max_node); %for the dummy nodes put 1 directly
 explored(remaining_nodes)=0;
 
-
-all_nodes_traversed=1;
+if isempty(remaining_nodes)==1
+    all_nodes_traversed=0;
+else
+    all_nodes_traversed=1;
+end
+    
 
 iter=1;
 

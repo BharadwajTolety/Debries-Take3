@@ -10,7 +10,7 @@ time_selected=obj_select(1); profit_selected=obj_select(2); intersection_selecte
 for e = 1:no_edges
     from = brushed_edges{e,1};
     to = brushed_edges{e,2};
-    nc_new = cell2mat(brushed_edges{e,3});
+    nc_new = brushed_edges{e,3};
     new_nc_len = length(nc_new);
     
     if isempty(nc_new)~=1 %If a brushing is been done - the edge is not empty

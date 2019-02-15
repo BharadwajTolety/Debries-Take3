@@ -49,7 +49,7 @@ OVERLAP1 = sum(sum(node_intersection_matrix)); %The total overlap
 %% Detecting bad edges
 %par3 is the threshold parameter
 par3 = 0.25;
-[ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, par3, EdgeList );
+[ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par3, EdgeList );
 
 %Objectives:
 % Min MAXTIME
@@ -124,7 +124,7 @@ time_vec=zeros(1,no_contractor);
     scoreFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\score_info_fromMatlab.txt');
     scoreFile = char(scoreFile);
 
-    fprintf('%s',scoreFile);
+    fprintf('\n%s',scoreFile);
     [fid, msg] = fopen(scoreFile,'w');
     if fid < 0 
          error('Failed to open file "%s" because: "%s"', scoreFile, msg);
@@ -135,3 +135,4 @@ time_vec=zeros(1,no_contractor);
         end
     end
     fclose(fid);
+    fprintf('\nclosed file');
