@@ -24,7 +24,7 @@ public class scan_controls : MonoBehaviour
             total--;
             profit_obj = 0;
         }
-        else if (total > 1)
+        else if (total < 2)
         {
             total++;
             profit_obj = 1;
@@ -40,7 +40,7 @@ public class scan_controls : MonoBehaviour
             total--;
             time_obj = 0;
         }
-        else if (total > 1)
+        else if (total < 2)
         {
             total++;
             time_obj = 1;
@@ -56,7 +56,7 @@ public class scan_controls : MonoBehaviour
             total--;
             intersect_obj = 0;
         }
-        else if(total > 1)
+        else if(total < 2)
         {
             total++;
             intersect_obj = 1;

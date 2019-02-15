@@ -11,9 +11,14 @@ using System;
 public class BrushSelector : MonoBehaviour {
 
     public Slider brush_slider;
-    //move the other brushes out of the way and set the current brush ON!!
 
-	public void setBrushRed()
+    private void Start()
+    {
+        Cursor.visible = false;
+    }
+
+    //move the other brushes out of the way and set the current brush ON!!
+    public void setBrushRed()
     {
 		Manager.Instance.mySelection = 1;
         

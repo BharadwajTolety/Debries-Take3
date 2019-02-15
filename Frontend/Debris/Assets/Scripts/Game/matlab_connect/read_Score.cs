@@ -35,10 +35,6 @@ public class read_Score : MonoBehaviour
             timespent = Time.time - start_time;
             if(read_score())
             {
-                GameObject map = GameObject.FindGameObjectWithTag("ALLOBJECTS");
-                badEdge_blinkers read_bE = (badEdge_blinkers)map.GetComponent(typeof(badEdge_blinkers));
-                read_bE.read_badEdges();
-
                 Debug.Log("maxProfit : " + Manager.Instance.maxProfit);
                 Debug.Log("minTime : " + Manager.Instance.minTime);
 
@@ -49,7 +45,8 @@ public class read_Score : MonoBehaviour
                 }
                 Debug.Log("intersect overlap_" + Manager.Instance.intersect);
 
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().update_log(profit_obj, time_obj, intersect_obj);
+                GameObject.FindGameObjectWithTag("ALLOBJECTS").GetComponent<badEdge_blinkers>().read_badEdges();
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().update_log(true, profit_obj, time_obj, intersect_obj);
 
                 //not reading anymore
                 reading_check = false;              
@@ -57,6 +54,8 @@ public class read_Score : MonoBehaviour
             else if (timespent > 15)
             {
                 Debug.Log("Matlab taking too long something wrong - " + timespent);
+
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().update_log(false, profit_obj, time_obj, intersect_obj);
 
                 //not reading anymore
                 reading_check = false;
