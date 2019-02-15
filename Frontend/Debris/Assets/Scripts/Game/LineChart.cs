@@ -13,15 +13,13 @@ public class LineChart : MonoBehaviour {
     public RectTransform labelTemplateY;
     public RectTransform dashTemplateX;
     public RectTransform dashTemplateY;
-    private List<GameObject> gameObjectList;
     private List<float> valueList, valueList2;
     private int maxVisibleValue, maxVisibleValue2;
     private float values;
+    private List<GameObject> gameObjectList;
 
     private void Awake()
     {
-        gameObjectList = new List<GameObject>();
-
         maxVisibleValue = 0;
         maxVisibleValue2 = 0;
 
@@ -29,9 +27,11 @@ public class LineChart : MonoBehaviour {
         valueList = new List<float>(); //profit
         valueList2 = new List<float>(); //time
 
-
+        draw_background();
         //Create the graph, labelTemplateX and labelTemplateY
         //ShowGraph(valueList, (int _i) => "Iter." + (_i + 1));
+
+        gameObjectList = new List<GameObject>();
     }
 
     //profit and then time
@@ -51,8 +51,7 @@ public class LineChart : MonoBehaviour {
         }
 
         maxVisibleValue = valueList.Count;
-        ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
-        ShowGraph(valueList2, maxVisibleValue2, (int _i) => "Iter." + (_i + 1));
+        ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
     }
 
     //fix this function for new names
@@ -60,44 +59,13 @@ public class LineChart : MonoBehaviour {
     {
         if (this.name.Contains("current_"))
         {
-            if (this.name.EndsWith("time"))
-            {
-                valueList.Add(Manager.Instance.cncTime[0]);
-                maxVisibleValue++;
-                valueList.Add(Manager.Instance.cncTime[1]);
-                maxVisibleValue++;
-                valueList.Add(Manager.Instance.cncTime[2]);
-                maxVisibleValue++;
-
-                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
-            }
-            else if (this.name.EndsWith("profit"))
-            {
-                valueList.Add(Manager.Instance.cncProfit[0]);
-                maxVisibleValue++;
-                valueList.Add(Manager.Instance.cncProfit[1]);
-                maxVisibleValue++;
-                valueList.Add(Manager.Instance.cncProfit[2]);
-                maxVisibleValue++;
-
-                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
-            }
-            else if (this.name.EndsWith("total"))
+            if (this.name.EndsWith("total"))
             {
                 valueList.Add(Manager.Instance.maxProfit);
-                maxVisibleValue++;
                 valueList2.Add(Manager.Instance.minTime);
                 maxVisibleValue++;
 
-                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
-                ShowGraph(valueList2, maxVisibleValue2, (int _i) => "Iter." + (_i + 1));
-            }
-            else
-            {
-                values = 0;
-                valueList.Add(Manager.Instance.maxProfit);
-                maxVisibleValue++;
-                ShowGraph(valueList, maxVisibleValue, (int _i) => "Iter." + (_i + 1));
+                ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
             }
         }
     }
@@ -115,7 +83,7 @@ public class LineChart : MonoBehaviour {
         return gameObject;
     }
 
-    private void ShowGraph(List<float> valueList, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
+    private void ShowGraph(List<float> valuelist_, List<float> valuelist2_, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
         if (getAxisLableX == null) {
             getAxisLableX = delegate (int _i) { return _i.ToString(); };
@@ -133,11 +101,12 @@ public class LineChart : MonoBehaviour {
         float graphWidth = graphContainer.sizeDelta.x;
         float graphHeight = graphContainer.sizeDelta.y;
 
-        float yMaximum = valueList[0];
-        float yMinimum = valueList[0];
+        //setting up max and mins for first line - profit
+        float yMaximum = valuelist_[0];
+        float yMinimum = valuelist_[0];
 
-        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount,0); i < valueList.Count; i++) {
-            float value = valueList[i];
+        for (int i = Mathf.Max(valuelist_.Count - maxVisibleValueAmount,0); i < valuelist_.Count; i++) {
+            float value = valuelist_[i];
             if (value > yMaximum) {
                 yMaximum = value;
             }
@@ -146,36 +115,102 @@ public class LineChart : MonoBehaviour {
             }
         }
 
-        float yDifference = yMaximum - yMinimum;
-        if (yDifference <= 0) {
-            yDifference = 5f;
+        //setting up max and mins for the second line - time
+        float yMaximum2 = valuelist2_[0];
+        float yMinimum2 = valuelist2_[0];
+
+        for (int i = Mathf.Max(valuelist2_.Count - maxVisibleValueAmount, 0); i < valuelist2_.Count; i++)
+        {
+            float value = valuelist2_[i];
+            if (value > yMaximum2)
+            {
+                yMaximum2 = value;
+            }
+            if (value < yMinimum2)
+            {
+                yMinimum2 = value;
+            }
         }
-        yMaximum = yMaximum + (yDifference * 0.2f);
-        yMinimum = yMinimum - (yDifference * 0.2f);
 
-        float xSize = graphWidth / maxVisibleValueAmount;
+        //caluclate the max mins for the whole graph/ how do you calculate this? 
+            float yDiffmax = yMaximum - yMaximum2;
+            if (yDiffmax <= 0)
+            {
+            yDiffmax = System.Math.Abs(yDiffmax) / graphHeight;
+            }
+            yMaximum = yMaximum + (yDiffmax * 0.2f);
+            yMaximum2 = yMaximum2 + (yDiffmax * 0.2f);
 
+            Debug.Log("ymx & ymx2: " + yMaximum + " " + yMaximum2);
+
+            float yDiffmin = yMinimum - yMinimum2;
+            if (yDiffmin <= 0)
+            {
+                yDiffmin = System.Math.Abs(yDiffmin) / graphHeight;
+            }
+            yMinimum = System.Math.Abs(yMinimum - (yDiffmin * 0.2f));
+            yMinimum2 = System.Math.Abs(yMinimum2 - (yDiffmin * 0.2f));
+
+            Debug.Log("ymn & ymn2: " + yMinimum + " " + yMinimum2);
+
+        float xSize = (graphWidth / maxVisibleValueAmount);
         int xIndex = 0;
 
-        GameObject lastCircleGameObject = null;
-        for (int i = Mathf.Max(valueList.Count - maxVisibleValueAmount, 0); i < valueList.Count; i++)
+        //instantiate and setup each value dot on the graph and connecting them
+        GameObject lastCircleGameObject = null, lastCircleGameObject2 = null;
+        for (int i = Mathf.Max(valuelist_.Count - maxVisibleValueAmount, 0), j = Mathf.Max(valuelist2_.Count - maxVisibleValueAmount, 0); i < valuelist_.Count; i++, j++)
         {
-            float xPosition = xSize + xIndex * xSize;
-            float yPosition = ((valueList[i] - yMinimum)/ (yMaximum - yMinimum)) * graphHeight;
+            //x is same for both
+            float xPosition = (xSize + xIndex * xSize)/2;
+
+            //setup dots on the graph - profit
+            float yPosition = ((valuelist_[i] - yMinimum)/ (yMaximum - yMinimum)) * graphHeight;
+            Debug.Log("yPosition: " + yPosition + " profit: " + valuelist_[i]);
+
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
             gameObjectList.Add(circleGameObject);
             if (lastCircleGameObject != null)
             {
-                GameObject dotConnecionGameObject = CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition);
+                GameObject dotConnecionGameObject = CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition, "profit");
                 gameObjectList.Add(dotConnecionGameObject);
             }
             lastCircleGameObject = circleGameObject;
+
+                //Create the label for y axis info over dot for the first one - Profit
+                RectTransform labelY = Instantiate(labelTemplateY);
+                labelY.SetParent(graphContainer, false);
+                labelY.gameObject.SetActive(true);
+                labelY.sizeDelta = new Vector2();
+                labelY.anchoredPosition = new Vector2(xPosition, yPosition + 10);
+                labelY.GetComponent<Text>().text = valuelist_[i].ToString() ;
+                gameObjectList.Add(labelY.gameObject);
+
+            //setup dots on the graph - time 
+            float yPosition2 = ((valuelist2_[j] - yMinimum2) / (yMaximum2 - yMinimum2)) * graphHeight;
+            Debug.Log("yPosition2: " + yPosition2 + " time: " + valuelist2_[j]);
+            GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2));
+            gameObjectList.Add(circleGameObject2);
+            if (lastCircleGameObject2 != null)
+            {
+                GameObject dotConnecionGameObject2 = CreateDotConnection(lastCircleGameObject2.GetComponent<RectTransform>().anchoredPosition, circleGameObject2.GetComponent<RectTransform>().anchoredPosition, "time");
+                gameObjectList.Add(dotConnecionGameObject2);
+            }
+            lastCircleGameObject2 = circleGameObject2;
+
+                //Create the label for y axis info over dot for the second one - time
+                RectTransform labelY2 = Instantiate(labelTemplateY);
+                labelY2.SetParent(graphContainer, false);
+                labelY2.gameObject.SetActive(true);
+                labelY2.sizeDelta = new Vector2();
+                labelY2.anchoredPosition = new Vector2(xPosition, yPosition2 + 10);
+                labelY2.GetComponent<Text>().text = valuelist2_[j].ToString();
+                gameObjectList.Add(labelY2.gameObject);
 
             //Create the label for x axis
             RectTransform labelX = Instantiate(labelTemplateX);
             labelX.SetParent(graphContainer, false);
             labelX.gameObject.SetActive(true);
-            labelX.anchoredPosition = new Vector2(xPosition, -7f);
+            labelX.anchoredPosition = new Vector2(xPosition, -5f);
             labelX.GetComponent<Text>().text = getAxisLableX(i);
             gameObjectList.Add(labelX.gameObject);
 
@@ -183,43 +218,42 @@ public class LineChart : MonoBehaviour {
             RectTransform dashX = Instantiate(dashTemplateX);
             dashX.SetParent(graphContainer, false);
             dashX.gameObject.SetActive(true);
-            dashX.anchoredPosition = new Vector2(xPosition, -7f);
+            dashX.anchoredPosition = new Vector2(xPosition, -5f);
             gameObjectList.Add(dashX.gameObject);
 
             xIndex++;
         }
+    }
 
-        int separatorCount = 15;
-        for (int i = 0; i <= separatorCount; i++) 
+    private void draw_background()
+    {
+        float graphWidth = graphContainer.sizeDelta.x;
+        float graphHeight = graphContainer.sizeDelta.y;
+
+        int separatorCount = 10;
+        for (int i = 0; i <= separatorCount; i++)
         {
             float normalizeValue = i * 1f / separatorCount;
-
-            //Create the label for y axis
-            /*
-            RectTransform labelY = Instantiate(labelTemplateY);
-            labelY.SetParent(graphContainer, false);
-            labelY.gameObject.SetActive(true);
-            labelY.anchoredPosition = new Vector2(-7f, normalizeValue * graphHeight);
-            labelY.GetComponent<Text>().text = getAxisLableY(yMinimum + normalizeValue * (yMaximum - yMinimum));
-            gameObjectList.Add(labelY.gameObject);
-            */
-
             //Create the horizontal dash
             RectTransform dashY = Instantiate(dashTemplateY);
             dashY.SetParent(graphContainer, false);
             dashY.gameObject.SetActive(true);
             dashY.anchoredPosition = new Vector2(-4f, normalizeValue * graphHeight);
-            gameObjectList.Add(dashY.gameObject);
-
         }
     }
 
     //Create the connection between dots
-    private GameObject CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)
+    private GameObject CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB, string item)
     {
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+        if(item == "profit")
+            gameObject.GetComponent<Image>().color = Color.yellow;
+        else if(item == "time")
+            gameObject.GetComponent<Image>().color = Color.blue;
+        else
+            gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
