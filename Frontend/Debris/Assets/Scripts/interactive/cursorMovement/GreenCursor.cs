@@ -11,7 +11,7 @@ public class GreenCursor : MonoBehaviour {
     void Update () {
 		Vector3 newSize = new Vector3 (Manager.Instance.brushSize, Manager.Instance.brushSize, 1);
 
-      float moveSpeed = 1f;
+      float moveSpeed = 2f;
         if (Manager.Instance.mySelection==2) {
             mousePosition = Input.mousePosition;
             mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);

@@ -16,7 +16,7 @@ public class redCursor : MonoBehaviour {
     void Update () {
 
 		Vector3 newSize = new Vector3 (Manager.Instance.brushSize, Manager.Instance.brushSize, 1);
-        float moveSpeed = 1f;
+        float moveSpeed = 2f;
         if (Manager.Instance.mySelection==1) {
             mousePosition = Input.mousePosition;
             mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class trig : mapBrushing {
 
+    public GameObject scanning_noti;
+
     //not the best place to do this but whatevs, this works out well.
     private GameObject scan;
     private GameObject blinker;
@@ -29,57 +31,60 @@ public class trig : mapBrushing {
 
     private void OnTriggerStay2D(Collider2D col)
  	{
-
-        if (col.tag == "red" || col.tag == "green" || col.tag == "blue" || col.tag == "white" || col.tag.Contains("+"))
+        if(!scanning_noti.activeSelf)
         {
-            if (Input.GetMouseButton (0) == true && this.tag == "redCursor" && !col.tag.Contains("red")) {
-                //Debug.Log("works red");
-				AssignLine ("red", col.name);
-                Manager.Instance.flag = true;
-            }
-            else if (Input.GetMouseButton(0) == true && this.tag == "greenCursor" && !col.tag.Contains("green"))
+            if (col.tag == "red" || col.tag == "green" || col.tag == "blue" || col.tag == "white" || col.tag.Contains("+"))
             {
-                //Debug.Log("works green");
-                AssignLine("green", col.name);
-                Manager.Instance.flag = true;
-            }
-            else if (Input.GetMouseButton(0) == true && this.tag == "blueCursor" && !col.tag.Contains("blue"))
-            {
-                //Debug.Log("works blue");
-                AssignLine("blue", col.name);
-                Manager.Instance.flag = true;
-            }
-            else if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
-            {
-                AssignLine("white", col.name);
-                Manager.Instance.flag = true;
-            }
-        }
-        else if(col.tag == "AllColor")
-        {
-            if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
-            {
-                AssignLine("white", col.name);
-                Manager.Instance.flag = true;
-            }
-        }
-        else
-        {
-            if (col.name == "no Cursor")
-            {
-                if (!cursorOff)
+                if (Input.GetMouseButton(0) == true && this.tag == "redCursor" && !col.tag.Contains("red"))
                 {
-                    cursorOff = true;
-                    size_check = Manager.Instance.brushSize;
-                    Manager.Instance.brushSize = 4;
+                    //Debug.Log("works red");
+                    AssignLine("red", col.name);
+                    Manager.Instance.flag = true;
+                }
+                else if (Input.GetMouseButton(0) == true && this.tag == "greenCursor" && !col.tag.Contains("green"))
+                {
+                    //Debug.Log("works green");
+                    AssignLine("green", col.name);
+                    Manager.Instance.flag = true;
+                }
+                else if (Input.GetMouseButton(0) == true && this.tag == "blueCursor" && !col.tag.Contains("blue"))
+                {
+                    //Debug.Log("works blue");
+                    AssignLine("blue", col.name);
+                    Manager.Instance.flag = true;
+                }
+                else if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
+                {
+                    AssignLine("white", col.name);
+                    Manager.Instance.flag = true;
                 }
             }
-            else if(col.name == "on Cursor")
+            else if (col.tag == "AllColor")
             {
-                if (cursorOff)
+                if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
                 {
-                    Manager.Instance.brushSize = size_check;
-                    cursorOff = false;
+                    AssignLine("white", col.name);
+                    Manager.Instance.flag = true;
+                }
+            }
+            else
+            {
+                if (col.name == "no Cursor")
+                {
+                    if (!cursorOff)
+                    {
+                        cursorOff = true;
+                        size_check = Manager.Instance.brushSize;
+                        Manager.Instance.brushSize = 4;
+                    }
+                }
+                else if (col.name == "on Cursor")
+                {
+                    if (cursorOff)
+                    {
+                        Manager.Instance.brushSize = size_check;
+                        cursorOff = false;
+                    }
                 }
             }
         }
@@ -101,7 +106,6 @@ public class trig : mapBrushing {
         {
             scanned = Manager.Instance.scans;
             deborah_check();
-            GameObject.Find("scanning_notification").GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 

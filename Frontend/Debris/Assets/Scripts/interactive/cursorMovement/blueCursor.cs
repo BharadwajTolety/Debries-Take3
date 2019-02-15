@@ -14,7 +14,7 @@ public class blueCursor : MonoBehaviour {
 
 	Vector3 newSize = new Vector3 (Manager.Instance.brushSize, Manager.Instance.brushSize, 1);
 
-        float moveSpeed = 1f;
+        float moveSpeed = 2f;
         if (Manager.Instance.mySelection==3)
         {
             mousePosition = Input.mousePosition;
