@@ -25,7 +25,10 @@ public class map_transformations : MonoBehaviour {
     //map zoom in
     public void zoom_in()
     {
-        if(transform.localScale.x < 1.55f)
+        if(GetComponent<Animator>().GetInteger("map_state") == 1 || GetComponent<Animator>().GetInteger("map_state") == 0)
+            GetComponent<Animator>().enabled = false;
+
+        if (transform.localScale.x < 1.55f)
         {
             transform.localScale += new Vector3(zoom, zoom, zoom);
             transform.position += reset_pos;
@@ -35,7 +38,10 @@ public class map_transformations : MonoBehaviour {
     //map zoom out
     public void zoom_out()
     {
-        if(transform.localScale.x > 0.95f)
+        if (GetComponent<Animator>().GetInteger("map_state") == 1 || GetComponent<Animator>().GetInteger("map_state") == 0)
+            GetComponent<Animator>().enabled = false;
+
+        if (transform.localScale.x > 0.95f)
         {
             transform.localScale -= new Vector3(zoom, zoom, zoom);
             transform.position -= reset_pos;
