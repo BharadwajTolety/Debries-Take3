@@ -15,20 +15,19 @@ for e = 1:no_edges
     
     if isempty(nc_new)~=1 %If a brushing is been done - the edge is not empty
         
-        
         nc_old = [];
-        
+                
         if isempty(EdgeList{from,to})==1; 
             t_debris1=0; 
         else
             t_debris1=sum(EdgeList{from,to}(:,4));
-            nc_old = [nc_old; EdgeList{from,to}(:,1)];
+            nc_old = [nc_old; EdgeList{from,to}(:,1)]; %why a double of old and edgelist?
         end
         if isempty(EdgeList{to, from})==1; 
             t_debris2=0;
         else 
             t_debris2=sum(EdgeList{to,from}(:,4));
-            nc_old = [nc_old; EdgeList{to,from}(:,1)];
+            nc_old = [nc_old; EdgeList{to,from}(:,1)]; %why a double of old and edgelist?
         end
         
         nc_old = unique(nc_old);
@@ -36,8 +35,10 @@ for e = 1:no_edges
         total_debris = t_debris1 + t_debris2 ;
         
         debris_div = total_debris / new_nc_len;
-        
-        for nc = nc_old %Delete the nc_old
+
+        for u = 1:length(nc_old) %Delete the nc_old            
+            nc = nc_old(u);   
+            
             Contractor{nc}.Debris(from,to) = 0;
             Contractor{nc}.Debris(to,from) = 0;
             
