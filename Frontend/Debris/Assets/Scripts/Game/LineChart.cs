@@ -39,6 +39,7 @@ public class LineChart : MonoBehaviour {
     {
         valueList.Clear();
         valueList2.Clear();
+        maxVisibleValue = 0;
 
         foreach (float value in valueUpdate)
         {
@@ -49,6 +50,8 @@ public class LineChart : MonoBehaviour {
         {
             valueList2.Add(value);
         }
+
+        maxVisibleValue = valueUpdate.Length;
 
         maxVisibleValue = valueList.Count;
         ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
@@ -70,11 +73,17 @@ public class LineChart : MonoBehaviour {
         }
     }
 
-    private GameObject CreateCircle(Vector2 anchoredPosition)
+    private GameObject CreateCircle(Vector2 anchoredPosition, string item)
     {
         GameObject gameObject = new GameObject("Knob", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().sprite = circleSprite;
+        if (item == "profit")
+            gameObject.GetComponent<Image>().color = Color.yellow;
+        else if (item == "time")
+            gameObject.GetComponent<Image>().color = Color.blue;
+        else
+            gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
         rectTransform.sizeDelta = new Vector2(11, 11);
@@ -132,6 +141,7 @@ public class LineChart : MonoBehaviour {
             }
         }
 
+        /*float yMax, yMin;
         //caluclate the max mins for the whole graph/ how do you calculate this? 
             float yDiffmax = yMaximum - yMaximum2;
             if (yDiffmax <= 0)
@@ -141,6 +151,7 @@ public class LineChart : MonoBehaviour {
             yMaximum = yMaximum + (yDiffmax * 0.2f);
             yMaximum2 = yMaximum2 + (yDiffmax * 0.2f);
 
+            yMax = System.Math.Abs(yMaximum - yMaximum2);
             Debug.Log("ymx & ymx2: " + yMaximum + " " + yMaximum2);
 
             float yDiffmin = yMinimum - yMinimum2;
@@ -151,7 +162,8 @@ public class LineChart : MonoBehaviour {
             yMinimum = System.Math.Abs(yMinimum - (yDiffmin * 0.2f));
             yMinimum2 = System.Math.Abs(yMinimum2 - (yDiffmin * 0.2f));
 
-            Debug.Log("ymn & ymn2: " + yMinimum + " " + yMinimum2);
+            yMin = System.Math.Abs(yMinimum - yMinimum2);
+            Debug.Log("ymn & ymn2: " + yMinimum + " " + yMinimum2);*/
 
         float xSize = (graphWidth / maxVisibleValueAmount);
         int xIndex = 0;
@@ -164,10 +176,10 @@ public class LineChart : MonoBehaviour {
             float xPosition = (xSize + xIndex * xSize)/2;
 
             //setup dots on the graph - profit
-            float yPosition = ((valuelist_[i] - yMinimum)/ (yMaximum - yMinimum)) * graphHeight;
+            float yPosition = (valuelist_[i]) / (graphHeight* valuelist_.Count);
             Debug.Log("yPosition: " + yPosition + " profit: " + valuelist_[i]);
 
-            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
+            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "profit");
             gameObjectList.Add(circleGameObject);
             if (lastCircleGameObject != null)
             {
@@ -186,9 +198,9 @@ public class LineChart : MonoBehaviour {
                 gameObjectList.Add(labelY.gameObject);
 
             //setup dots on the graph - time 
-            float yPosition2 = ((valuelist2_[j] - yMinimum2) / (yMaximum2 - yMinimum2)) * graphHeight;
+            float yPosition2 = (valuelist2_[j]) / (graphHeight* valuelist2_.Count);
             Debug.Log("yPosition2: " + yPosition2 + " time: " + valuelist2_[j]);
-            GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2));
+            GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "time");
             gameObjectList.Add(circleGameObject2);
             if (lastCircleGameObject2 != null)
             {

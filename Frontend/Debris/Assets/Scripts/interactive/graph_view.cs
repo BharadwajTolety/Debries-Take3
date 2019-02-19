@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class graph_view : MonoBehaviour {
     GameObject intersect_view;
     GameObject mapscreen;
 
-    public GameObject scan;
+    public GameObject scan, error;
 
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class graph_view : MonoBehaviour {
     public void toggle_noti()
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("whiteLine");
-        if (themWhiteLines.Length > 1)
+        if (themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
         {
             scan_disable();
         }
@@ -144,5 +145,16 @@ public class graph_view : MonoBehaviour {
     private void update_verCont()
     {
         GameObject.Find("ver_control").GetComponent<ver_control>().update_verList();
+    }
+
+    public void error_msg_open()
+    {
+        mapscreen.SetActive(false);
+        error.SetActive(true);
+    }
+
+    public void error_confirm()
+    {
+        SceneManager.LoadScene("HomeMenu");
     }
 }

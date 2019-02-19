@@ -55,6 +55,7 @@ public class read_Score : MonoBehaviour
             {
                 Debug.Log("Matlab taking too long something wrong - " + timespent);
 
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().update_log(false, profit_obj, time_obj, intersect_obj);
 
                 //not reading anymore

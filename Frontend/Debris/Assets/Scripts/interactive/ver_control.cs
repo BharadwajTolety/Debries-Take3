@@ -9,8 +9,8 @@ public class ver_control : mapBrushing {
     private List<float> maxProfit   = new List<float>();
     private List<float> minTime     = new List<float>();
 
-    private List<float>[] cncProfit  = new List<float>[3];
-    private List<float>[] cncTime    = new List<float>[3];
+    private List<float>[] cncProfit;
+    private List<float>[] cncTime;
 
     private Dictionary<string, string> map = new Dictionary<string, string>();
 
@@ -19,6 +19,12 @@ public class ver_control : mapBrushing {
 
     private void Awake()
     {
+        for (int i = 0; i < 3; i++)
+        {
+            cncProfit[i] = new List<float>();
+            cncTime[i] = new List<float>();
+        }
+
         for (int i = 0; i < 5; i++)
         {
             GameObject.FindGameObjectWithTag("ver_" + (i + 1)).GetComponent<Button>().interactable = false;
@@ -32,9 +38,6 @@ public class ver_control : mapBrushing {
 
         for (int i = 0; i < 3; i++)
         {
-            cncProfit[i] = new List<float>();
-            cncTime[i] = new List<float>();
-
             cncProfit[i].Add(Manager.Instance.cncProfit[i]);
             cncTime[i].Add(Manager.Instance.cncTime[i]);
         }
@@ -74,16 +77,18 @@ public class ver_control : mapBrushing {
         float[] profit_verCont = maxProfit.GetRange(0,total).ToArray();
         float[] time_verCont = minTime.GetRange(0, total).ToArray();
 
-        GameObject.Find("score_total").GetComponent<LineChart>().reUpdate(profit_verCont, time_verCont);
+        GameObject.Find("current_total").GetComponent<LineChart>().reUpdate(profit_verCont, time_verCont);
 
+        List<float> cncProfit_verCont = new List<float>();
+        List<float> cncTime_verCont = new List<float>();
         for (int i = 0; i < 3; i++)
         {
-            float[] cncProfit_verCont = cncProfit[i].GetRange(0, total).ToArray();
-            float[] cncTime_verCont = cncTime[i].GetRange(0, total).ToArray();
-
-            GameObject.Find("profit_" + (i+1)).GetComponent<BarChart>().reUpdate(cncProfit_verCont);
-            GameObject.Find("time_" + (i+1)).GetComponent<BarChart>().reUpdate(cncTime_verCont);
+            cncProfit_verCont.Add(cncProfit[i].IndexOf(total));
+            cncTime_verCont.Add(cncTime[i].IndexOf(total));
         }
+
+        GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(cncProfit_verCont);
+        GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(cncTime_verCont);
     }
 
     //this needs to be updated for multiple edge contractors
@@ -104,16 +109,31 @@ public class ver_control : mapBrushing {
             for (int i = 6; i<readScan.Length;i++)
             {
                 scoreInfo =  readScan[i].Split(',');
-                switch(int.Parse(scoreInfo[2]))
+                switch(scoreInfo[2])
                 {
-                    case 1:
+                    case "1":
                         map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "red");
                         break;
-                    case 2:
+                    case "2":
                         map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "green");
                         break;
-                    case 3:
+                    case "3":
                         map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "blue");
+                        break;
+                    case "13":
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "red+blue");
+                        break;
+                    case "23":
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "green+blue");
+                        break;
+                    case "12":
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "red+green");
+                        break;
+                    case "123":
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "red+blue+green");
+                        break;
+                    case "":
+                        map.Add("_" + scoreInfo[0] + "_" + scoreInfo[1], "white");
                         break;
                     default:
                         Debug.Log("prob in ver control read scanfile, white line maybe");

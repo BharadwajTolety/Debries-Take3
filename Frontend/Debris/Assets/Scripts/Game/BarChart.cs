@@ -32,7 +32,7 @@ public class BarChart : MonoBehaviour
         draw_background();
     }
 
-    public void reUpdate(float[] valueUpdate)
+    public void reUpdate(List<float> valueUpdate)
     {
         valueList.Clear();
         maxVisibleValue = 0;
@@ -40,9 +40,9 @@ public class BarChart : MonoBehaviour
         foreach (float value in valueUpdate)
         {
             valueList.Add(value);
+            maxVisibleValue++;
         }
 
-        maxVisibleValue = valueList.Count;
         ShowGraph(valueList, maxVisibleValue, (int _i) => "CNC." + (_i + 1));
     }
 
