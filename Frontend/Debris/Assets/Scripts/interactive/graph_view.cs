@@ -22,7 +22,7 @@ public class graph_view : MonoBehaviour {
     public void toggle_noti()
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("whiteLine");
-        if (themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
+        if (themWhiteLines.Length > 1 && Manager.Instance.scans< 1)
         {
             scan_disable();
         }
@@ -45,7 +45,7 @@ public class graph_view : MonoBehaviour {
     //update the graphs and then call function to write up the log for experiment stuff
     public void update_log(bool scanning, int profit_obj, int time_obj, int intersect_obj)
     {
-        if(scanning)
+        if (scanning)
         {
             string exPath = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + Manager.Instance.scans + ".csv";
             GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);

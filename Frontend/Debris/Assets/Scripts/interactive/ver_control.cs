@@ -19,6 +19,9 @@ public class ver_control : mapBrushing {
 
     private void Awake()
     {
+        cncProfit = new List<float>[3];
+        cncTime = new List<float>[3];
+
         for (int i = 0; i < 3; i++)
         {
             cncProfit[i] = new List<float>();
@@ -95,7 +98,7 @@ public class ver_control : mapBrushing {
     private bool read_scanFile(string ver)
     {
         map.Clear();
-        string scanFile = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + ver + ".csv";
+        string scanFile = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + (ver) + ".csv";
 
         if(!File.Exists(scanFile))
         {
@@ -106,7 +109,7 @@ public class ver_control : mapBrushing {
             string[] readScan = File.ReadAllLines(scanFile);
             string[] scoreInfo = new string[3];
 
-            for (int i = 6; i<readScan.Length;i++)
+            for (int i = 7; i<readScan.Length;i++)
             {
                 scoreInfo =  readScan[i].Split(',');
                 switch(scoreInfo[2])

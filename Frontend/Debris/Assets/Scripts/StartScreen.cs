@@ -28,6 +28,15 @@ public class StartScreen : MonoBehaviour {
         {
             Directory.CreateDirectory(log_directory);
         }
+        else
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
 
         SceneManager.LoadScene("MainGame");
     }

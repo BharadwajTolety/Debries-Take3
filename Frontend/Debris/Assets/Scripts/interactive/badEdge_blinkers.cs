@@ -111,6 +111,8 @@ public class badEdge_blinkers : MonoBehaviour {
 
         foreach (GameObject line in lines)
         {
+            Color lineColor = line.GetComponent<SpriteRenderer>().color;
+
             if (line.name.EndsWith("_" + bad_edge))
             {
                 if(on)
@@ -120,7 +122,7 @@ public class badEdge_blinkers : MonoBehaviour {
                 }
                 else
                 {
-                    line.GetComponent<SpriteRenderer>().color = Color.white;
+                    line.GetComponent<SpriteRenderer>().color = lineColor;
                     line.GetComponent<Transform>().localScale -= wobble;
                 }
             }

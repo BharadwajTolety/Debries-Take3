@@ -9,6 +9,7 @@ using System.Text;
 public class contInfo_Matlab : classSocket
 {
     string csvPath;
+    string[] readFile;
     int count_edges = 0;
 
     private void Awake()
@@ -17,6 +18,21 @@ public class contInfo_Matlab : classSocket
 
         csvPath = Application.dataPath + "/Database/Output/edgelist_forMatlab.csv";
         write_CSV(csvPath);
+
+        if (Manager.Instance.sessionId == "" || Manager.Instance.playerId == "")
+        {
+            Manager.Instance.playerId = "def";
+            Manager.Instance.sessionId = "def";
+
+            string log_directory = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
+
+            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
     }
 
     //write out the csv for matlab to read
@@ -37,7 +53,7 @@ public class contInfo_Matlab : classSocket
     public void read_contractor_info(int profit, int time, int intersect)
     {
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
-        if (themWhiteEdges.Length == 1 && themWhiteEdges[0].name == "white")
+        if ((themWhiteEdges.Length == 1 && themWhiteEdges[0].name == "white") || Manager.Instance.scans > 0)
         {
             Manager.Instance.scans += 1;
             Manager.Instance.edge_changes = 0;
@@ -70,88 +86,79 @@ public class contInfo_Matlab : classSocket
         GameObject[] red_green = GameObject.FindGameObjectsWithTag("red+green");
         GameObject[] green_blue = GameObject.FindGameObjectsWithTag("green+blue");
         GameObject[] all_color = GameObject.FindGameObjectsWithTag("AllColor");
+            List<GameObject[]> lines_ = new List<GameObject[]>
+            {
+                themRedEdges, themGreenEdges, themBlueEdges, red_blue, red_green, green_blue, all_color
+            };
 
         StringBuilder csv = new StringBuilder();
         count_edges = 0;
+        string csv_input;
 
-        //write down score on the first line if this is a scan file
-        if (score)
+        //write the scores in for log
+        if(score)
         {
-            csv.AppendLine("first time, three scores, then objinputs+edgelist");
-
-            float timeLog = Time.fixedUnscaledTime;
-            csv.AppendLine(timeLog.ToString());
-
-            for (int i = 0; i < 3; i++)
+            csv_input = write_scores();
+            if (csv_input.EndsWith("\r\n"))
             {
-                string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], (i+1));
-                csv.AppendLine(cncline);
+                csv_input = csv_input.Substring(0, csv_input.Length - 2);
+                csv.AppendLine(csv_input);
             }
 
-            string newline = string.Format("{0},{1},Fullscore", Manager.Instance.maxProfit, Manager.Instance.minTime);
-            csv.AppendLine(newline);
+            string scanFile = Application.dataPath + "/Database/Input/brushedEdges_Matlab.csv";
+
+            if (!File.Exists(scanFile))
+            {
+                score = false;
+            }
+            else
+            {
+                readFile = File.ReadAllLines(scanFile);
+            }
         }
 
         //putting up obj category info
         string objline = string.Format("{0},{1},{2}", profit_obj, time_obj, intersect_obj);
         csv.AppendLine(objline);
 
-        string csv_input;
         //write edges here
-        csv_input = write_edges(path , themRedEdges);
-        if (csv_input.EndsWith("\r\n"))
+        foreach (GameObject[] lines in lines_)
         {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
-        }
-
-        csv_input = write_edges(path , themGreenEdges);
-        if (csv_input.EndsWith("\r\n"))
-        {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
-        }
-
-        csv_input = write_edges(path , themBlueEdges);
-        if (csv_input.EndsWith("\r\n"))
-        {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
-        }
-
-        csv_input = write_edges(path , red_blue);
-        if (csv_input.EndsWith("\r\n"))
-        {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
-        }
-
-        csv_input = write_edges(path , red_green);
-        if (csv_input.EndsWith("\r\n"))
-        {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
-        }
-
-        csv_input = write_edges(path , green_blue);
-        if (csv_input.EndsWith("\r\n"))
-        {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
-        }
-
-        csv_input = write_edges(path , all_color);
-        if (csv_input.EndsWith("\r\n"))
-        {
-            csv_input = csv_input.Substring(0, csv_input.Length - 2);
-            csv.AppendLine(csv_input);
+            csv_input = write_edges(path, lines, score);
+            if (csv_input.EndsWith("\r\n"))
+            {
+                csv_input = csv_input.Substring(0, csv_input.Length - 2);
+                csv.AppendLine(csv_input);
+            }
         }
 
         File.WriteAllText(path, csv.ToString());
         return count_edges;
     }
 
-    private string write_edges(string path, GameObject[] edges)
+    private string write_scores()
+    {
+        StringBuilder csv = new StringBuilder();
+        string[] nodeInfo = new string[4];
+
+        csv.AppendLine("first time, three scores, then objinputs+edgelist");
+
+        float timeLog = Time.fixedUnscaledTime;
+        csv.AppendLine(timeLog.ToString());
+
+        for (int i = 0; i < 3; i++)
+        {
+            string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], (i + 1));
+            csv.AppendLine(cncline);
+        }
+
+        string newline = string.Format("{0},{1},Fullscore", Manager.Instance.maxProfit, Manager.Instance.minTime);
+        csv.AppendLine(newline);
+
+        return csv.ToString();
+    }
+
+    private string write_edges(string path, GameObject[] edges, bool score)
     {
         string from = "-";
         string to = "-";
@@ -166,6 +173,7 @@ public class contInfo_Matlab : classSocket
         if (edges[0].name.Contains("blue"))
             nc += "3";
 
+
         for (int i = 0; i < edges.Length; i++)
         {
             nodeInfo = edges[i].name.Split('_');
@@ -173,16 +181,26 @@ public class contInfo_Matlab : classSocket
             {
                 from = nodeInfo[2];
                 to = nodeInfo[3];
-
+        
                 if (from != "-" || to != "-")
                 {
-                    string newline = string.Format("{0},{1},{2}", from, to, nc);
+                    string newline;
+                    if (!score)
+                    {
+                        newline = string.Format("{0},{1},{2}", from, to, nc);
+                    }
+                    else
+                    {
+                        string[] scoreInfo = new string[3];
+                        scoreInfo = readFile[count_edges + 1].Split(',');
+                        newline = string.Format("{0},{1},{2},{3},{4},{5},{6}", from, to, nc, "-", scoreInfo[0], scoreInfo[1], scoreInfo[2]);
+                    }
                     csv.AppendLine(newline);
                     count_edges += 1;
                 }
             }
         }
-
+        
         return csv.ToString();
     }
 

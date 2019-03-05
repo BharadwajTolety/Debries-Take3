@@ -70,6 +70,24 @@ public class scan_controls : MonoBehaviour
         GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
     }
 
+    public void submit_log()
+    {
+        string player, session;
+        if (Manager.Instance.sessionId == "" || Manager.Instance.playerId == "")
+        {
+            player = "def";
+            session = "def";
+        }
+        else
+        {
+            player = Manager.Instance.playerId;
+            session = Manager.Instance.sessionId;
+        }
+        string exPath = Application.dataPath + "/Database/Output/" + player + "_" + session + "/Scan_Final.csv";
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
+        Application.Quit();
+    }
+
     private void update_button(Button butt, Sprite[] spri, int pressed)
     {
         if (pressed == 1)

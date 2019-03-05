@@ -35,6 +35,9 @@ public class trig : mapBrushing {
         {
             if (col.tag == "red" || col.tag == "green" || col.tag == "blue" || col.tag == "white" || col.tag.Contains("+"))
             {
+                //blinker toggle should be off when brushing
+                    blinker.GetComponent<Toggle>().isOn = false;
+
                 if (Input.GetMouseButton(0) == true && this.tag == "redCursor" && !col.tag.Contains("red"))
                 {
                     //Debug.Log("works red");
@@ -113,7 +116,7 @@ public class trig : mapBrushing {
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
 
-        if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1)
+        if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
         {
             blinker.GetComponent<Toggle>().interactable = false;
         }
@@ -122,7 +125,7 @@ public class trig : mapBrushing {
             blinker.GetComponent<Toggle>().interactable = true;
         }
 
-        if (Manager.Instance.edge_changes < 2 || themWhiteLines.Length > 1)
+        if (Manager.Instance.edge_changes < 2 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
         {
             scan.GetComponent<Button>().interactable = false;
         }
