@@ -135,4 +135,27 @@ time_vec=zeros(1,no_contractor);
         end
     end
     fclose(fid);
+    
+    brushedFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\brushedEdges_Matlab.csv');
+    brushedFile = char(brushedFile);
+
+    fprintf('\n%s',brushedFile);
+    [fid, msg] = fopen(brushedFile,'w');
+    for j = 1:length(brushed_edges)
+        thiscell = '';
+        for k = 1:length(brushed_edges{j,3})
+            thiscell = [thiscell,num2str(brushed_edges{j,3}(k))];
+        end
+        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
+        brushed_edges(j,3) = cellstr(thiscell);
+    end
+    T = cell2table(brushed_edges);
+    
+    if fid < 0 
+        error('Failed to open file "%s" because: "%s"', brushedFile, msg);
+    else
+        writetable(T,brushedFile);
+    end
+        
+    fclose(fid);
     fprintf('\nclosed file');
