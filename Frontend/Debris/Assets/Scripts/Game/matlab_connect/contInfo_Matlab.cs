@@ -145,6 +145,7 @@ public class contInfo_Matlab : classSocket
 
         float timeLog = Time.fixedUnscaledTime;
         csv.AppendLine(timeLog.ToString());
+        csv.AppendLine(Manager.Instance.suggest.ToString());
 
         for (int i = 0; i < 3; i++)
         {

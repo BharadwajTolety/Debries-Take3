@@ -73,7 +73,10 @@ public class badEdge_blinkers : MonoBehaviour {
         //read_badEdges();
         on = toggle.GetComponent<Toggle>().isOn;
         if(bad_edges != null)
+        {
+            Manager.Instance.suggest += 1;
             StartCoroutine(blinkers());
+        }
     }
 
     public IEnumerator blinkers()

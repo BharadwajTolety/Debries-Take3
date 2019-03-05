@@ -253,9 +253,11 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
             thiscell = [thiscell,num2str(brushed_edges{j,3}(k))];
         end
         %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
-        brushed_edges(j,3) = cellstr(thiscell);
+        brushed_print(j,1) = brushed_edges(j,1);
+        brushed_print(j,2) = brushed_edges(j,2);
+        brushed_print(j,3) = cellstr(thiscell);
     end
-    T = cell2table(brushed_edges);
+    T = cell2table(brushed_print);
     
     if fid < 0 
         error('Failed to open file "%s" because: "%s"', brushedFile, msg);

@@ -15,6 +15,7 @@ public class Manager : Singleton<Manager>
     public bool flag = false; //flag checking whether map coloring has been changed or not
     public int edge_changes = 0;
 
+    public int suggest = 0;
     public int scans = 0; //number of scans done
     public float maxProfit, minTime, intersect; //the scores for the game
 
