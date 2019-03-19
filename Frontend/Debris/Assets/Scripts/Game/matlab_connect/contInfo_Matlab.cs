@@ -16,7 +16,8 @@ public class contInfo_Matlab : classSocket
     {
         count_edges = 0;
 
-        csvPath = Application.dataPath + "/Database/Output/edgelist_forMatlab.csv";
+        csvPath = Application.streamingAssetsPath + "/Database/Output/edgelist_forMatlab.csv";
+
         write_CSV(csvPath);
 
         if (Manager.Instance.sessionId == "" || Manager.Instance.playerId == "")
@@ -24,7 +25,10 @@ public class contInfo_Matlab : classSocket
             Manager.Instance.playerId = "def";
             Manager.Instance.sessionId = "def";
 
-            string log_directory = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
+            string log_directory = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
+
+            if (!Directory.Exists(log_directory))
+                Directory.CreateDirectory(log_directory);
 
             System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
 
@@ -105,7 +109,7 @@ public class contInfo_Matlab : classSocket
                 csv.AppendLine(csv_input);
             }
 
-            string scanFile = Application.dataPath + "/Database/Input/brushedEdges_Matlab.csv";
+            string scanFile = Application.streamingAssetsPath + "/Database/Input/brushedEdges_Matlab.csv";
 
             if (!File.Exists(scanFile))
             {

@@ -13,7 +13,7 @@ public class badEdge_blinkers : MonoBehaviour {
 
     private void Awake()
     {
-        badEdge_path = Application.dataPath + "/Database/Input/badEdges_from_Matlab.csv";
+        badEdge_path = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab.csv";
         reset_badEdge();
     }
 

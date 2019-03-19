@@ -14,7 +14,7 @@ public class read_Score : MonoBehaviour
 
     private void Awake()
     {
-        scorePath = Application.dataPath + "/Database/Input/score_info_fromMatlab.txt";
+        scorePath = Application.streamingAssetsPath + "/Database/Input/score_info_fromMatlab.txt";
         
         reset_score();
 

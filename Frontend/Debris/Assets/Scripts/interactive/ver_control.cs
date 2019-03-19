@@ -98,7 +98,7 @@ public class ver_control : mapBrushing {
     private bool read_scanFile(string ver)
     {
         map.Clear();
-        string scanFile = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + (ver) + ".csv";
+        string scanFile = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + (ver) + ".csv";
 
         if(!File.Exists(scanFile))
         {

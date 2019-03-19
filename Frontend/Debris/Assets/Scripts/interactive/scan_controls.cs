@@ -83,7 +83,7 @@ public class scan_controls : MonoBehaviour
             player = Manager.Instance.playerId;
             session = Manager.Instance.sessionId;
         }
-        string exPath = Application.dataPath + "/Database/Output/" + player + "_" + session + "/Scan_Final.csv";
+        string exPath = Application.streamingAssetsPath + "/Database/Output/" + player + "_" + session + "/Scan_Final.csv";
         GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
         Application.Quit();
     }

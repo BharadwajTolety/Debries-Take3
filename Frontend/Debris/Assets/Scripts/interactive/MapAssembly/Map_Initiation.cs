@@ -37,7 +37,7 @@ public class Map_Initiation : MonoBehaviour
     {
         //C1- read the data for the nodes and put them into itemdata
         //C2- Run DrawMap()
-        JSONstring = File.ReadAllText(Application.dataPath + "/Database/Input/Node_data_1.json");
+        JSONstring = File.ReadAllText(Application.streamingAssetsPath + "/Database/Input/Node_data_1.json");
 
         itemData = JsonMapper.ToObject(JSONstring);
 

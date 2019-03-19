@@ -22,7 +22,7 @@ public class StartScreen : MonoBehaviour {
             Manager.Instance.sessionId = session_info.GetComponent<InputField>().text;
         }
 
-        string log_directory = Application.dataPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
+        string log_directory = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
 
         if(!Directory.Exists(log_directory))
         {
