@@ -37,7 +37,10 @@ public class Map_Initiation : MonoBehaviour
     {
         //C1- read the data for the nodes and put them into itemdata
         //C2- Run DrawMap()
-        JSONstring = File.ReadAllText(Application.streamingAssetsPath + "/Database/Input/Node_data_1.json");
+        if (Manager.Instance.map_json == "")
+            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Node_data_1.json";
+
+        JSONstring = File.ReadAllText(Manager.Instance.map_json);
 
         itemData = JsonMapper.ToObject(JSONstring);
 
@@ -217,11 +220,11 @@ public class Map_Initiation : MonoBehaviour
             heat_map = Instantiate(GameObject.Find("debris_heat"),between2, Quaternion.identity);
             heat_map.transform.localScale = new Vector3(2f, 2f, 0.0f);
             if (debris < 83)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.64f, .255f, 0f, .4f);
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.70f, 1f, 0f, .4f);
             else if (83 < debris && debris < 166)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, .4f);
             else if (debris > 166)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.255f, .64f, 0f, .4f);
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, .70f, 0f, .4f);
 
             // heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
             heat_map.transform.parent = gameObject.transform;

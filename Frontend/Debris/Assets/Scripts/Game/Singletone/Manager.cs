@@ -11,6 +11,8 @@ public class Manager : Singleton<Manager>
     public List<float> debrisList;
     public List<float> TimesList;
 
+    public string map_json, game_setup;
+
     public int map_version = 0;
     public bool flag = false; //flag checking whether map coloring has been changed or not
     public int edge_changes = 0;

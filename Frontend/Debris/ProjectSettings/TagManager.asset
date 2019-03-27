@@ -39,6 +39,7 @@ TagManager:
   - greenLine
   - blueLine
   - toggle
+  - heat
   layers:
   - Default
   - TransparentFX

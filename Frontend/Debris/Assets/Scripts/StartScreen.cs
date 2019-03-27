@@ -7,7 +7,23 @@ using System.IO;
 
 public class StartScreen : MonoBehaviour {
 
-    public GameObject player_info, session_info;
+    public GameObject player_info, session_info, notification;
+    public Dropdown dropdown_game;
+
+    private void Awake()
+    {
+        //get the options setup
+        DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath + "/Database/Output/res_setup");
+        FileInfo[] files = d.GetFiles("*.txt");
+
+        List<string> dropOptions = new List<string>();
+        foreach (FileInfo file in files)
+        {
+            dropOptions.Add(file.Name);
+        }
+
+        dropdown_game.AddOptions(dropOptions);
+    }
 
     public void StartGame()
     {
@@ -44,5 +60,22 @@ public class StartScreen : MonoBehaviour {
     {
         Debug.Log("EXIT!");
         Application.Quit();
+    }
+
+    public void select_game()
+    {
+        string setup = Application.streamingAssetsPath + "/Database/Input/res_setup/setup_" + dropdown_game.value;
+
+        if(!File.Exists(setup))
+        {
+            notification.SetActive(true);
+        }
+        else
+        {
+            string[] lines = File.ReadAllLines(setup);
+
+            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/" + lines[0] +".json";
+            Manager.Instance.game_setup = Application.streamingAssetsPath + "/Database/Input/" + lines[1] + ".json";
+        }
     }
 }
