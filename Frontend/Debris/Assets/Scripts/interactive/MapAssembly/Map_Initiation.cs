@@ -167,23 +167,23 @@ public class Map_Initiation : MonoBehaviour
             //Debug.Log(dest);
             edgeNumber = i + 1;
 
-            if (contractorCode == 0) { AddEdge(edgeNumber, source, dest, "white"); }
-            else
-            if (contractorCode == 1) { AddEdge(edgeNumber, source, dest, "red"); }
-            else
-            if (contractorCode == 2) { AddEdge(edgeNumber, source, dest, "blue"); }
-            else
-            if (contractorCode == 3) { AddEdge(edgeNumber, source, dest, "green"); }
-
-
             debrivalue = float.Parse(itemData["EdgeData"][i]["debris"].ToString());
-            Manager.Instance.debrisList.Add(debrivalue);
             timesValue = float.Parse(itemData["EdgeData"][i]["time"].ToString());
+
+            if (contractorCode == 0) { AddEdge(edgeNumber, source, dest, "white", debrivalue); }
+            else
+            if (contractorCode == 1) { AddEdge(edgeNumber, source, dest, "red", debrivalue); }
+            else
+            if (contractorCode == 2) { AddEdge(edgeNumber, source, dest, "blue", debrivalue); }
+            else
+            if (contractorCode == 3) { AddEdge(edgeNumber, source, dest, "green", debrivalue); }
+
+            Manager.Instance.debrisList.Add(debrivalue);
             Manager.Instance.TimesList.Add(timesValue);
         }
     }
 
-    void AddEdge(int EdgeNumber, int nFrom, int nTo, string strType)
+    void AddEdge(int EdgeNumber, int nFrom, int nTo, string strType, float debris)
     {
         GameObject theSourceObj, theDestinationObj;
         theSourceObj = GameObject.Find("n_" + nFrom);
@@ -213,6 +213,18 @@ public class Map_Initiation : MonoBehaviour
             string name = "E_" + EdgeNumber + "_" + nFrom + "_" + nTo;
             NewObj.name = name;
 
+            GameObject heat_map;
+            heat_map = Instantiate(GameObject.Find("debris_heat"),between2, Quaternion.identity);
+            heat_map.transform.localScale = new Vector3(2f, 2f, 0.0f);
+            if (debris < 83)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.64f, .255f, 0f, .4f);
+            else if (83 < debris && debris < 166)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, .4f);
+            else if (debris > 166)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.255f, .64f, 0f, .4f);
+
+            // heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
+            heat_map.transform.parent = gameObject.transform;
         }
         else { }
         //Debug.Log("Not Found");

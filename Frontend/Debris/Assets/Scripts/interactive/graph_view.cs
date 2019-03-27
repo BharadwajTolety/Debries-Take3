@@ -36,10 +36,12 @@ public class graph_view : MonoBehaviour {
     private void scan_disable()
     {
         GameObject scan = GameObject.Find("Scan");
-        GameObject blinker = GameObject.Find("Toggle");
+        GameObject[] blinkers = GameObject.FindGameObjectsWithTag("toggle");
 
         scan.GetComponent<Button>().interactable = false;
-        blinker.GetComponent<Toggle>().interactable = false;
+
+        foreach (GameObject blinker in blinkers)
+            blinker.GetComponent<Toggle>().interactable = false;
     }
 
     //update the graphs and then call function to write up the log for experiment stuff

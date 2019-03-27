@@ -10,7 +10,7 @@ public class trig : mapBrushing {
 
     //not the best place to do this but whatevs, this works out well.
     private GameObject scan;
-    private GameObject blinker;
+    private GameObject[] blinkers;
     private GameObject scan_off;
     private GameObject scan_on;
 
@@ -24,7 +24,7 @@ public class trig : mapBrushing {
         scanned = 0;
 
         scan = GameObject.Find("Scan");
-        blinker = GameObject.Find("Toggle");
+        blinkers = GameObject.FindGameObjectsWithTag("toggle");
         scan_off = GameObject.Find("scan_off");
         scan_on = GameObject.Find("scan_on");
     }
@@ -36,6 +36,7 @@ public class trig : mapBrushing {
             if (col.tag == "red" || col.tag == "green" || col.tag == "blue" || col.tag == "white" || col.tag.Contains("+"))
             {
                 //blinker toggle should be off when brushing
+                foreach(GameObject blinker in blinkers)
                     blinker.GetComponent<Toggle>().isOn = false;
 
                 if (Input.GetMouseButton(0) == true && this.tag == "redCursor" && !col.tag.Contains("red"))
@@ -118,11 +119,13 @@ public class trig : mapBrushing {
 
         if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
         {
-            blinker.GetComponent<Toggle>().interactable = false;
+            foreach (GameObject blinker in blinkers)
+                blinker.GetComponent<Toggle>().interactable = false;
         }
         else
         {
-            blinker.GetComponent<Toggle>().interactable = true;
+            foreach (GameObject blinker in blinkers)
+                blinker.GetComponent<Toggle>().interactable = true;
         }
 
         if (Manager.Instance.edge_changes < 2 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
