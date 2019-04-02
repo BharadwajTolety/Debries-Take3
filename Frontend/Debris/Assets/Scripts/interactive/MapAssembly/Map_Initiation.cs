@@ -218,15 +218,16 @@ public class Map_Initiation : MonoBehaviour
 
             GameObject heat_map;
             heat_map = Instantiate(GameObject.Find("debris_heat"),between2, Quaternion.identity);
-            heat_map.transform.localScale = new Vector3(2f, 2f, 0.0f);
-            if (debris < 83)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.70f, 1f, 0f, .4f);
-            else if (83 < debris && debris < 166)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, .4f);
-            else if (debris > 166)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, .70f, 0f, .4f);
+            heat_map.transform.localScale = new Vector3(0.3f, distance, 0.0f);
+            heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
 
-            // heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
+            if (debris < 83)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.70f, 1f, 0f, .7f);
+            else if (83 < debris && debris < 166)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, .7f);
+            else if (debris > 166)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(1f, .70f, 0f, .7f);
+
             heat_map.transform.parent = gameObject.transform;
         }
         else { }

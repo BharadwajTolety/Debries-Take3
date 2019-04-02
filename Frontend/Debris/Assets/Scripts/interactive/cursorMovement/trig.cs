@@ -16,12 +16,14 @@ public class trig : mapBrushing {
 
     //checking scans and cursor size
     private int scanned;
-    private float size_check;
+    private float size_check, playTime;
     private bool cursorOff;
 
     private void Awake()
     {
         scanned = 0;
+
+        playTime = 0;
 
         scan = GameObject.Find("Scan");
         blinkers = GameObject.FindGameObjectsWithTag("toggle");
@@ -96,6 +98,9 @@ public class trig : mapBrushing {
 
     private void Update()
     {
+        //track playtime
+        playTime += Time.deltaTime;
+
         if (Input.GetMouseButtonUp(0) && Manager.Instance.flag)
         {
             //Debug.Log("update " + Manager.Instance.flag);
@@ -122,7 +127,7 @@ public class trig : mapBrushing {
             foreach (GameObject blinker in blinkers)
                 blinker.GetComponent<Toggle>().interactable = false;
         }
-        else
+        else 
         {
             foreach (GameObject blinker in blinkers)
                 blinker.GetComponent<Toggle>().interactable = true;
@@ -132,8 +137,10 @@ public class trig : mapBrushing {
         {
             scan.GetComponent<Button>().interactable = false;
         }
-        else
+        else if(scan.GetComponent<Button>().interactable == false)
         {
+            //only update when scan is active cos only after clicking scan is the playtime logged
+            Manager.Instance.time_played = playTime;
             scan.GetComponent<Button>().interactable = true;
         }
     }
