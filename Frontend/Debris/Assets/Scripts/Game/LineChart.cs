@@ -167,6 +167,7 @@ public class LineChart : MonoBehaviour {
 
         float xSize = (graphWidth / maxVisibleValueAmount);
         int xIndex = 0;
+        int graph_size = 1;
 
         //instantiate and setup each value dot on the graph and connecting them
         GameObject lastCircleGameObject = null, lastCircleGameObject2 = null;
@@ -176,7 +177,7 @@ public class LineChart : MonoBehaviour {
             float xPosition = (xSize + xIndex * xSize)/2;
 
             //setup dots on the graph - profit
-            float yPosition = (valuelist_[i]) / (graphHeight* (valuelist_.Count));
+            float yPosition = (valuelist_[i]) / (graphHeight* (valuelist_.Count%2 == 0 ? ++graph_size : graph_size));
             Debug.Log("yPosition: " + yPosition + " profit: " + valuelist_[i]);
 
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "profit");
@@ -198,7 +199,7 @@ public class LineChart : MonoBehaviour {
                 gameObjectList.Add(labelY.gameObject);
 
             //setup dots on the graph - time 
-            float yPosition2 = (valuelist2_[j]) / (graphHeight* (valuelist2_.Count));
+            float yPosition2 = (valuelist2_[j]) / (graphHeight* (valuelist_.Count % 2 == 0 ? ++graph_size : graph_size));
             Debug.Log("yPosition2: " + yPosition2 + " time: " + valuelist2_[j]);
             GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "time");
             gameObjectList.Add(circleGameObject2);
