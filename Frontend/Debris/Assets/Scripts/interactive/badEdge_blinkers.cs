@@ -13,11 +13,11 @@ public class badEdge_blinkers : MonoBehaviour {
 
     private void Awake()
     {
+        badEdge_path = new string[2];
         //there are three badedge cases: time, profit and intersection
         badEdge_path[0] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab.csv";
         badEdge_path[1] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab_2.csv";
-        badEdge_path[2] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab_3.csv";
-
+      
         reset_badEdge();
     }
 
