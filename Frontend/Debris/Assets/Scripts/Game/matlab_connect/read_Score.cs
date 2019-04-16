@@ -45,7 +45,7 @@ public class read_Score : MonoBehaviour
                 }
                 Debug.Log("intersect overlap_" + Manager.Instance.intersect);
 
-                GameObject.FindGameObjectWithTag("ALLOBJECTS").GetComponent<badEdge_blinkers>().read_badEdges();
+                GameObject.Find("MapScreen").GetComponent<badEdge_blinkers>().read_badEdges();
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().update_log(true, profit_obj, time_obj, intersect_obj);
 
                 //not reading anymore
@@ -97,6 +97,7 @@ public class read_Score : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("the file couldnt be read - " + e.Message);
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                 return false;
             }
 

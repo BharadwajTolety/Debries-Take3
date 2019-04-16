@@ -29,7 +29,10 @@ public class graph_view : MonoBehaviour {
         else
         {
             scan.SetActive(true);
-            GameObject.Find("Toggle").GetComponent<Toggle>().interactable = true;
+            GameObject[] blinkers = GameObject.FindGameObjectsWithTag("toggle");
+
+            foreach (GameObject blinker in blinkers)
+                blinker.GetComponent<Toggle>().interactable = false;
         }
     }
 
@@ -151,6 +154,7 @@ public class graph_view : MonoBehaviour {
 
     public void error_msg_open()
     {
+        scan.SetActive(false);
         mapscreen.SetActive(false);
         error.SetActive(true);
     }

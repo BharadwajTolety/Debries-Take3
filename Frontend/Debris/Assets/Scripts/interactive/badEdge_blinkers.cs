@@ -7,16 +7,20 @@ using UnityEngine.UI;
 
 public class badEdge_blinkers : MonoBehaviour {
 
-    private List<string>[] bad_edges = new List<string>[3];
+    private List<string>[] bad_edges;
     private bool on = true;
     private string[] badEdge_path;
 
     private void Awake()
     {
-        //there are three badedge cases: time, profit and intersection
+        bad_edges = new List<string>[2];
+        badEdge_path = new string[2];
+
+        Manager.Instance.suggest = new int[] { 0,0,0};
+
+        //there are three badedge cases: time/profit and intersection
         badEdge_path[0] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab.csv";
         badEdge_path[1] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab_2.csv";
-        badEdge_path[2] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab_3.csv";
 
         reset_badEdge();
     }
@@ -47,6 +51,7 @@ public class badEdge_blinkers : MonoBehaviour {
             if (!File.Exists(bad_path))
             {
                 Debug.Log("something went wrong with matlab there is no badedge file available");
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                 continue;
             }
             else
@@ -74,6 +79,7 @@ public class badEdge_blinkers : MonoBehaviour {
                 catch (Exception e)
                 {
                     Debug.Log("the file couldnt be read - " + e.Message);
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                     continue;
                 }
             }

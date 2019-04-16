@@ -49,7 +49,7 @@ OVERLAP1 = sum(sum(node_intersection_matrix)); %The total overlap
 %% Detecting bad edges
 %par3 is the threshold parameter
 par3 = 0.25;
-[ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par3, EdgeList );
+[ BadEdges_int, BadEdges_time ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par3, EdgeList );
 
 %Objectives:
 % Min MAXTIME
@@ -109,7 +109,7 @@ time_vec=zeros(1,no_contractor);
    
     end
 
-    badFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\badEdges_from_Matlab.csv');
+    badFile = strcat(initPath,'\Frontend\Debris\Assets\StreamingAssets\Database\Input\badEdges_from_Matlab.csv');
     badFile = char(badFile);
 
     fprintf('%s',badFile);
@@ -117,11 +117,23 @@ time_vec=zeros(1,no_contractor);
     if fid < 0 
          error('Failed to open file "%s" because: "%s"', badFile, msg);
     else
-        csvwrite(badFile,BadEdges);
+        csvwrite(badFile,BadEdges_time);
     end
     fclose(fid);
     
-    scoreFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\score_info_fromMatlab.txt');
+    badFile2 = strcat(initPath,'\Frontend\Debris\Assets\StreamingAssets\Database\Input\badEdges_from_Matlab2.csv');
+    badFile2 = char(badFile2);
+
+    fprintf('%s',badFile2);
+    [fid, msg] = fopen(badFile2,'w');
+    if fid < 0 
+         error('Failed to open file "%s" because: "%s"', badFile2, msg);
+    else
+        csvwrite(badFile2,BadEdges_int);
+    end
+    fclose(fid);
+    
+    scoreFile = strcat(initPath,'\Frontend\Debris\Assets\StreamingAssets\Database\Input\score_info_fromMatlab.txt');
     scoreFile = char(scoreFile);
 
     fprintf('\n%s',scoreFile);
@@ -136,7 +148,7 @@ time_vec=zeros(1,no_contractor);
     end
     fclose(fid);
     
-    brushedFile = strcat(initPath,'\Frontend\Debris\Assets\Database\Input\brushedEdges_Matlab.csv');
+    brushedFile = strcat(initPath,'\Frontend\Debris\Assets\StreamingAssets\Database\Input\brushedEdges_Matlab.csv');
     brushedFile = char(brushedFile);
 
     fprintf('\n%s',brushedFile);

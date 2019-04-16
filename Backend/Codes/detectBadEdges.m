@@ -1,4 +1,4 @@
-function [ BadEdges ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par_threshold, EdgeList )
+function [ BadEdges_int, BadEdges_time ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par_threshold, EdgeList )
 
 %BadEdges will have the same format as edge_change
 %from - to -nc - cl- trip - collected debris
@@ -47,6 +47,8 @@ bad_edges_int = EdgeList(I_int(1:no_bad_edges),1:2);
 [~, I_time ] = sort(EdgeList(:,4), 'descend');
 bad_edges_time = EdgeList(I_time(1:no_bad_edges),1:2);
 
-BadEdges = unique([bad_edges_int; bad_edges_time],'rows');
+BadEdges_int = bad_edges_int;
+BadEdges_time = bad_edges_time;
+%BadEdges = unique([bad_edges_int; bad_edges_time],'rows');
 end
 
