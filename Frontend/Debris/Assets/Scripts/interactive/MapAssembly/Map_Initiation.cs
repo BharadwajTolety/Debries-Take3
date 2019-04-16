@@ -224,9 +224,16 @@ public class Map_Initiation : MonoBehaviour
             if (debris < 83)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(.42f, .91f, .18f, .7f);
             else if (83 < debris && debris < 166)
+//current
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(.905f, .71f, .2f, .7f);
             else if (debris > 166)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(0.6f, .38f, .27f, .7f);
+//incoming
+/*
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.9f, .71f, .2f, .7f);
+            else if (debris > 166)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.6f, .38f, .27f, .7f);
+*/
 
             heat_map.transform.parent = gameObject.transform;
         }
