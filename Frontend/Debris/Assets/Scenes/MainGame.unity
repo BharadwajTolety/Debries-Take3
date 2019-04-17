@@ -9258,7 +9258,6 @@ GameObject:
   - component: {fileID: 1648344606}
   - component: {fileID: 1648344608}
   - component: {fileID: 1648344610}
-  - component: {fileID: 1648344611}
   - component: {fileID: 1648344612}
   - component: {fileID: 1648344609}
   - component: {fileID: 1648344613}
@@ -9326,43 +9325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ec9becb50e28469ca6a39f3b42a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1648344611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1648344605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85e1a790ea697bf41ba6a55fe8d03717, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mySelection: 1
-  brushSize: 20
-  debrisList: []
-  TimesList: []
-  map_json: 
-  game_setup: 
-  map_version: 0
-  flag: 0
-  edge_changes: 0
-  suggest: 
-  scans: 0
-  maxProfit: 0
-  minTime: 0
-  intersect: 0
-  time_played: 0
-  cncProfit:
-  - 0
-  - 0
-  - 0
-  cncTime:
-  - 0
-  - 0
-  - 0
-  playerId: 
-  sessionId: 
-  playTime: 0
 --- !u!114 &1648344612
 MonoBehaviour:
   m_ObjectHideFlags: 0

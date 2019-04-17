@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.IO;
+using System;
 
 public class StartScreen : MonoBehaviour {
 
@@ -13,16 +14,20 @@ public class StartScreen : MonoBehaviour {
     private void Awake()
     {
         //get the options setup
-        DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath + "/Database/Output/res_setup");
+        DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath + "/Database/Input/res_setup");
         FileInfo[] files = d.GetFiles("*.txt");
 
         List<string> dropOptions = new List<string>();
         foreach (FileInfo file in files)
         {
-            dropOptions.Add(file.Name);
+            string op_name = file.ToString().Substring(file.ToString().IndexOf("res_setup") + 10);
+            dropOptions.Add(op_name);
         }
 
+        dropdown_game.ClearOptions();
         dropdown_game.AddOptions(dropOptions);
+
+        Manager.Instance.map_json = "";
     }
 
     public void StartGame()
@@ -64,7 +69,7 @@ public class StartScreen : MonoBehaviour {
 
     public void select_game()
     {
-        string setup = Application.streamingAssetsPath + "/Database/Input/res_setup/setup_" + dropdown_game.value;
+        string setup = Application.streamingAssetsPath + "/Database/Input/res_setup/setup_" + dropdown_game.value + ".txt";
 
         if(!File.Exists(setup))
         {
@@ -74,8 +79,16 @@ public class StartScreen : MonoBehaviour {
         {
             string[] lines = File.ReadAllLines(setup);
 
-            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/" + lines[0] +".json";
-            Manager.Instance.game_setup = Application.streamingAssetsPath + "/Database/Input/" + lines[1] + ".json";
+            bool flag = false;
+            foreach(string line in lines)
+            {
+                if(!flag)
+                    Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Node_data_" + line + ".json";
+                else
+                    Manager.Instance.game_setup = Application.streamingAssetsPath + "/Database/Input/" + line + ".json";
+
+                flag = true;
+            }
         }
     }
 }

@@ -13,14 +13,13 @@ public class badEdge_blinkers : MonoBehaviour {
 
     private void Awake()
     {
-        bad_edges = new List<string>[2];
-        badEdge_path = new string[2];
-
         Manager.Instance.suggest = new int[] { 0,0,0};
 
+        //store path cases
+        badEdge_path = new string[2];
         //there are three badedge cases: time/profit and intersection
         badEdge_path[0] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab.csv";
-        badEdge_path[1] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab_2.csv";
+        badEdge_path[1] = Application.streamingAssetsPath + "/Database/Input/badEdges_from_Matlab2.csv";
 
         reset_badEdge();
     }
@@ -37,7 +36,10 @@ public class badEdge_blinkers : MonoBehaviour {
             }
         }
 
-        bad_edges = new List<string>[3];
+        //store badedge info for diff cases
+        bad_edges = new List<string>[2];
+        bad_edges[0] = new List<string>();
+        bad_edges[1] = new List<string>();
     }
 
     //read the badEdge file after matlab done writing it
@@ -67,7 +69,11 @@ public class badEdge_blinkers : MonoBehaviour {
 
                         string badEdge_info = bE_info[0] + "_" + bE_info[1];
 
-                        if (!bad_edges[i].Contains(badEdge_info))
+                        if (bad_edges[i] == null)
+                        {
+                            bad_edges[i].Add(badEdge_info);
+                        }
+                        else if(!bad_edges[i].Contains(badEdge_info))
                         {
                             bad_edges[i].Add(badEdge_info);
                         }
@@ -95,12 +101,10 @@ public class badEdge_blinkers : MonoBehaviour {
         {
             int this_case = 0;
 
-            if (toggle.name.StartsWith("Profit"))
+            if (toggle.name.StartsWith("Profit") || toggle.name.StartsWith("Time"))
                 this_case = 0;
-            else if (toggle.name.StartsWith("Time"))
-                this_case = 1;
             else
-                this_case = 2;
+                this_case = 1;
 
             Manager.Instance.suggest[this_case] += 1;
             StartCoroutine(blinkers(this_case));

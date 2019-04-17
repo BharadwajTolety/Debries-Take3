@@ -147,10 +147,10 @@ public class contInfo_Matlab : classSocket
 
         csv.AppendLine("first time, three scores, then objinputs+edgelist");
 
-        float timeLog = Time.fixedUnscaledTime;
+        float timeLog = Manager.Instance.time_played;
         csv.AppendLine(timeLog.ToString());
 
-        string suggest = string.Format("{0},{1},{2}", Manager.Instance.suggest[0].ToString(), Manager.Instance.suggest[1].ToString(), Manager.Instance.suggest[3].ToString());
+        string suggest = string.Format("{0},{1},{2}", Manager.Instance.suggest[0].ToString(), Manager.Instance.suggest[1].ToString(), Manager.Instance.suggest[2].ToString());
         csv.AppendLine(suggest);
 
         for (int i = 0; i < 3; i++)
