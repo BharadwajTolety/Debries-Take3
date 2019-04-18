@@ -14,14 +14,21 @@ public class StartScreen : MonoBehaviour {
     private void Awake()
     {
         //get the options setup
-        DirectoryInfo d = new DirectoryInfo(Application.streamingAssetsPath + "/Database/Input/res_setup");
-        FileInfo[] files = d.GetFiles("*.txt");
+        string setup = Application.streamingAssetsPath + "/Database/Input/res_setup/setup_1.txt";
 
         List<string> dropOptions = new List<string>();
-        foreach (FileInfo file in files)
+        if (!File.Exists(setup))
         {
-            string op_name = file.ToString().Substring(file.ToString().IndexOf("res_setup") + 10);
-            dropOptions.Add(op_name);
+            notification.SetActive(true);
+        }
+        else
+        {
+            string[] lines = File.ReadAllLines(setup);
+
+            foreach (string line in lines)
+            {
+                dropOptions.Add(line);
+            }
         }
 
         dropdown_game.ClearOptions();
@@ -69,26 +76,6 @@ public class StartScreen : MonoBehaviour {
 
     public void select_game()
     {
-        string setup = Application.streamingAssetsPath + "/Database/Input/res_setup/setup_" + dropdown_game.value + ".txt";
-
-        if(!File.Exists(setup))
-        {
-            notification.SetActive(true);
-        }
-        else
-        {
-            string[] lines = File.ReadAllLines(setup);
-
-            bool flag = false;
-            foreach(string line in lines)
-            {
-                if(!flag)
-                    Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Node_data_" + line + ".json";
-                else
-                    Manager.Instance.game_setup = Application.streamingAssetsPath + "/Database/Input/" + line + ".json";
-
-                flag = true;
-            }
-        }
+        Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/" + dropdown_game.GetComponentInChildren<Text>().text + ".json";
     }
 }
