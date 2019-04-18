@@ -39,6 +39,18 @@ public class contInfo_Matlab : classSocket
         }
     }
 
+    private void Start()
+    {
+        string debris_path = Application.streamingAssetsPath + "/Database/Output/debris.csv";
+        StringBuilder deb = new StringBuilder();
+        foreach (float debris in Manager.Instance.debrisList)
+        {
+            string objline = string.Format("{0}", debris);
+            deb.AppendLine(objline);
+        }
+        File.WriteAllText(debris_path, deb.ToString());
+    }
+
     //write out the csv for matlab to read
     void write_CSV(string path)
     {
@@ -117,7 +129,15 @@ public class contInfo_Matlab : classSocket
             }
             else
             {
-                readFile = File.ReadAllLines(scanFile);
+                try
+                {
+                    readFile = File.ReadAllLines(scanFile);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("the file couldnt be read - " + e.Message);
+                }
+                
             }
         }
 

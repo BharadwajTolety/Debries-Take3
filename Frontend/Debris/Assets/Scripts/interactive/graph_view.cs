@@ -56,7 +56,7 @@ public class graph_view : MonoBehaviour {
             GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
 
             update_graphs();
-            update_verCont();
+           // update_verCont();
         }
         scan.SetActive(false);
     }

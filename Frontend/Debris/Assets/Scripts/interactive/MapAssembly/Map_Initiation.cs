@@ -33,12 +33,12 @@ public class Map_Initiation : MonoBehaviour
 
     }
 
-    void Awake()
+    void Start()
     {
         //C1- read the data for the nodes and put them into itemdata
         //C2- Run DrawMap()
         if (Manager.Instance.map_json == "")
-            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Node_data_1.json";
+            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Node_data_1_OG.json";
 
         JSONstring = File.ReadAllText(Manager.Instance.map_json);
 
