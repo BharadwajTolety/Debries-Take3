@@ -46,10 +46,12 @@ Adjacency=Time>0;
 % convert the EdgeAssignment to a cell array - in the future I will add
 % into cells
 
-for i=1:size(EdgeAssignment,1)
-    Assignment{i,1} = EdgeAssignment(i,1); %cell array version of EdgeAssignment
-    Assignment{i,2} = EdgeAssignment(i,2); %cell array version of EdgeAssignment
-end
+%for i=1:size(EdgeAssignment,1)
+%    Assignment{i,1} = EdgeAssignment(i,1); %cell array version of EdgeAssignment
+%    Assignment{i,2} = EdgeAssignment(i,2); %cell array version of EdgeAssignment
+%end
+
+
 
 %% Trying a new assignment vec [58, 79] => assign it to contractor 1 too
 % but debris collection is zero, just allowing traversal by cont 1
@@ -61,20 +63,9 @@ end
 %connected subgraphs for each contractor
 
 for nc=1:no_contractor
-    
-    %% =========== NEW ==========
-    contractor_edges=[];
-    iter=0;
-    for h=1:size(Assignment,1)
-        if any(Assignment{h,1}==nc) 
-            iter = iter +1;
-            contractor_edges(iter,1)=EdgeList(h,1); contractor_edges(iter,2)=EdgeList(h,2);
-            contractor_edges(iter,3)=Assignment{h,2}(Assignment{h,1}==nc); %The percentage debris allocated to that contractor
-            
-        end
-    end
-    %% =======================
-    
+
+       contractor_edges = EdgeList(find(EdgeList(:,3) == nc),:);
+       
     Contractor{nc}.TimeMatrix=zeros(no_nodes);
     Contractor{nc}.Debris=zeros(no_nodes);
     binary_nodes=zeros(1,no_nodes);
@@ -258,25 +249,19 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
     brushedFile = char(brushedFile);
 
     fprintf('\n%s',brushedFile);
+    brushed_print = [];
     [fid, msg] = fopen(brushedFile,'w');
+    delete(brushedFile);
     for j = 1:length(brushed_edges)
-        thiscell = '';
-        for k = 1:length(brushed_edges{j,3})
-            thiscell = [thiscell,num2str(brushed_edges{j,3}(k))];
-        end
-        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
-        brushed_print(j,1) = brushed_edges(j,1);
-        brushed_print(j,2) = brushed_edges(j,2);
-        brushed_print(j,3) = cellstr(thiscell);
+    %%    brushed_print = [brushed_print;brushed_edges{j,:}];
     end
-    T = cell2table(brushed_print);
     
     if fid < 0 
-        error('Failed to open file "%s" because: "%s"', brushedFile, msg);
+    %%    error('Failed to open file "%s" because: "%s"', brushedFile, msg);
     else
-        writetable(T,brushedFile);
-    end
-        
+        csvwrite(brushedFile, brushed_print);
+    end       
     fclose(fid);
+    
     fprintf('\nclosed file');    
 %toc

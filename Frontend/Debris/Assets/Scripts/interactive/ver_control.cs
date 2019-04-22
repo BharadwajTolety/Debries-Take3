@@ -51,7 +51,7 @@ public class ver_control : mapBrushing {
         if (count_ver < Manager.Instance.scans)
         {
             count_ver++;
-            if (ver_cont <= 5)
+            if (ver_cont < 5)
                 ver_cont++;
         }
 
@@ -60,6 +60,9 @@ public class ver_control : mapBrushing {
             GameObject vers_button = GameObject.FindGameObjectWithTag("ver_" + (i + 1));
             vers_button.GetComponent<Button>().interactable = true;
             vers_button.name = (Manager.Instance.scans - j).ToString();
+
+            //change the display of the button for user accessibility
+            vers_button.GetComponent<Text>().text = vers_button.name;
         }
         push_scoreList();
     }

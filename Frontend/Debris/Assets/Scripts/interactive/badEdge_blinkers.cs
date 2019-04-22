@@ -116,15 +116,25 @@ public class badEdge_blinkers : MonoBehaviour {
         GameObject[] redLine = GameObject.FindGameObjectsWithTag("red");
         GameObject[] greenLine = GameObject.FindGameObjectsWithTag("green");
         GameObject[] blueLine = GameObject.FindGameObjectsWithTag("blue");
+        GameObject[] white = GameObject.FindGameObjectsWithTag("white");
+        GameObject[] red_blue = GameObject.FindGameObjectsWithTag("red+blue");
+        GameObject[] red_green = GameObject.FindGameObjectsWithTag("red+green");
+        GameObject[] green_blue = GameObject.FindGameObjectsWithTag("green+blue");
+        GameObject[] all_color = GameObject.FindGameObjectsWithTag("AllColor");
 
         //Queue<string> badEdges = new Queue<string>();
-        while(on)
+        while (on)
         {
             foreach (string bad_edge in bad_edges[tog_no])
             {
                 update_bad(redLine, bad_edge, true);
                 update_bad(greenLine, bad_edge, true);
                 update_bad(blueLine, bad_edge, true);
+                update_bad(white,bad_edge,true);
+                update_bad(red_blue,bad_edge,true);
+                update_bad(red_green, bad_edge, true);
+                update_bad(green_blue, bad_edge, true);
+                update_bad(all_color,bad_edge,true);
             }
 
             yield return new WaitForSeconds(0.5f);
@@ -134,6 +144,11 @@ public class badEdge_blinkers : MonoBehaviour {
                 update_bad(redLine, bad_edge, false);
                 update_bad(greenLine, bad_edge, false);
                 update_bad(blueLine, bad_edge, false);
+                update_bad(white, bad_edge, false);
+                update_bad(red_blue, bad_edge, false);
+                update_bad(red_green, bad_edge, false);
+                update_bad(green_blue, bad_edge, false);
+                update_bad(all_color, bad_edge, false);
             }
 
             yield return new WaitForSeconds(0.5f);

@@ -9,23 +9,16 @@ public class trig : mapBrushing {
     public GameObject scanning_noti;
 
     //not the best place to do this but whatevs, this works out well.
-    private GameObject scan;
     private GameObject[] blinkers;
     private GameObject scan_off;
     private GameObject scan_on;
 
     //checking scans and cursor size
-    private int scanned;
-    private float size_check, playTime;
+    private float size_check;
     private bool cursorOff;
 
     private void Awake()
     {
-        scanned = 0;
-
-        playTime = 0;
-
-        scan = GameObject.Find("Scan");
         blinkers = GameObject.FindGameObjectsWithTag("toggle");
         scan_off = GameObject.Find("scan_off");
         scan_on = GameObject.Find("scan_on");
@@ -93,55 +86,6 @@ public class trig : mapBrushing {
                     }
                 }
             }
-        }
-    }
-
-    private void Update()
-    {
-        //track playtime
-        playTime += Time.deltaTime;
-
-        if (Input.GetMouseButtonUp(0) && Manager.Instance.flag)
-        {
-            //Debug.Log("update " + Manager.Instance.flag);
-
-            Manager.Instance.map_version += 1;
-            Manager.Instance.flag = false;
-
-            deborah_check();
-        }
-
-        if(scanned != Manager.Instance.scans)
-        {
-            scanned = Manager.Instance.scans;
-            deborah_check();
-        }
-    }
-
-    private void deborah_check()
-    {
-        GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
-
-        if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
-        {
-            foreach (GameObject blinker in blinkers)
-                blinker.GetComponent<Toggle>().interactable = false;
-        }
-        else 
-        {
-            foreach (GameObject blinker in blinkers)
-                blinker.GetComponent<Toggle>().interactable = true;
-        }
-
-        if (Manager.Instance.edge_changes < 2 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
-        {
-            scan.GetComponent<Button>().interactable = false;
-        }
-        else if(scan.GetComponent<Button>().interactable == false)
-        {
-            //only update when scan is active cos only after clicking scan is the playtime logged
-            Manager.Instance.time_played = playTime;
-            scan.GetComponent<Button>().interactable = true;
         }
     }
 }

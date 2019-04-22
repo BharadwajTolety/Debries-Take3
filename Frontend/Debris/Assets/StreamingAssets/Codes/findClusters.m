@@ -63,7 +63,11 @@ end
 
 %until no_cluster, the previous clusters are overwritten , we need to get
 %rid of the rest of the clusters remaining
+try
 no_prev_cluster = length(Contractor{nc}.cluster);
+catch
+    no_prev_cluster = 0;
+end
  for y = no_cluster +1 : no_prev_cluster
      Contractor{nc}.cluster{y} = [];
      Contractor{nc}.Edges{y} = [];
@@ -77,11 +81,18 @@ no_prev_cluster = length(Contractor{nc}.cluster);
      end
      Contractor{nc}.trips{y} = Contractor{nc}.trips{y}((~cellfun('isempty',Contractor{nc}.trips{y})));
  end
- 
+ try
  Contractor{nc}.cluster = Contractor{nc}.cluster((~cellfun('isempty',Contractor{nc}.cluster)));
- Contractor{nc}.Edges = Contractor{nc}.Edges((~cellfun('isempty',Contractor{nc}.Edges)));
+  Contractor{nc}.Edges = Contractor{nc}.Edges((~cellfun('isempty',Contractor{nc}.Edges)));
+ catch
+    Contractor{nc}.cluster = [];
+    COntractor{nc}.Edges = [];
+ end
+
  try
  Contractor{nc}.trips = Contractor{nc}.trips((~cellfun('isempty',Contractor{nc}.trips)));
+ catch
+     Contractor{nc}.trips = [];
  end
 end
 

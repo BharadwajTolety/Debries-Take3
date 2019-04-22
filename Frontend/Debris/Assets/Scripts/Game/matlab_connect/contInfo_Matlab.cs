@@ -11,6 +11,7 @@ public class contInfo_Matlab : classSocket
     string csvPath;
     string[] readFile;
     int count_edges = 0;
+    bool error_flag = false;
 
     private void Awake()
     {
@@ -98,13 +99,14 @@ public class contInfo_Matlab : classSocket
         GameObject[] themRedEdges = GameObject.FindGameObjectsWithTag("red");
         GameObject[] themGreenEdges = GameObject.FindGameObjectsWithTag("green");
         GameObject[] themBlueEdges = GameObject.FindGameObjectsWithTag("blue");
+        GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
         GameObject[] red_blue = GameObject.FindGameObjectsWithTag("red+blue");
         GameObject[] red_green = GameObject.FindGameObjectsWithTag("red+green");
         GameObject[] green_blue = GameObject.FindGameObjectsWithTag("green+blue");
         GameObject[] all_color = GameObject.FindGameObjectsWithTag("AllColor");
             List<GameObject[]> lines_ = new List<GameObject[]>
             {
-                themRedEdges, themGreenEdges, themBlueEdges, red_blue, red_green, green_blue, all_color
+                themRedEdges, themGreenEdges, themBlueEdges, themWhiteEdges, red_blue, red_green, green_blue, all_color
             };
 
         StringBuilder csv = new StringBuilder();
@@ -131,10 +133,15 @@ public class contInfo_Matlab : classSocket
             {
                 try
                 {
+                    //read brushed file
+                    Debug.Log("read brushed file");
                     readFile = File.ReadAllLines(scanFile);
+                    error_flag = false;
                 }
                 catch (Exception e)
                 {
+                    readFile = new string[200];
+                    error_flag = true;
                     Debug.Log("the file couldnt be read - " + e.Message);
                 }
                 
@@ -212,15 +219,17 @@ public class contInfo_Matlab : classSocket
                 if (from != "-" || to != "-")
                 {
                     string newline;
-                    if (!score)
+
+                    if (score && !error_flag)
                     {
+                        string[] scoreInfo = new string[3];
+                        // scoreInfo = readFile[count_edges].Split(',');
+                        // newline = string.Format("{0},{1},{2},{3},{4},{5},{6}", from, to, nc, "-", scoreInfo[0], scoreInfo[1], scoreInfo[2]);
                         newline = string.Format("{0},{1},{2}", from, to, nc);
                     }
                     else
                     {
-                        string[] scoreInfo = new string[3];
-                        scoreInfo = readFile[count_edges + 1].Split(',');
-                        newline = string.Format("{0},{1},{2},{3},{4},{5},{6}", from, to, nc, "-", scoreInfo[0], scoreInfo[1], scoreInfo[2]);
+                        newline = string.Format("{0},{1},{2}", from, to, nc);
                     }
                     csv.AppendLine(newline);
                     count_edges += 1;

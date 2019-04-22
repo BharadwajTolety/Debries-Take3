@@ -92,6 +92,15 @@ public class mapBrushing : MonoBehaviour
         Debug.Log("Map Updated version control");
     }
 
+    //for new run edge update
+    public void new_run_update(GameObject selectedObj, GameObject newObj)
+    {
+        GameObject new_run_edge = update_it(selectedObj, newObj);
+        new_run_edge.name = selectedObj.name;
+
+        Debug.Log("new run starting, run no.: " + Manager.Instance.run);
+    }
+
     private GameObject update_it(GameObject theSelectedObj, GameObject NewObj)
     {
 

@@ -12,7 +12,7 @@ using LitJson;
  2. --Input Given solutions is done using inputGivenSolution() 
  */
 
-public class Map_Initiation : MonoBehaviour
+public class Map_Initiation : mapBrushing
 {
     private string JSONstring, JSON_Edges, JSON_Contractors;
     private JsonData itemData, edgeNamesData, ContractorsData;
@@ -30,14 +30,13 @@ public class Map_Initiation : MonoBehaviour
             end = endPoint;
             id = index;
         }
-
     }
 
-    void Start()
+    void Awake()
     {
         //C1- read the data for the nodes and put them into itemdata
         //C2- Run DrawMap()
-        if (Manager.Instance.map_json == "")
+        if (Manager.Instance.map_json == "" || Manager.Instance.map_json == null)
             Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Node_data_1_OG.json";
 
         JSONstring = File.ReadAllText(Manager.Instance.map_json);
@@ -111,6 +110,47 @@ public class Map_Initiation : MonoBehaviour
         }
     }
 
+    //draw the map again for new run setup
+    public void drawMap_again()
+    {
+        int number_of_edges = itemData["EdgeData"].Count;
+        int source;
+        int dest;
+        int contractorCode;
+        int edgeNumber = 0;
+
+        for (int i = 0; i < number_of_edges; i++)
+        {
+
+            //Manager.Instance.debrisList.Add((float)itemData["EdgeData"][i]["debris"]);
+
+            source = (int)itemData["EdgeData"][i]["From"];
+            //contractorCode = (int)itemData ["CD"];
+            dest = (int)itemData["EdgeData"][i]["To"];
+            contractorCode = (int)itemData["EdgeData"][i]["Contractor"];
+            //Debug.Log(dest);
+            edgeNumber = i + 1;
+
+            if (contractorCode == 0) { addEdge_again(edgeNumber, source, dest, "white"); }
+            else
+            if (contractorCode == 1) { addEdge_again(edgeNumber, source, dest, "red"); }
+            else
+            if (contractorCode == 2) { addEdge_again(edgeNumber, source, dest, "blue"); }
+            else
+            if (contractorCode == 3) { addEdge_again(edgeNumber, source, dest, "green"); }
+        }
+    }
+
+    void addEdge_again(int EdgeNumber, int nFrom, int nTo, string strType)
+    {
+        string edge_name = "E_" + EdgeNumber + "_" + nFrom + "_" + nTo;
+
+        GameObject to_update = GameObject.Find(edge_name);
+        GameObject restart_edge = GameObject.Find(strType);
+
+        //tell which object to change to which object.
+        new_run_update(to_update, restart_edge);
+    }
 
     /// <summary>
     /// Draws the map.
@@ -222,18 +262,12 @@ public class Map_Initiation : MonoBehaviour
             heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
 
             if (debris < 83)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.42f, .91f, .18f, .7f);
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.42f, .91f, .18f, .85f);
             else if (83 < debris && debris < 166)
 //current
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.905f, .71f, .2f, .7f);
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(.905f, .71f, .2f, .85f);
             else if (debris > 166)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(0.6f, .38f, .27f, .7f);
-//incoming
-/*
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.9f, .71f, .2f, .7f);
-            else if (debris > 166)
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.6f, .38f, .27f, .7f);
-*/
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(0.6f, .38f, .27f, .85f);
 
             heat_map.transform.parent = gameObject.transform;
         }

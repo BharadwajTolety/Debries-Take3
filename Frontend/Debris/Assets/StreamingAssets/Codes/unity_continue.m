@@ -4,8 +4,34 @@
 %% run main
 clear X
 clear brushed_edges
-X = importdata('C:/Users/Uttkarsh/Desktop/Debris_work_folder/work_debris/Frontend/Debris/Assets/Database/Output/edgelist_forMatlab.csv');
+    pathSplit=regexp(pwd,'\','split');
+    initPath = '';
+
+    for n = 1:numel(pathSplit)
+    if(strcmp(pathSplit(n),'Codes'))
+          break;
+    end
+   
+        if n == 1
+            initPath = strcat(initPath,pathSplit(n));
+        else
+            initPath = strcat(initPath,'\',pathSplit(n));
+        end
+   
+    end
+    
+    path = strcat(initPath,'\Database\Output\edgelist_forMatlab.csv');
+    path = char(path);
+X = importdata(path);
+
 load('brushed_edges.mat');
+load('ProblemData(Instance2).mat');
+
+    path = strcat(initPath,'\Database\Output\debris.csv');
+    path = char(path);
+    
+debris = [];
+debris = importdata(path);
 
 header = X(1,:);
 X(1,:) = [];

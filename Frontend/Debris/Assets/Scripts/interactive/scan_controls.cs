@@ -9,12 +9,81 @@ public class scan_controls : MonoBehaviour
     public Sprite[] profit_sprite, time_sprite, intersect_sprite;
     private int profit_obj, time_obj, intersect_obj, total;
 
+    public GameObject scan, mapscreen;
+    public GameObject[] blinkers = new GameObject[3];
+
+    //checking scans and cursor size
+    private int scanned;
+    private float playTime;
+
     private void Awake()
     {
+        scanned = 0;
+
+        playTime = 0;
+
         profit_obj = 0;
         time_obj = 0;
         intersect_obj = 0;
         total = 0;
+    }
+
+    private void Update()
+    {
+        //track playtime
+        playTime += Time.deltaTime;
+
+        if (Input.GetMouseButtonUp(0) && Manager.Instance.flag)
+        {
+            //Debug.Log("update " + Manager.Instance.flag);
+
+            Manager.Instance.map_version += 1;
+            Manager.Instance.flag = false;
+
+            deborah_check();
+        }
+
+        if (scanned != Manager.Instance.scans)
+        {
+            scanned = Manager.Instance.scans;
+            deborah_check();
+        }
+    }
+
+    public void check_deborah()
+    {
+        //manual call to check when clicking scan objects after coloring edges
+        deborah_check();
+    }
+
+    private void deborah_check()
+    {
+        GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
+
+        if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1)
+        {
+            if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
+            {
+                foreach (GameObject blinker in blinkers)
+                    blinker.GetComponent<Toggle>().interactable = false;
+            }
+            else
+            {
+                foreach (GameObject blinker in blinkers)
+                    blinker.GetComponent<Toggle>().interactable = true;
+            }
+
+            if (Manager.Instance.edge_changes < 2 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
+            {
+                scan.GetComponent<Button>().interactable = false;
+            }
+            else if (scan.GetComponent<Button>().interactable == false)
+            {
+                //only update when scan is active cos only after clicking scan is the playtime logged
+                Manager.Instance.time_played = playTime;
+                scan.GetComponent<Button>().interactable = true;
+            }
+        }
     }
 
     public void profit_check()
@@ -85,7 +154,13 @@ public class scan_controls : MonoBehaviour
         }
         string exPath = Application.streamingAssetsPath + "/Database/Output/" + player + "_" + session + "/Scan_Final.csv";
         GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
-        Application.Quit();
+
+        new_run();
+    }
+
+    private void new_run()
+    {
+        mapscreen.GetComponent<Map_Initiation>().drawMap_again();
     }
 
     private void update_button(Button butt, Sprite[] spri, int pressed)
