@@ -152,18 +152,24 @@ time_vec=zeros(1,no_contractor);
     brushedFile = char(brushedFile);
 
     fprintf('\n%s',brushedFile);
-    brushed_print = [];
     [fid, msg] = fopen(brushedFile,'w');
-    delete(brushedFile);
     for j = 1:length(brushed_edges)
-      %%  brushed_print = [brushed_print;brushed_edges{j,:}];
+        thiscell = '';
+        for k = 1:length(brushed_edges{j,3})
+            thiscell = [thiscell,num2str(brushed_edges{j,3}(k))];
+        end
+        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
+        brushed_print(j,1) = brushed_edges(j,1);
+        brushed_print(j,2) = brushed_edges(j,2);
+        brushed_print(j,3) = cellstr(thiscell);
     end
+    T = cell2table(brushed_print);
     
     if fid < 0 
-      %%  error('Failed to open file "%s" because: "%s"', brushedFile, msg);
+        error('Failed to open file "%s" because: "%s"', brushedFile, msg);
     else
-        csvwrite(brushedFile, brushed_print);
-    end       
+        writetable(T,brushedFile);
+    end      
     fclose(fid);
     
     fprintf('\nclosed file');

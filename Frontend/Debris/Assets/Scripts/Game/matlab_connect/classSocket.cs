@@ -18,7 +18,7 @@ public class classSocket : MonoBehaviour
     String Host = "LocalHost";
     Int32 Port = 55002;
     
-    public void setupSocket()
+    public void setupSocket(bool new_run)
     {
         try
         {
@@ -26,7 +26,13 @@ public class classSocket : MonoBehaviour
             theStream = mySocket.GetStream();
             theWriter = new StreamWriter(theStream);
             socketReady = true;
-            Byte[] sendBytes = Encoding.UTF8.GetBytes("matlab can read CSV now!");
+            Byte[] sendBytes;
+            
+            if(new_run)
+                sendBytes = Encoding.UTF8.GetBytes("matlab can read CSV now!");
+            else
+                sendBytes = Encoding.UTF8.GetBytes("restart matlab read CSV!");
+
             mySocket.GetStream().Write(sendBytes, 0, sendBytes.Length);
             Debug.Log("socket is sent");
         }

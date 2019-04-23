@@ -10,7 +10,7 @@ public class contInfo_Matlab : classSocket
 {
     string csvPath;
     string[] readFile;
-    int count_edges = 0;
+    int count_edges = 0, run_count = 0;
     bool error_flag = false;
 
     private void Awake()
@@ -80,7 +80,13 @@ public class contInfo_Matlab : classSocket
             Debug.Log("writting complete!! total edges - " + count_edges);
 
             //setup the client for the matlab server to read
-            setupSocket();
+            if(run_count != Manager.Instance.run)
+            {
+                run_count = Manager.Instance.run;
+                setupSocket(true);
+            }
+            else
+                setupSocket(false);
 
             call_reading(profit, time, intersect);
         }

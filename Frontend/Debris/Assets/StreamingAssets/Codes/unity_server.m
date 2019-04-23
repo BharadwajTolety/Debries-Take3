@@ -22,6 +22,15 @@ for i=1:24 rawwData(i)= char(rawData(i));
         end
         time = toc;
         time;
+    elseif strcmp(rawwData, 'restart matlab read CSV!')
+        fprintf('\nstart rereading csv now!');
+        clc
+        clearvars -except tcpipServer
+        tic
+        unity_start();
+        flag = true;
+        time = toc;
+        time;
     end
 end
 fclose(tcpipServer);

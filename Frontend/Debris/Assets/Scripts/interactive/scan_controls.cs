@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class scan_controls : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class scan_controls : MonoBehaviour
     public Sprite[] profit_sprite, time_sprite, intersect_sprite;
     private int profit_obj, time_obj, intersect_obj, total;
 
+    public Dropdown which_run;
     public GameObject scan, mapscreen, verControl;
     public GameObject[] blinkers = new GameObject[3];
 
@@ -50,6 +52,35 @@ public class scan_controls : MonoBehaviour
         {
             scanned = Manager.Instance.scans;
             deborah_check();
+        }
+    }
+
+    private void update_runList()
+    {
+        string dir = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId;
+
+        if (!Directory.Exists(dir))
+        {
+            Debug.Log("no folder found to keep current run logs in");
+            return;
+        }
+        else
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(dir);
+
+            //update the run list drop down box
+            which_run.ClearOptions();
+            List<string> dropOptions = new List<string>();
+            dropOptions.Add("Current");
+            foreach (FileInfo file in di.GetFiles())
+            {
+                if (file.Name.EndsWith(".csv"))
+                {
+                    dropOptions.Add(file.Name.Substring(0,file.Name.IndexOf(".csv")));
+                }
+            }
+            which_run.AddOptions(dropOptions);
+
         }
     }
 
@@ -160,6 +191,19 @@ public class scan_controls : MonoBehaviour
         runSetup.log_data(exPath, profit_obj, time_obj, intersect_obj);
 
         new_run();
+    }
+
+    public void finalise_run()
+    {
+        //checkpath and print fota
+        string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_" + which_run.value + ".csv";
+        string newpath = path.Substring(0, path.IndexOf(".csv")) + "_Final.csv";
+
+        //change name of the finalise run file to mark it as finalise then quit game.
+        File.Move(path, newpath);
+        File.Delete(path);
+
+        Application.Quit();
     }
 
     private void new_run()
