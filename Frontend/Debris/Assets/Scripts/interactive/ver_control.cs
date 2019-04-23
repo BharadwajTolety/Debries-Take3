@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ver_control : mapBrushing {
+public class ver_control : MonoBehaviour {
 
     private List<float> maxProfit   = new List<float>();
     private List<float> minTime     = new List<float>();
@@ -72,7 +72,7 @@ public class ver_control : mapBrushing {
         //the version name should only be the version number
         if(read_scanFile(ver.name))
         {
-            map_update_ver(map);
+            mapBrushing.map_update_ver(map);
             reUpdate_graphs(int.Parse(ver.name));
         }
     }

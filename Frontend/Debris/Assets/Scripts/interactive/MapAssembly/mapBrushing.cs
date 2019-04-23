@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class mapBrushing : MonoBehaviour
 {
+    private static mapBrushing instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     //call this for regular brushing map update
-    public void AssignLine(string lineType, string lineName)
+    public static void AssignLine(string lineType, string lineName)
     {
         GameObject theSelectedObj = GameObject.Find(lineName);
         GameObject NewObj = GameObject.Find(lineType);
@@ -33,7 +39,7 @@ public class mapBrushing : MonoBehaviour
             NewObj = GameObject.Find(update);
         }
 
-        GameObject created = update_it(theSelectedObj, NewObj);
+        GameObject created = instance.update_it(theSelectedObj, NewObj);
         created.name = lineName;
 
         Manager.Instance.save_map(Manager.Instance.map_version, theSelectedObj);
@@ -44,21 +50,21 @@ public class mapBrushing : MonoBehaviour
     }
 
     //call this to undo/redo update the map contractors/coloring
-    public void map_update_undoRedo(Dictionary<string, string> updateEdges)
+    public static void map_update_undoRedo(Dictionary<string, string> updateEdges)
     {
         foreach (var updateEdge in updateEdges)
         {
             GameObject NewObj = GameObject.Find(updateEdge.Value);
             GameObject theSelectedObj = GameObject.Find(updateEdge.Key);
 
-            GameObject created = update_it(theSelectedObj, NewObj);
+            GameObject created = instance.update_it(theSelectedObj, NewObj);
             created.name = updateEdge.Key;
         }
         Debug.Log("Map Updated undo redo");
     }
 
     //call this to version update the map contractors/coloring
-    public void map_update_ver(Dictionary<string, string> updateEdges)
+    public static void map_update_ver(Dictionary<string, string> updateEdges)
     {
         GameObject[] allGameObjects = (GameObject[])FindObjectsOfType(typeof(GameObject));
 
@@ -85,7 +91,7 @@ public class mapBrushing : MonoBehaviour
             if (!objSelected)
                 break;
 
-            GameObject created = update_it(theSelectedObj, NewObj);
+            GameObject created = instance.update_it(theSelectedObj, NewObj);
 
             created.name = edgeName;
         }
@@ -93,12 +99,10 @@ public class mapBrushing : MonoBehaviour
     }
 
     //for new run edge update
-    public void new_run_update(GameObject selectedObj, GameObject newObj)
+    public static void new_run_update(GameObject selectedObj, GameObject newObj)
     {
-        GameObject new_run_edge = update_it(selectedObj, newObj);
+        GameObject new_run_edge = instance.update_it(selectedObj, newObj);
         new_run_edge.name = selectedObj.name;
-
-        Debug.Log("new run starting, run no.: " + Manager.Instance.run);
     }
 
     private GameObject update_it(GameObject theSelectedObj, GameObject NewObj)

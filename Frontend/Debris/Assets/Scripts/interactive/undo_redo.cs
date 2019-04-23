@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class undo_redo : mapBrushing
+public class undo_redo : MonoBehaviour
 {
     int undo_count = 0; 
 
@@ -19,7 +19,7 @@ public class undo_redo : mapBrushing
         if (Manager.Instance.map_version <= undo_count && Manager.Instance.map_info.Count>1)
         {
             Manager.Instance.map_version++;
-            map_update_undoRedo(Manager.Instance.map_info[Manager.Instance.map_version]);
+            mapBrushing.map_update_undoRedo(Manager.Instance.map_info[Manager.Instance.map_version]);
         }
         else if(Manager.Instance.map_info.Count > 1)
         {
@@ -33,7 +33,7 @@ public class undo_redo : mapBrushing
         if (Manager.Instance.map_version > 0)
         {
             Manager.Instance.map_version--;
-            map_update_undoRedo(Manager.Instance.map_info[Manager.Instance.map_version]);
+            mapBrushing.map_update_undoRedo(Manager.Instance.map_info[Manager.Instance.map_version]);
             undo_count++;
         }
     }

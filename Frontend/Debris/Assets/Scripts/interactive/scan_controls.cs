@@ -9,8 +9,11 @@ public class scan_controls : MonoBehaviour
     public Sprite[] profit_sprite, time_sprite, intersect_sprite;
     private int profit_obj, time_obj, intersect_obj, total;
 
-    public GameObject scan, mapscreen;
+    public GameObject scan, mapscreen, manager;
     public GameObject[] blinkers = new GameObject[3];
+
+    public int wid, hght, w, h;
+    public int x, y;
 
     //checking scans and cursor size
     private int scanned;
@@ -134,6 +137,7 @@ public class scan_controls : MonoBehaviour
         update_button(intersect_button, intersect_sprite, intersect_obj);
     }
 
+    //public method to call scanning functionality
     public void scan_check()
     {
         GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
@@ -160,7 +164,10 @@ public class scan_controls : MonoBehaviour
 
     private void new_run()
     {
+        Manager.Instance.run += 1;
         mapscreen.GetComponent<Map_Initiation>().drawMap_again();
+
+        runSetup.takeScreenShot_static(wid,hght,x,y, w, h);
     }
 
     private void update_button(Button butt, Sprite[] spri, int pressed)

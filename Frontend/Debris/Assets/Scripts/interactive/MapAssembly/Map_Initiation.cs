@@ -12,7 +12,7 @@ using LitJson;
  2. --Input Given solutions is done using inputGivenSolution() 
  */
 
-public class Map_Initiation : mapBrushing
+public class Map_Initiation : MonoBehaviour
 {
     private string JSONstring, JSON_Edges, JSON_Contractors;
     private JsonData itemData, edgeNamesData, ContractorsData;
@@ -139,6 +139,7 @@ public class Map_Initiation : mapBrushing
             else
             if (contractorCode == 3) { addEdge_again(edgeNumber, source, dest, "green"); }
         }
+        Debug.Log("new run starting, run no.: " + Manager.Instance.run);
     }
 
     void addEdge_again(int EdgeNumber, int nFrom, int nTo, string strType)
@@ -149,7 +150,7 @@ public class Map_Initiation : mapBrushing
         GameObject restart_edge = GameObject.Find(strType);
 
         //tell which object to change to which object.
-        new_run_update(to_update, restart_edge);
+        mapBrushing.new_run_update(to_update, restart_edge);
     }
 
     /// <summary>

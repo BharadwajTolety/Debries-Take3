@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class trig : mapBrushing {
+public class trig : MonoBehaviour {
 
     public GameObject scanning_noti;
 
@@ -37,24 +37,24 @@ public class trig : mapBrushing {
                 if (Input.GetMouseButton(0) == true && this.tag == "redCursor" && !col.tag.Contains("red"))
                 {
                     //Debug.Log("works red");
-                    AssignLine("red", col.name);
+                    mapBrushing.AssignLine("red", col.name);
                     Manager.Instance.flag = true;
                 }
                 else if (Input.GetMouseButton(0) == true && this.tag == "greenCursor" && !col.tag.Contains("green"))
                 {
                     //Debug.Log("works green");
-                    AssignLine("green", col.name);
+                    mapBrushing.AssignLine("green", col.name);
                     Manager.Instance.flag = true;
                 }
                 else if (Input.GetMouseButton(0) == true && this.tag == "blueCursor" && !col.tag.Contains("blue"))
                 {
                     //Debug.Log("works blue");
-                    AssignLine("blue", col.name);
+                    mapBrushing.AssignLine("blue", col.name);
                     Manager.Instance.flag = true;
                 }
                 else if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
                 {
-                    AssignLine("white", col.name);
+                    mapBrushing.AssignLine("white", col.name);
                     Manager.Instance.flag = true;
                 }
             }
@@ -62,7 +62,7 @@ public class trig : mapBrushing {
             {
                 if (Input.GetMouseButton(0) == true && this.tag == "whiteCursor" && col.tag != "white")
                 {
-                    AssignLine("white", col.name);
+                    mapBrushing.AssignLine("white", col.name);
                     Manager.Instance.flag = true;
                 }
             }
