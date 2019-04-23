@@ -105,7 +105,7 @@ public class runSetup : MonoBehaviour
             {
                 source = (int)mapItem["EdgeData"][i]["From"];
                 dest = (int)mapItem["EdgeData"][i]["To"];
-                line += ',' + source + '_' + dest;
+                line += ',' + source.ToString() + '_' + dest.ToString();
             }
                 csv.AppendLine(line);
         }
@@ -118,10 +118,10 @@ public class runSetup : MonoBehaviour
             line += ',' + Manager.Instance.cncProfit[i].ToString() + ',' + Manager.Instance.cncTime[i].ToString();
         }
 
-        suggest = Manager.Instance.suggest[0].ToString() + Manager.Instance.suggest[1].ToString() + Manager.Instance.suggest[2].ToString();
-        inputObj = prft_obj.ToString() + time_obj.ToString() + inter_obj.ToString();
+        suggest = Manager.Instance.suggest[0].ToString() + '_' + Manager.Instance.suggest[1].ToString() + '_' + Manager.Instance.suggest[2].ToString();
+        inputObj = prft_obj.ToString() + '_' + time_obj.ToString() + '_' + inter_obj.ToString();
 
-        line += ',' + Manager.Instance.intersect + ',' + suggest + ',' + inputObj;
+        line += ',' + Manager.Instance.intersect.ToString() + ',' + suggest + ',' + inputObj;
 
         for (int i = 0; i < number_of_edges; i++)
         {

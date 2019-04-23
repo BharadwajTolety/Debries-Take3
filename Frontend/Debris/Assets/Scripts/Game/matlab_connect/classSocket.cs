@@ -28,7 +28,7 @@ public class classSocket : MonoBehaviour
             socketReady = true;
             Byte[] sendBytes;
             
-            if(new_run)
+            if(!new_run)
                 sendBytes = Encoding.UTF8.GetBytes("matlab can read CSV now!");
             else
                 sendBytes = Encoding.UTF8.GetBytes("restart matlab read CSV!");
