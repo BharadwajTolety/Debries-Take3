@@ -32,6 +32,27 @@ public class ver_control : MonoBehaviour {
         {
             GameObject.FindGameObjectWithTag("ver_" + (i + 1)).GetComponent<Button>().interactable = false;
         }
+
+        //empty the folder for a new game
+        empty_folder();
+    }
+
+    public void empty_folder()
+    {
+        string log_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
+        if (!Directory.Exists(log_directory))
+        {
+            Directory.CreateDirectory(log_directory);
+        }
+        else
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
     }
 
     private void push_scoreList()
@@ -101,7 +122,7 @@ public class ver_control : MonoBehaviour {
     private bool read_scanFile(string ver)
     {
         map.Clear();
-        string scanFile = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + (ver) + ".csv";
+        string scanFile = Application.streamingAssetsPath + "/Database/Output/Input/ver_cntrl/Scan_" + (ver) + ".csv";
 
         if(!File.Exists(scanFile))
         {

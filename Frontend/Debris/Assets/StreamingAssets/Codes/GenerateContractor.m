@@ -251,13 +251,12 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
     fprintf('\n%s',brushedFile);
     brushed_print = [];
     [fid, msg] = fopen(brushedFile,'w');
-    delete(brushedFile);
     for j = 1:length(brushed_edges)
-    %%    brushed_print = [brushed_print;brushed_edges{j,:}];
+        brushed_print = [brushed_print;brushed_edges{j,:}];
     end
     
     if fid < 0 
-    %%    error('Failed to open file "%s" because: "%s"', brushedFile, msg);
+        error('Failed to open file "%s" because: "%s"', brushedFile, msg);
     else
         csvwrite(brushedFile, brushed_print);
     end       

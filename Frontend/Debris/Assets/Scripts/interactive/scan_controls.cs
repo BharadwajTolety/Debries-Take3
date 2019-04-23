@@ -9,7 +9,7 @@ public class scan_controls : MonoBehaviour
     public Sprite[] profit_sprite, time_sprite, intersect_sprite;
     private int profit_obj, time_obj, intersect_obj, total;
 
-    public GameObject scan, mapscreen, manager;
+    public GameObject scan, mapscreen, verControl;
     public GameObject[] blinkers = new GameObject[3];
 
     public int wid, hght, w, h;
@@ -156,16 +156,20 @@ public class scan_controls : MonoBehaviour
             player = Manager.Instance.playerId;
             session = Manager.Instance.sessionId;
         }
-        string exPath = Application.streamingAssetsPath + "/Database/Output/" + player + "_" + session + "/Scan_Final.csv";
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
+        string exPath = Application.streamingAssetsPath + "/Database/Output/" + player + "_" + session + "/Run_" + Manager.Instance.run + ".csv";
+        runSetup.log_data(exPath, profit_obj, time_obj, intersect_obj);
 
         new_run();
     }
 
     private void new_run()
     {
+        //new run and scan back to zero
         Manager.Instance.run += 1;
+        Manager.Instance.scans = 0;
         mapscreen.GetComponent<Map_Initiation>().drawMap_again();
+
+        verControl.GetComponent<ver_control>().empty_folder();
 
         runSetup.takeScreenShot_static(wid,hght,x,y, w, h);
     }

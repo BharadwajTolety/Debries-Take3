@@ -21,7 +21,7 @@ public class contInfo_Matlab : classSocket
 
         write_CSV(csvPath);
 
-        if (Manager.Instance.sessionId == "" || Manager.Instance.playerId == "")
+        if (Manager.Instance.sessionId == "" || Manager.Instance.playerId == "" || Manager.Instance.sessionId == "def" || Manager.Instance.playerId == "def")
         {
             Manager.Instance.playerId = "def";
             Manager.Instance.sessionId = "def";
@@ -114,39 +114,38 @@ public class contInfo_Matlab : classSocket
         string csv_input;
 
         //write the scores in for log
-        if(score)
-        {
-            csv_input = write_scores();
-            if (csv_input.EndsWith("\r\n"))
-            {
-                csv_input = csv_input.Substring(0, csv_input.Length - 2);
-                csv.AppendLine(csv_input);
-            }
-
-            string scanFile = Application.streamingAssetsPath + "/Database/Input/brushedEdges_Matlab.csv";
-
-            if (!File.Exists(scanFile))
-            {
-                score = false;
-            }
-            else
-            {
-                try
-                {
-                    //read brushed file
-                    Debug.Log("read brushed file");
-                    readFile = File.ReadAllLines(scanFile);
-                    error_flag = false;
-                }
-                catch (Exception e)
-                {
-                    readFile = new string[200];
-                    error_flag = true;
-                    Debug.Log("the file couldnt be read - " + e.Message);
-                }
-                
-            }
-        }
+        //if(score)
+        //{
+        //    csv_input = write_scores();
+        //    if (csv_input.EndsWith("\r\n"))
+        //    {
+        //        csv_input = csv_input.Substring(0, csv_input.Length - 2);
+        //        csv.AppendLine(csv_input);
+        //    }
+        //
+        //    string scanFile = Application.streamingAssetsPath + "/Database/Input/brushedEdges_Matlab.csv";
+        //
+        //    if (!File.Exists(scanFile))
+        //    {
+        //        score = false;
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            //read brushed file
+        //            readFile = File.ReadAllLines(scanFile);
+        //            Debug.Log("read brushed file");
+        //            error_flag = false;
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            error_flag = true;
+        //            Debug.Log("the file couldnt be read - " + e.Message);
+        //        }
+        //        
+        //    }
+        //}
 
         //putting up obj category info
         string objline = string.Format("{0},{1},{2}", profit_obj, time_obj, intersect_obj);
@@ -163,34 +162,66 @@ public class contInfo_Matlab : classSocket
             }
         }
 
+        //write down the edge list for matlab
         File.WriteAllText(path, csv.ToString());
+
+        ver_control_file(csv.ToString());
         return count_edges;
     }
 
-    private string write_scores()
+    //write down the scan file for version control needs
+    private void ver_control_file(string csv)
     {
-        StringBuilder csv = new StringBuilder();
-        string[] nodeInfo = new string[4];
-
-        csv.AppendLine("first time, three scores, then objinputs+edgelist");
-
-        float timeLog = Manager.Instance.time_played;
-        csv.AppendLine(timeLog.ToString());
-
-        string suggest = string.Format("{0},{1},{2}", Manager.Instance.suggest[0].ToString(), Manager.Instance.suggest[1].ToString(), Manager.Instance.suggest[2].ToString());
-        csv.AppendLine(suggest);
-
-        for (int i = 0; i < 3; i++)
+        string log_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
+        if (!Directory.Exists(log_directory))
         {
-            string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], (i + 1));
-            csv.AppendLine(cncline);
+            Directory.CreateDirectory(log_directory);
+        }
+        else
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+
+            int count = 0;
+            foreach (FileInfo file in di.GetFiles())
+            {
+                if(file.Name.EndsWith(".csv"))
+                {
+                    count++;
+                }
+            }
+
+            if (count >= 5)
+                di.GetFiles()[0].Delete();
         }
 
-        string newline = string.Format("{0},{1},Fullscore", Manager.Instance.maxProfit, Manager.Instance.minTime);
-        csv.AppendLine(newline);
-
-        return csv.ToString();
+        string path = log_directory + "/Scan_" + Manager.Instance.scans + ".csv";
+        File.WriteAllText(path, csv);
     }
+
+    //private string write_scores()
+    //{
+    //    StringBuilder csv = new StringBuilder();
+    //    string[] nodeInfo = new string[4];
+    //
+    //    csv.AppendLine("first time, three scores, then objinputs+edgelist");
+    //
+    //    float timeLog = Manager.Instance.time_played;
+    //    csv.AppendLine(timeLog.ToString());
+    //
+    //    string suggest = string.Format("{0},{1},{2}", Manager.Instance.suggest[0].ToString(), Manager.Instance.suggest[1].ToString(), Manager.Instance.suggest[2].ToString());
+    //    csv.AppendLine(suggest);
+    //
+    //    for (int i = 0; i < 3; i++)
+    //    {
+    //        string cncline = string.Format("{0},{1},{2}", Manager.Instance.cncProfit[i], Manager.Instance.cncTime[i], (i + 1));
+    //        csv.AppendLine(cncline);
+    //    }
+    //
+    //    string newline = string.Format("{0},{1},Fullscore", Manager.Instance.maxProfit, Manager.Instance.minTime);
+    //    csv.AppendLine(newline);
+    //
+    //    return csv.ToString();
+    //}
 
     private string write_edges(string path, GameObject[] edges, bool score)
     {
@@ -200,13 +231,17 @@ public class contInfo_Matlab : classSocket
         StringBuilder csv = new StringBuilder();
         string[] nodeInfo = new string[4];
 
-        if (edges[0].name.Contains("red"))
-            nc += "1";
-        if (edges[0].name.Contains("green"))
-            nc += "2";
-        if (edges[0].name.Contains("blue"))
-            nc += "3";
-
+        if (edges[0].name == "white")
+            nc = "";
+        else
+        {
+            if (edges[0].name.Contains("red"))
+                nc += "1";
+            if (edges[0].name.Contains("green"))
+                nc += "2";
+            if (edges[0].name.Contains("blue"))
+                nc += "3";
+        }
 
         for (int i = 0; i < edges.Length; i++)
         {
@@ -220,14 +255,14 @@ public class contInfo_Matlab : classSocket
                 {
                     string newline;
 
-                    if (score && !error_flag)
-                    {
-                        string[] scoreInfo = new string[3];
-                        // scoreInfo = readFile[count_edges].Split(',');
-                        // newline = string.Format("{0},{1},{2},{3},{4},{5},{6}", from, to, nc, "-", scoreInfo[0], scoreInfo[1], scoreInfo[2]);
-                        newline = string.Format("{0},{1},{2}", from, to, nc);
-                    }
-                    else
+                    //if (score && !error_flag)
+                    //{
+                    //    string[] scoreInfo = new string[3];
+                    //    // scoreInfo = readFile[count_edges].Split(',');
+                    //    // newline = string.Format("{0},{1},{2},{3},{4},{5},{6}", from, to, nc, "-", scoreInfo[0], scoreInfo[1], scoreInfo[2]);
+                    //    newline = string.Format("{0},{1},{2}", from, to, nc);
+                    //}
+                    //else
                     {
                         newline = string.Format("{0},{1},{2}", from, to, nc);
                     }

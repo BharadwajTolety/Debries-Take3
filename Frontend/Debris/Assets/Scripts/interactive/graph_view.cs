@@ -47,16 +47,19 @@ public class graph_view : MonoBehaviour {
             blinker.GetComponent<Toggle>().interactable = false;
     }
 
-    //update the graphs and then call function to write up the log for experiment stuff
+    //update the graphs and then call function to write up the log for experiment stuff, also reset suggest
     public void update_log(bool scanning, int profit_obj, int time_obj, int intersect_obj)
     {
         if (scanning)
         {
-            string exPath = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Scan_" + Manager.Instance.scans + ".csv";
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().write_log(exPath, profit_obj, time_obj, intersect_obj);
+            string exPath = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_" + Manager.Instance.run + ".csv";
+            runSetup.log_data(exPath, profit_obj, time_obj, intersect_obj);
 
             update_graphs();
             update_verCont();
+
+            //scanning done so reset suggest count for next logging.
+            Manager.Instance.suggest = new int[] { 0, 0, 0 };
         }
         scan.SetActive(false);
     }
