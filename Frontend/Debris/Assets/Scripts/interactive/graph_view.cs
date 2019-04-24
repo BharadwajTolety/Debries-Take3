@@ -10,6 +10,7 @@ public class graph_view : MonoBehaviour {
     GameObject mapscreen;
 
     public GameObject scan, error;
+    public Image run_image;
 
     private void Awake()
     {
@@ -62,6 +63,20 @@ public class graph_view : MonoBehaviour {
             Manager.Instance.suggest = new int[] { 0, 0, 0 };
         }
         scan.SetActive(false);
+    }
+
+    //
+    public void update_run_image(Text input)
+    {
+        string exPath = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/" + input + ".csv";
+        byte[] image;
+
+        if (input.ToString() != "Current")
+        {
+            image = runSetup.read_image(input.ToString());
+
+
+        }
     }
 
     //controller to open and close graphs

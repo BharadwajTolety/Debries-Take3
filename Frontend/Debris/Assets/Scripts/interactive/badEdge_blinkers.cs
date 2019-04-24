@@ -167,12 +167,12 @@ public class badEdge_blinkers : MonoBehaviour {
             {
                 if(on)
                 {
-                    line.GetComponent<SpriteRenderer>().color = Color.yellow;
+                    //line.GetComponent<SpriteRenderer>().color = Color.yellow;
                     line.GetComponent<Transform>().localScale += wobble;
                 }
                 else
                 {
-                    line.GetComponent<SpriteRenderer>().color = lineColor;
+                    //line.GetComponent<SpriteRenderer>().color = lineColor;
                     line.GetComponent<Transform>().localScale -= wobble;
                 }
             }

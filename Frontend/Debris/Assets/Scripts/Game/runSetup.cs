@@ -27,6 +27,14 @@ public class runSetup : MonoBehaviour
         {
             Directory.CreateDirectory(log_directory);
         }
+        else
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
     }
 
     private void Start()
@@ -40,7 +48,7 @@ public class runSetup : MonoBehaviour
     {
         string run_image = Application.persistentDataPath + "/run_images" + "/run_" + Manager.Instance.run + ".png";
 
-        if(takescreenshotonNextFrame)
+        if (takescreenshotonNextFrame)
         {
             takescreenshotonNextFrame = false;
             RenderTexture renderTex = gameCamera.targetTexture;
@@ -51,7 +59,7 @@ public class runSetup : MonoBehaviour
             renderResult.ReadPixels(rect, 0, 0);
 
             byte[] byteArr = renderResult.EncodeToPNG();
-            System.IO.File.WriteAllBytes(run_image,byteArr);
+            System.IO.File.WriteAllBytes(run_image, byteArr);
 
             Debug.Log("image saved for run:" + Manager.Instance.run);
             Debug.Log(run_image);
@@ -63,13 +71,25 @@ public class runSetup : MonoBehaviour
 
     private void takeScreenShot(int width, int height)
     {
-        gameCamera.targetTexture = RenderTexture.GetTemporary(width,height,16);
+        gameCamera.targetTexture = RenderTexture.GetTemporary(width, height, 16);
         takescreenshotonNextFrame = true;
     }
 
     public static void log_data(string path, int prft_obj, int time_obj, int inter_obj)
     {
         instance.logging(path, prft_obj, time_obj, inter_obj);
+    }
+
+    public static byte[] read_image(string path)
+    {
+        byte[] image = null;
+        if (File.Exists(path))
+        {
+            image = File.ReadAllBytes(path);
+            return image;
+        }
+
+        return image;
     }
 
     private void logging(string path, int prft_obj, int time_obj, int inter_obj)

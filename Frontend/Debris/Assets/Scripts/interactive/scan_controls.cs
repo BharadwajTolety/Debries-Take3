@@ -31,6 +31,8 @@ public class scan_controls : MonoBehaviour
         time_obj = 0;
         intersect_obj = 0;
         total = 0;
+
+        update_runList();
     }
 
     private void Update()
@@ -196,7 +198,15 @@ public class scan_controls : MonoBehaviour
     public void finalise_run()
     {
         //checkpath and print fota
-        string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_" + which_run.value + ".csv";
+        string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_";
+        if (which_run.options[which_run.value].text == "Current")
+        {
+            path += Manager.Instance.run.ToString() + ".csv";
+        }
+        else
+        {
+            path += which_run.options[which_run.value].text + ".csv";
+        }
         string newpath = path.Substring(0, path.IndexOf(".csv")) + "_Final.csv";
 
         //change name of the finalise run file to mark it as finalise then quit game.
@@ -214,6 +224,8 @@ public class scan_controls : MonoBehaviour
         mapscreen.GetComponent<Map_Initiation>().drawMap_again();
 
         verControl.GetComponent<ver_control>().empty_folder();
+
+        update_runList();
 
         runSetup.takeScreenShot_static(wid,hght,x,y, w, h);
     }
