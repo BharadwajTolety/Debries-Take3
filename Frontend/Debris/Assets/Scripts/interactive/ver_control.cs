@@ -4,7 +4,9 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ver_control : MonoBehaviour {
+public class ver_control : MonoBehaviour
+{
+    public Button[] ver_buttons;
 
     private List<float> maxProfit   = new List<float>();
     private List<float> minTime     = new List<float>();
@@ -30,14 +32,14 @@ public class ver_control : MonoBehaviour {
 
         for (int i = 0; i < 5; i++)
         {
-            GameObject.FindGameObjectWithTag("ver_" + (i + 1)).GetComponent<Button>().interactable = false;
+            ver_buttons[i].interactable = false;
         }
 
         //empty the folder for a new game
         empty_folder();
     }
 
-    public void empty_folder()
+    public void empty_folder(bool restart = false)
     {
         string log_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
         if (!Directory.Exists(log_directory))
@@ -53,6 +55,12 @@ public class ver_control : MonoBehaviour {
                 file.Delete();
             }
         }
+
+        if(restart)
+        {
+            update_verList(restart);
+            restart_graphs();
+        }
     }
 
     private void push_scoreList()
@@ -67,25 +75,49 @@ public class ver_control : MonoBehaviour {
         }
     }
 
-    public void update_verList()
+    public void update_verList(bool restart = false)
     {
-        if (count_ver < Manager.Instance.scans)
+        if(!restart)
         {
-            count_ver++;
-            if (ver_cont < 5)
-                ver_cont++;
-        }
+            if (count_ver < Manager.Instance.scans)
+            {
+                count_ver++;
+                if (ver_cont < 5)
+                    ver_cont++;
+            }
 
-        for(int i = 0, j = count_ver-1; i<ver_cont; i++, j--)
+            for (int i = 0, j = count_ver - 1; i < ver_cont; i++, j--)
+            {
+                Button vers_button = ver_buttons[i];
+                vers_button.interactable = true;
+                vers_button.gameObject.name = (Manager.Instance.scans - j).ToString();
+
+                //change the display of the button for user accessibility
+                vers_button.gameObject.GetComponent<Text>().text = vers_button.name;
+            }
+            push_scoreList();
+        }
+        else
         {
-            GameObject vers_button = GameObject.FindGameObjectWithTag("ver_" + (i + 1));
-            vers_button.GetComponent<Button>().interactable = true;
-            vers_button.name = (Manager.Instance.scans - j).ToString();
+            //reset everything for a new run
+            count_ver = 0;
+            ver_cont = 0;
 
-            //change the display of the button for user accessibility
-            vers_button.GetComponent<Text>().text = vers_button.name;
+            for (int i = 0; i < 5; i++)
+            {
+                ver_buttons[i].interactable = false;
+            }
+
+            maxProfit.Clear();
+            minTime.Clear();
+
+            for (int i = 0; i < 3; i++)
+            {
+                cncProfit[i].Clear();
+                cncTime[i].Clear();
+            }
         }
-        push_scoreList();
+       
     }
 
     public void update_mapVer(GameObject ver)

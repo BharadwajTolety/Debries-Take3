@@ -222,9 +222,7 @@ public class scan_controls : MonoBehaviour
     private void new_run()
     {
         mapscreen.GetComponent<Map_Initiation>().drawMap_again();
-
-        verControl.GetComponent<ver_control>().restart_graphs();
-        verControl.GetComponent<ver_control>().empty_folder();
+        verControl.GetComponent<ver_control>().empty_folder(true);
 
         update_runList();
 
