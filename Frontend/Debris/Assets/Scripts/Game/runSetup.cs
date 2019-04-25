@@ -46,7 +46,8 @@ public class runSetup : MonoBehaviour
 
     private void OnPostRender()
     {
-        string run_image = Application.persistentDataPath + "/run_images" + "/run_" + Manager.Instance.run + ".png";
+        //-1 quick fix for file name management
+        string run_image = Application.persistentDataPath + "/run_images" + "/run_" + (Manager.Instance.run - 1) + ".png";
 
         if (takescreenshotonNextFrame)
         {

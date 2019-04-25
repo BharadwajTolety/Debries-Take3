@@ -14,8 +14,9 @@ public class scan_controls : MonoBehaviour
     public GameObject scan, mapscreen, verControl;
     public GameObject[] blinkers = new GameObject[3];
 
-    public int wid, hght, w, h;
-    public int x, y;
+    [Header("screenshot setting")]
+    public int wid;
+    public int hght, w, h, x, y;
 
     //checking scans and cursor size
     private int scanned;
@@ -218,9 +219,6 @@ public class scan_controls : MonoBehaviour
 
     private void new_run()
     {
-        //new run and scan back to zero
-        Manager.Instance.run += 1;
-        Manager.Instance.scans = 0;
         mapscreen.GetComponent<Map_Initiation>().drawMap_again();
 
         verControl.GetComponent<ver_control>().empty_folder();
@@ -228,6 +226,10 @@ public class scan_controls : MonoBehaviour
         update_runList();
 
         runSetup.takeScreenShot_static(wid,hght,x,y, w, h);
+
+        //new run and scan back to zero
+        Manager.Instance.run += 1;
+        Manager.Instance.scans = 0;
     }
 
     private void update_button(Button butt, Sprite[] spri, int pressed)

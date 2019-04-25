@@ -9,14 +9,16 @@ public class graph_view : MonoBehaviour {
     GameObject intersect_view;
     GameObject mapscreen;
 
-    public GameObject scan, error;
-    public Image run_image;
+    public GameObject scan, error, run_image;
+    private Texture2D image_tex;
 
     private void Awake()
     {
         mapscreen = GameObject.Find("MapScreen");
         intersect_view = GameObject.Find("intersection_overlaps");
 
+        //keep the texture empty
+        image_tex = null;
         scan_disable();
     }
 
@@ -65,17 +67,31 @@ public class graph_view : MonoBehaviour {
         scan.SetActive(false);
     }
 
-    //
-    public void update_run_image(Text input)
+//work the dropdown
+public void update_run_image(Dropdown op)
     {
-        string exPath = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/" + input + ".csv";
+        string input = op.options[op.value].text;
+
+        string exPath = Application.persistentDataPath + "/run_images/" + input + ".png";
         byte[] image;
 
         if (input.ToString() != "Current")
         {
-            image = runSetup.read_image(input.ToString());
+            image = runSetup.read_image(exPath);
 
+            image_tex = new Texture2D(0, 0, TextureFormat.RGBAFloat, false);
+            image_tex.LoadImage(image);
 
+            mapscreen.SetActive(false);
+            run_image.SetActive(true);
+            run_image.GetComponent<RectTransform>().sizeDelta = new Vector2(image_tex.width, image_tex.height);
+            run_image.GetComponent<RawImage>().texture = image_tex;
+        }
+        else
+        {
+            mapscreen.SetActive(true);
+            run_image.SetActive(false);
+            image_tex = null;
         }
     }
 
