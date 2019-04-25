@@ -18,7 +18,7 @@ no_cluster=0;
 
 while all_nodes_traversed %Until all the nodes are processed
     
-    no_cluster=no_cluster +1;    
+    no_cluster=no_cluster +1;
     Contractor{nc}.Edges{no_cluster}=[];
     root=remaining_nodes(1);
     Q=root;   
@@ -83,10 +83,15 @@ end
  end
  try
  Contractor{nc}.cluster = Contractor{nc}.cluster((~cellfun('isempty',Contractor{nc}.cluster)));
-  Contractor{nc}.Edges = Contractor{nc}.Edges((~cellfun('isempty',Contractor{nc}.Edges)));
  catch
     Contractor{nc}.cluster = [];
-    COntractor{nc}.Edges = [];
+ end
+ 
+ 
+ try
+    Contractor{nc}.Edges = Contractor{nc}.Edges((~cellfun('isempty',Contractor{nc}.Edges)));
+ catch
+    Contractor{nc}.Edges = [];
  end
 
  try

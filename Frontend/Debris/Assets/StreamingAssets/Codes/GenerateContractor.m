@@ -160,8 +160,8 @@ for nc=1:no_contractor
 end
 
 [ surrounding ] = findSurrounding( Contractor );
-[Contractor,  node_intersection_matrix] = ComputeIntersection2(Contractor, depot, surrounding);
-OVERLAP = sum(sum(node_intersection_matrix));
+[Contractor,  node_intersection_vec] = ComputeIntersection2(Contractor, depot, surrounding);
+OVERLAP = sum(sum(node_intersection_vec));
 
 profit_vec=zeros(1,no_contractor);
 time_vec=zeros(1,no_contractor);

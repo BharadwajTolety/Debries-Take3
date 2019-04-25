@@ -1,4 +1,4 @@
-function [ Contractor, node_intersection_matrix ] = ComputeIntersection2(Contractor, depot, surrounding )
+function [ Contractor, node_intersection_vec ] = ComputeIntersection2(Contractor, depot, surrounding )
 
 node_intersection_matrix = surrounding > 0 ; 
 
@@ -7,6 +7,7 @@ node_intersection_vec = sum(node_intersection_matrix);
 
 %since we want the extra number of contractors, subtract 1
 node_intersection_vec= node_intersection_vec - 1; 
+
 %Exclude the depot from the calculation - all of the cont. using it anyways
 node_intersection_vec(depot) = 0; 
 
