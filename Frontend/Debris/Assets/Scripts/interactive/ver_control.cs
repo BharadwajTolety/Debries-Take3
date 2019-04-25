@@ -98,6 +98,14 @@ public class ver_control : MonoBehaviour {
         }
     }
 
+    //for when starting on a run
+    public void restart_graphs()
+    {
+        GameObject.Find("current_total").GetComponent<LineChart>().reUpdate(null, null, true);
+        GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(null, true);
+        GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(null, true);
+    }
+
     //fix this
     private void reUpdate_graphs(int total)
     {

@@ -177,6 +177,7 @@ public class scan_controls : MonoBehaviour
         GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
     }
 
+    //submit the current run and log it down.
     public void submit_log()
     {
         string player, session;
@@ -217,10 +218,12 @@ public class scan_controls : MonoBehaviour
         Application.Quit();
     }
 
+    //new run DO: redraw map;restart graphs; scan = 0; vercontrl reset; 
     private void new_run()
     {
         mapscreen.GetComponent<Map_Initiation>().drawMap_again();
 
+        verControl.GetComponent<ver_control>().restart_graphs();
         verControl.GetComponent<ver_control>().empty_folder();
 
         update_runList();

@@ -37,6 +37,7 @@ public class runSetup : MonoBehaviour
         }
     }
 
+    //store map info for logging and stuffing
     private void Start()
     {
         JSONstring = File.ReadAllText(Manager.Instance.map_json);
@@ -126,7 +127,7 @@ public class runSetup : MonoBehaviour
             {
                 source = (int)mapItem["EdgeData"][i]["From"];
                 dest = (int)mapItem["EdgeData"][i]["To"];
-                line += ',' + source.ToString() + '_' + dest.ToString();
+                line += ',' + "E_" + source.ToString() + '_' + dest.ToString();
             }
                 csv.AppendLine(line);
         }
@@ -191,6 +192,7 @@ public class runSetup : MonoBehaviour
         File.AppendAllText(path, csv.ToString());
     }
 
+    //different values to get the right fit for the screenshot
     public static void takeScreenShot_static(int width, int height, int x, int y, int w, int h)
     {
         instance.takeScreenShot(width , height);

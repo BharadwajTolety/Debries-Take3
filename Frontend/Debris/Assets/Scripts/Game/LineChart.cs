@@ -35,25 +35,30 @@ public class LineChart : MonoBehaviour {
     }
 
     //profit and then time
-    public void reUpdate(float[] valueUpdate, float[] valueUpdate2)
+    public void reUpdate(float[] valueUpdate, float[] valueUpdate2, bool restart = false)
     {
         valueList.Clear();
         valueList2.Clear();
         maxVisibleValue = 0;
 
-        foreach (float value in valueUpdate)
+        //when we are not restarting for a new run
+        if(!restart)
         {
-            valueList.Add(value);
+            foreach (float value in valueUpdate)
+            {
+                valueList.Add(value);
+            }
+
+            foreach (float value in valueUpdate2)
+            {
+                valueList2.Add(value);
+            }
+
+            maxVisibleValue = valueUpdate.Length;
+
+            maxVisibleValue = valueList.Count;
         }
 
-        foreach(float value in valueUpdate2)
-        {
-            valueList2.Add(value);
-        }
-
-        maxVisibleValue = valueUpdate.Length;
-
-        maxVisibleValue = valueList.Count;
         ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
     }
 
