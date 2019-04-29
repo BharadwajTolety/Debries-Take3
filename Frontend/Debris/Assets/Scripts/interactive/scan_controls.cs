@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
@@ -56,6 +57,14 @@ public class scan_controls : MonoBehaviour
             scanned = Manager.Instance.scans;
             deborah_check();
         }
+
+        //hacky way to make sure order of things for new run
+        if (runSetup.screenshot())
+        {
+            runSetup.screenshot_done(false);
+            mapscreen.GetComponent<Map_Initiation>().drawMap_again();
+            verControl.GetComponent<ver_control>().empty_folder(true);
+        }
     }
 
     private void update_runList()
@@ -99,7 +108,7 @@ public class scan_controls : MonoBehaviour
 
         if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1)
         {
-            if (Manager.Instance.edge_changes > 5 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
+            if (Manager.Instance.edge_changes > 40 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
             {
                 foreach (GameObject blinker in blinkers)
                     blinker.GetComponent<Toggle>().interactable = false;
@@ -200,7 +209,7 @@ public class scan_controls : MonoBehaviour
     public void finalise_run()
     {
         //checkpath and print fota
-        string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_";
+        string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/";
         if (which_run.options[which_run.value].text == "Current")
         {
             path += Manager.Instance.run.ToString() + ".csv";
@@ -215,20 +224,21 @@ public class scan_controls : MonoBehaviour
         File.Move(path, newpath);
         File.Delete(path);
 
-        Application.Quit();
+        SceneManager.LoadScene("HomeMenu");
     }
 
     //new run DO: redraw map;restart graphs; scan = 0; vercontrl reset; 
     private void new_run()
     {
-        mapscreen.GetComponent<Map_Initiation>().drawMap_again();
-        verControl.GetComponent<ver_control>().empty_folder(true);
+        runSetup.takeScreenShot_static(wid, hght, x, y, w, h);
+
+        //two steps in update hacky fix
+        //mapscreen.GetComponent<Map_Initiation>().drawMap_again();
+        //verControl.GetComponent<ver_control>().empty_folder(true);
 
         update_runList();
 
-        runSetup.takeScreenShot_static(wid,hght,x,y, w, h);
-
-        //new run and scan back to zero
+        //new run; scan back to zero
         Manager.Instance.run += 1;
         Manager.Instance.scans = 0;
     }

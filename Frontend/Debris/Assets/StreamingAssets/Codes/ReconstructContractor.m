@@ -116,9 +116,21 @@ for nc = 1:length(Contractor)
     Contractor{nc}.TotalTime=time_to_collect + traversaltime_contractor + pathToDepot_C;
     Contractor{nc}.TotalProfit=(total_debris * revenue_per_debris) - ((traversaltime_contractor +pathToDepot_C) /2 *gas_per_distance);
     
-    Contractor{nc}.Edges = Contractor{nc}.Edges((~cellfun('isempty',Contractor{nc}.Edges)));
-    Contractor{nc}.trips = Contractor{nc}.trips((~cellfun('isempty',Contractor{nc}.trips)));
-    Contractor{nc}.cluster= Contractor{nc}.cluster((~cellfun('isempty',Contractor{nc}.cluster)));
+    try
+        Contractor{nc}.Edges = Contractor{nc}.Edges((~cellfun('isempty',Contractor{nc}.Edges)));
+    catch
+        Contractor{nc}.Edges = [];
+    end
+    try
+        Contractor{nc}.trips = Contractor{nc}.trips((~cellfun('isempty',Contractor{nc}.trips)));
+    catch
+        Contractor{nc}.trips = [];
+    end
+    try
+        Contractor{nc}.cluster= Contractor{nc}.cluster((~cellfun('isempty',Contractor{nc}.cluster)));
+    catch
+        Contractor{nc}.cluster = []
+    end
     
 end
 

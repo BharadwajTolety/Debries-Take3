@@ -9,17 +9,18 @@ using System;
 //setting up run system front and back both
 public class runSetup : MonoBehaviour
 {
-    private bool takescreenshotonNextFrame = false;
     private Camera gameCamera;
-
+    private bool takeScreenShotonNextFrame;
     private string JSONstring;
     private static JsonData mapItem;
+    private bool screenshotdone = false;
 
     private static runSetup instance;
     private static int x_, y_, w_, h_;
 
     private void Awake()
     {
+        takeScreenShotonNextFrame = false;
         gameCamera = gameObject.GetComponent<Camera>();
         instance = this;
         string log_directory = Application.persistentDataPath + "/run_images";
@@ -37,22 +38,14 @@ public class runSetup : MonoBehaviour
         }
     }
 
-    //store map info for logging and stuffing
-    private void Start()
-    {
-        JSONstring = File.ReadAllText(Manager.Instance.map_json);
-
-        mapItem = JsonMapper.ToObject(JSONstring);
-    }
-
     private void OnPostRender()
     {
-        //-1 quick fix for file name management
-        string run_image = Application.persistentDataPath + "/run_images" + "/run_" + (Manager.Instance.run - 1) + ".png";
-
-        if (takescreenshotonNextFrame)
+        if(takeScreenShotonNextFrame)
         {
-            takescreenshotonNextFrame = false;
+            takeScreenShotonNextFrame = false;
+            //-1 quick fix for file name management
+            string run_image = Application.persistentDataPath + "/run_images" + "/run_" + (Manager.Instance.run - 1) + ".png";
+
             RenderTexture renderTex = gameCamera.targetTexture;
 
             Texture2D renderResult = new Texture2D(renderTex.width, renderTex.height, TextureFormat.RGBAFloat, false);
@@ -68,13 +61,23 @@ public class runSetup : MonoBehaviour
 
             RenderTexture.ReleaseTemporary(renderTex);
             gameCamera.targetTexture = null;
+
+            screenshot_done(true);
         }
+    }
+
+    //store map info for logging and stuffing
+    private void Start()
+    {
+        JSONstring = File.ReadAllText(Manager.Instance.map_json);
+
+        mapItem = JsonMapper.ToObject(JSONstring);
     }
 
     private void takeScreenShot(int width, int height)
     {
         gameCamera.targetTexture = RenderTexture.GetTemporary(width, height, 16);
-        takescreenshotonNextFrame = true;
+        takeScreenShotonNextFrame = true;
     }
 
     public static void log_data(string path, int prft_obj, int time_obj, int inter_obj)
@@ -121,7 +124,7 @@ public class runSetup : MonoBehaviour
         //add the header
         if (Manager.Instance.scans == 1)
         {
-            line = "-,time_played,MaxProfit,MinTime,red_profit,red_time,green_profit,green_time,blue_profit,blue_time,intersect,total_suggest,input_obj";
+            line = "-,time_played,MinProfit,MaxTime,red_profit,red_time,green_profit,green_time,blue_profit,blue_time,intersect,total_suggest,input_obj";
 
             for (int i = 0; i < number_of_edges; i++)
             {
@@ -176,7 +179,7 @@ public class runSetup : MonoBehaviour
                     brush_info = brush_edge.Split(',');
                     if((source + "_" + dest) == (brush_info[0] + "_" + brush_info[1]))
                     {
-                        line += ',' + nc + '-' + brush_info[2];
+                        line += ',' + nc + '_' + brush_info[2];
                         found_brush = true;
                         break;
                     }
@@ -190,6 +193,17 @@ public class runSetup : MonoBehaviour
         csv.AppendLine(line);
 
         File.AppendAllText(path, csv.ToString());
+    }
+
+    //hacky way to track when screenshot is shot
+    public static void screenshot_done(bool done)
+    {
+        instance.screenshotdone = done;
+    }
+
+    public static bool screenshot()
+    {
+        return instance.screenshotdone;
     }
 
     //different values to get the right fit for the screenshot

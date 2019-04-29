@@ -107,6 +107,7 @@ public void update_run_image(Dropdown op)
         {
             GameObject.Find("current_profit").GetComponent<Animator>().SetInteger("profit_state", 1);
             GameObject.Find("current_total").GetComponent<Animator>().SetInteger("progress_state", 1);
+            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("intersect_state", 1);
 
             if (graph_anim.GetInteger("time_state") == 2)
             {
@@ -123,6 +124,7 @@ public void update_run_image(Dropdown op)
         {
             GameObject.Find("current_time").GetComponent<Animator>().SetInteger("time_state", 1);
             GameObject.Find("current_total").GetComponent<Animator>().SetInteger("progress_state", 1);
+            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("intersect_state", 1);
 
             if (graph_anim.GetInteger("profit_state") == 2)
             {
@@ -139,6 +141,7 @@ public void update_run_image(Dropdown op)
         {
             GameObject.Find("current_profit").GetComponent<Animator>().SetInteger("profit_state", 1);
             GameObject.Find("current_time").GetComponent<Animator>().SetInteger("time_state", 1);
+            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("intersect_state", 1);
 
             if (graph_anim.GetInteger("progress_state") == 2)
             {
@@ -151,22 +154,39 @@ public void update_run_image(Dropdown op)
                 map_anim.SetInteger("map_state", 4);
             }
         }
+        else if(graph.name == "intersection_overlaps")
+        {
+            GameObject.Find("current_profit").GetComponent<Animator>().SetInteger("profit_state", 1);
+            GameObject.Find("current_time").GetComponent<Animator>().SetInteger("time_state", 1);
+            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("progress_state", 1);
+
+            if (graph_anim.GetInteger("intersect_state") == 2)
+            {
+                graph_anim.SetInteger("intersect_state", 1);
+                map_anim.SetInteger("map_state", 1);
+            }
+            else
+            {
+                graph_anim.SetInteger("intersect_state", 2);
+                map_anim.SetInteger("map_state", 5);
+            }
+        }
     }
 
-    private void intersection_update()
+    public void intersection_update(float intersect)
     {
         Text text = intersect_view.GetComponentInChildren<Text>();
         Slider intersect_slider = intersect_view.GetComponentInChildren<Slider>();
 
         if (text.name == "total nodes")
         {
-            text.text = (GameObject.FindGameObjectsWithTag("objNode").Length*2).ToString();
+            text.text = ((GameObject.FindGameObjectsWithTag("objNode").Length-1)*2).ToString();
         }
 
         intersect_slider.maxValue = GameObject.FindGameObjectsWithTag("objNode").Length*2;
         if (intersect_slider.GetComponentInChildren<Text>().name == "current_overlap")
         {
-            intersect_slider.value = Manager.Instance.intersect;
+            intersect_slider.value = intersect;
             intersect_slider.GetComponentInChildren<Text>().text = intersect_slider.value.ToString();
         }
     }
@@ -177,7 +197,7 @@ public void update_run_image(Dropdown op)
         GameObject.Find("current_profit").GetComponent<BarChart>().update_graph();
         GameObject.Find("current_total").GetComponent<LineChart>().update_graph();
 
-        intersection_update();
+        intersection_update(Manager.Instance.intersect);
     }
 
     //just update version control scores every scan

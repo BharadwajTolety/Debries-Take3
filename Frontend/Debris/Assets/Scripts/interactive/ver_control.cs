@@ -14,6 +14,8 @@ public class ver_control : MonoBehaviour
     private List<float>[] cncProfit;
     private List<float>[] cncTime;
 
+    private List<float> intersect;
+
     private Dictionary<string, string> map = new Dictionary<string, string>();
 
     private int ver_cont = 0;
@@ -21,6 +23,8 @@ public class ver_control : MonoBehaviour
 
     private void Awake()
     {
+        intersect = new List<float>();
+
         cncProfit = new List<float>[3];
         cncTime = new List<float>[3];
 
@@ -65,6 +69,7 @@ public class ver_control : MonoBehaviour
 
     private void push_scoreList()
     {
+        intersect.Add(Manager.Instance.intersect);
         maxProfit.Add (Manager.Instance.maxProfit);
         minTime.Add(Manager.Instance.minTime);
 
@@ -107,7 +112,7 @@ public class ver_control : MonoBehaviour
             {
                 ver_buttons[i].interactable = false;
             }
-
+            intersect.Clear();
             maxProfit.Clear();
             minTime.Clear();
 
@@ -136,6 +141,7 @@ public class ver_control : MonoBehaviour
         GameObject.Find("current_total").GetComponent<LineChart>().reUpdate(null, null, true);
         GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(null, true);
         GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(null, true);
+        GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(0f);
     }
 
     //fix this
@@ -156,6 +162,8 @@ public class ver_control : MonoBehaviour
 
         GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(cncProfit_verCont);
         GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(cncTime_verCont);
+
+        GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(intersect[total]);
     }
 
     //this needs to be updated for multiple edge contractors

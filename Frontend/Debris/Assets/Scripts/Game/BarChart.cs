@@ -45,9 +45,17 @@ public class BarChart : MonoBehaviour
                 valueList.Add(value);
                 maxVisibleValue++;
             }
+            ShowGraph(valueList, maxVisibleValue, (int _i) => "CNC." + (_i + 1));
         }
+        else
+        {
+            foreach (GameObject gameObject in gameObjectList)
+            {
+                Destroy(gameObject);
+            }
 
-        ShowGraph(valueList, maxVisibleValue, (int _i) => "CNC." + (_i + 1));
+            gameObjectList.Clear();
+        }
     }
 
     public void update_graph()

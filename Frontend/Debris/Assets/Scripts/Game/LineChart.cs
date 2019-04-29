@@ -57,9 +57,18 @@ public class LineChart : MonoBehaviour {
             maxVisibleValue = valueUpdate.Length;
 
             maxVisibleValue = valueList.Count;
-        }
 
-        ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
+            ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
+        }
+        else
+        {
+            foreach (GameObject gameObject in gameObjectList)
+            {
+                Destroy(gameObject);
+            }
+
+            gameObjectList.Clear();
+        }
     }
 
     //fix this function for new names

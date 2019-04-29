@@ -180,7 +180,7 @@ end
 % [Contractor, BadCycles_profit, BadCycles_intersection] = detectBadTrips(Contractor, capacity,pr, int);
 EdgeListMatrix = GenerateEdgeList( Contractor );
 
- par3 = 0.25;
+ par3 = 0.1;
 [ BadEdges_int, BadEdges_time ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par3, EdgeList );
      
 %save('Contractor2.mat', 'Contractor')

@@ -48,7 +48,7 @@ OVERLAP1 = sum(sum(node_intersection_matrix)); %The total overlap
 %% 
 %% Detecting bad edges
 %par3 is the threshold parameter
-par3 = 0.25;
+par3 = 0.1;
 [ BadEdges_int, BadEdges_time ] = detectBadEdges( EdgeListMatrix, Contractor, capacity, par3, EdgeList );
 
 %Objectives:
