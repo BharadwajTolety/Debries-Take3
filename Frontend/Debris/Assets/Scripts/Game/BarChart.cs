@@ -105,6 +105,21 @@ public class BarChart : MonoBehaviour
 
     private void ShowGraph(List<float> valuelist_, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
+        int valcheck = 0;
+        foreach(float value in valuelist_)
+        {
+                 if (value > 10000000)
+                valuelist_[valcheck] = value / 10000;
+            else if (value > 1000000)
+                valuelist_[valcheck] = value / 1000;
+            else if (value > 100000)
+                valuelist_[valcheck] = value / 100;
+            else if (value > 10000)
+                valuelist_[valcheck] = value / 10;
+
+            valcheck++;
+        }
+
         if (getAxisLableX == null)
         {
             getAxisLableX = delegate (int _i) { return _i.ToString(); };
@@ -125,12 +140,12 @@ public class BarChart : MonoBehaviour
         float graphWidth = graphContainer.sizeDelta.x;
         float graphHeight = graphContainer.sizeDelta.y;
 
-        float yMaximum = valuelist_[0];
-        float yMinimum = valuelist_[0];
+        int yMaximum = (int)(valuelist_[0]);
+        int yMinimum = (int)(valuelist_[0]);
 
         for (int i = Mathf.Max(valuelist_.Count - maxVisibleValueAmount, 0); i < valuelist_.Count; i++)
         {
-            float value = valuelist_[i];
+            int value = (int)valuelist_[i];
             if (value > yMaximum)
             {
                 yMaximum = value;
@@ -146,8 +161,8 @@ public class BarChart : MonoBehaviour
         {
             yDifference = 5f;
         }
-        yMaximum = yMaximum + (yDifference * 0.2f);
-        yMinimum = yMinimum - (yDifference * 0.2f);
+        yMaximum = yMaximum + (int)(yDifference * 0.2f);
+        yMinimum = yMinimum - (int)(yDifference * 0.2f);
 
         float xSize = graphWidth / maxVisibleValueAmount;
 
@@ -171,7 +186,7 @@ public class BarChart : MonoBehaviour
             labelY.gameObject.SetActive(true);
             labelY.sizeDelta = new Vector2(2f,2f);
             labelY.anchoredPosition = new Vector2(xPosition + 10, yPosition + 10);
-            labelY.GetComponent<Text>().text = valuelist_[i].ToString();
+            labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString();
             gameObjectList.Add(labelY.gameObject);
 
             //Create the label for x axis

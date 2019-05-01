@@ -50,6 +50,16 @@ public class contInfo_Matlab : classSocket
             deb.AppendLine(objline);
         }
         File.WriteAllText(debris_path, deb.ToString());
+
+        run_generatecnc();
+    }
+
+    //when we start off with a contractor list on the map run this function.
+    public void run_generatecnc()
+    {
+        GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
+        if (themWhiteEdges.Length == 1)
+            setupSocket(true);
     }
 
     //write out the csv for matlab to read

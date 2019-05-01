@@ -9,7 +9,7 @@ public class graph_view : MonoBehaviour {
     GameObject intersect_view;
     GameObject mapscreen;
 
-    public GameObject scan, error, run_image;
+    public GameObject scan, error, run_image, handle_mark;
     private Texture2D image_tex;
 
     private void Awake()
@@ -107,7 +107,7 @@ public void update_run_image(Dropdown op)
         {
             GameObject.Find("current_profit").GetComponent<Animator>().SetInteger("profit_state", 1);
             GameObject.Find("current_total").GetComponent<Animator>().SetInteger("progress_state", 1);
-            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("intersect_state", 1);
+            GameObject.Find("intersection_overlaps").GetComponent<Animator>().SetInteger("intersect_state", 1);
 
             if (graph_anim.GetInteger("time_state") == 2)
             {
@@ -124,7 +124,7 @@ public void update_run_image(Dropdown op)
         {
             GameObject.Find("current_time").GetComponent<Animator>().SetInteger("time_state", 1);
             GameObject.Find("current_total").GetComponent<Animator>().SetInteger("progress_state", 1);
-            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("intersect_state", 1);
+            GameObject.Find("intersection_overlaps").GetComponent<Animator>().SetInteger("intersect_state", 1);
 
             if (graph_anim.GetInteger("profit_state") == 2)
             {
@@ -141,7 +141,7 @@ public void update_run_image(Dropdown op)
         {
             GameObject.Find("current_profit").GetComponent<Animator>().SetInteger("profit_state", 1);
             GameObject.Find("current_time").GetComponent<Animator>().SetInteger("time_state", 1);
-            GameObject.Find("current_total").GetComponent<Animator>().SetInteger("intersect_state", 1);
+            GameObject.Find("intersection_overlaps").GetComponent<Animator>().SetInteger("intersect_state", 1);
 
             if (graph_anim.GetInteger("progress_state") == 2)
             {
@@ -189,6 +189,11 @@ public void update_run_image(Dropdown op)
             intersect_slider.value = intersect;
             intersect_slider.GetComponentInChildren<Text>().text = intersect_slider.value.ToString();
         }
+
+        GameObject mark = Instantiate(handle_mark);
+        mark.GetComponent<Image>().color = Color.yellow;
+        mark.transform.position = intersect_slider.handleRect.position;
+        mark.transform.SetParent(intersect_slider.fillRect.transform);
     }
 
     private void update_graphs()

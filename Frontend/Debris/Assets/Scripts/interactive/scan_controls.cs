@@ -12,7 +12,7 @@ public class scan_controls : MonoBehaviour
     private int profit_obj, time_obj, intersect_obj, total;
 
     public Dropdown which_run;
-    public GameObject scan, mapscreen, verControl;
+    public GameObject scan, mapscreen, verControl,manager;
     public GameObject[] blinkers = new GameObject[3];
 
     [Header("screenshot setting")]
@@ -64,6 +64,8 @@ public class scan_controls : MonoBehaviour
             runSetup.screenshot_done(false);
             mapscreen.GetComponent<Map_Initiation>().drawMap_again();
             verControl.GetComponent<ver_control>().empty_folder(true);
+
+            manager.GetComponent<contInfo_Matlab>().run_generatecnc();
         }
     }
 
@@ -183,7 +185,7 @@ public class scan_controls : MonoBehaviour
     //public method to call scanning functionality
     public void scan_check()
     {
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
+        manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
     }
 
     //submit the current run and log it down.

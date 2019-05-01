@@ -108,6 +108,36 @@ public class LineChart : MonoBehaviour {
 
     private void ShowGraph(List<float> valuelist_, List<float> valuelist2_, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
+        int valcheck = 0;
+        foreach (float value in valuelist_)
+        {
+            if (value > 10000000)
+                valuelist_[valcheck] = value / 10000;
+            else if (value > 1000000)
+                valuelist_[valcheck] = value / 1000;
+            else if (value > 100000)
+                valuelist_[valcheck] = value / 100;
+            else if (value > 10000)
+                valuelist_[valcheck] = value / 10;
+
+            valcheck++;
+        }
+
+        valcheck = 0;
+        foreach (float value in valuelist2_)
+        {
+            if (value > 10000000)
+                valuelist2_[valcheck] = value / 10000;
+            else if (value > 1000000)
+                valuelist2_[valcheck] = value / 1000;
+            else if (value > 100000)
+                valuelist2_[valcheck] = value / 100;
+            else if (value > 10000)
+                valuelist2_[valcheck] = value / 10;
+
+            valcheck++;
+        }
+
         if (getAxisLableX == null) {
             getAxisLableX = delegate (int _i) { return _i.ToString(); };
         }
@@ -191,7 +221,7 @@ public class LineChart : MonoBehaviour {
             float xPosition = (xSize + xIndex * xSize)/2;
 
             //setup dots on the graph - profit
-            float yPosition = (valuelist_[i]) / (graphHeight*(valuelist_.Count+1));
+            float yPosition = (valuelist_[i]) / (graphHeight * .05f);
             Debug.Log("yPosition: " + yPosition + " profit: " + valuelist_[i]);
 
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "profit");
@@ -209,11 +239,11 @@ public class LineChart : MonoBehaviour {
                 labelY.gameObject.SetActive(true);
                 labelY.sizeDelta = new Vector2();
                 labelY.anchoredPosition = new Vector2(xPosition, yPosition + 10);
-                labelY.GetComponent<Text>().text = valuelist_[i].ToString() ;
+                labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString() ;
                 gameObjectList.Add(labelY.gameObject);
 
             //setup dots on the graph - time 
-            float yPosition2 = (valuelist2_[j]) / (graphHeight* (valuelist_.Count + 1));
+            float yPosition2 = (valuelist2_[j]) / (graphHeight * .05f);
             Debug.Log("yPosition2: " + yPosition2 + " time: " + valuelist2_[j]);
             GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "time");
             gameObjectList.Add(circleGameObject2);
@@ -230,7 +260,7 @@ public class LineChart : MonoBehaviour {
                 labelY2.gameObject.SetActive(true);
                 labelY2.sizeDelta = new Vector2();
                 labelY2.anchoredPosition = new Vector2(xPosition, yPosition2 + 10);
-                labelY2.GetComponent<Text>().text = valuelist2_[j].ToString();
+                labelY2.GetComponent<Text>().text = ((int)valuelist2_[j]).ToString();
                 gameObjectList.Add(labelY2.gameObject);
 
             //Create the label for x axis
