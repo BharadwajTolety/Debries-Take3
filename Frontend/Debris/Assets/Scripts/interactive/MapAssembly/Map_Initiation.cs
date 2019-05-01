@@ -271,6 +271,7 @@ public class Map_Initiation : MonoBehaviour
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(0.6f, .38f, .27f, .85f);
 
             heat_map.transform.parent = gameObject.transform;
+            heat_map.name = "heat_" + name;
         }
         else { }
         //Debug.Log("Not Found");

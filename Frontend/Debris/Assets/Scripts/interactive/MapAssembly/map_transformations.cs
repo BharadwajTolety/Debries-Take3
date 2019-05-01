@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class map_transformations : MonoBehaviour {
-    
-    
+
+    public GameObject legend;
     public Vector3 rot = new Vector3(0, 0, -61), pos = new Vector3(-78.5f, 755.83f, 0), reset_pos = new Vector3(-10, 30, 0);
     [SerializeField]
     private float zoom = 0.05f;
@@ -62,7 +62,7 @@ public class map_transformations : MonoBehaviour {
                         };
 
         string[] eyes = { "RedEye", "BlueEye", "GreenEye" };
-        string[] edges = { "red", "blue" , "green" };
+        string[] edges = { "red", "blue" , "green", "white" };
 
         for(int i = 0 ; i < eyes.Length ; i++)
         {
@@ -93,22 +93,47 @@ public class map_transformations : MonoBehaviour {
     //mask the other edges out based on eye buttons
     private void mask_edges(string edg)
     {
-        string[] what_edge  = {"red" , "blue" , "green", "red+green" , "green+blue" , "red+blue" , "red+blue+green" };
+        string[] what_edge  = {"red" , "blue" , "green", "red+green" , "green+blue" , "red+blue" , "red+blue+green", "white" };
 
         for( int i = 0; i<what_edge.Length; i++)
         {   
             if(!what_edge[i].Contains(edg))
             {
                 GameObject[] edges = GameObject.FindGameObjectsWithTag(what_edge[i]);
+                GameObject[] heats = GameObject.FindGameObjectsWithTag("heat");
+
                 foreach (GameObject edge in edges)
                 {
                     if (edge.GetComponent<SpriteRenderer>().maskInteraction == SpriteMaskInteraction.None)
                     {
+                        if(legend.activeSelf)
+                        {
+                            foreach (GameObject heat in heats)
+                            {
+                                if (heat.name.Contains(edge.name))
+                                {
+                                    heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                                    break;
+                                }
+                            }
+                        }
                         edge.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                         edge.GetComponent<BoxCollider2D>().isTrigger = false;
                     }
                     else
                     {
+                        if(legend.activeSelf)
+                        {
+                            foreach (GameObject heat in heats)
+                            {
+                                if (heat.name.Contains(edge.name))
+                                {
+                                    heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+                                    break;
+                                }
+                            }
+                        }
+
                         edge.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
                         edge.GetComponent<BoxCollider2D>().isTrigger = true;
                     }
