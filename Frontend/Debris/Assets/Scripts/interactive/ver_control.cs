@@ -156,21 +156,24 @@ public class ver_control : MonoBehaviour
         List<float> cncTime_verCont = new List<float>();
         for (int i = 0; i < 3; i++)
         {
-            cncProfit_verCont.Add(cncProfit[i].IndexOf(total));
-            cncTime_verCont.Add(cncTime[i].IndexOf(total));
+            float prft = cncProfit[i][total-1];
+            cncProfit_verCont.Add(prft);
+
+            float tme = cncTime[i][total-1];
+            cncTime_verCont.Add(tme);
         }
 
         GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(cncProfit_verCont);
         GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(cncTime_verCont);
 
-        GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(intersect[total]);
+        GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(intersect[total-1]);
     }
 
     //this needs to be updated for multiple edge contractors
     private bool read_scanFile(string ver)
     {
         map.Clear();
-        string scanFile = Application.streamingAssetsPath + "/Database/Output/Input/ver_cntrl/Scan_" + (ver) + ".csv";
+        string scanFile = Application.streamingAssetsPath + "/Database/Input/ver_cntrl/Scan_" + (ver) + ".csv";
 
         if(!File.Exists(scanFile))
         {
@@ -181,7 +184,7 @@ public class ver_control : MonoBehaviour
             string[] readScan = File.ReadAllLines(scanFile);
             string[] scoreInfo = new string[3];
 
-            for (int i = 7; i<readScan.Length;i++)
+            for (int i = 1; i<readScan.Length;i++)
             {
                 scoreInfo =  readScan[i].Split(',');
                 switch(scoreInfo[2])
