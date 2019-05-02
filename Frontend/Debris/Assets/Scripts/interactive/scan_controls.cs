@@ -101,10 +101,10 @@ public class scan_controls : MonoBehaviour
     public void check_deborah()
     {
         //manual call to check when clicking scan objects after coloring edges
-        deborah_check();
+        deborah_check(true);
     }
 
-    private void deborah_check()
+    private void deborah_check(bool obj = false)
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
 
@@ -121,7 +121,14 @@ public class scan_controls : MonoBehaviour
                     blinker.GetComponent<Toggle>().interactable = true;
             }
 
-            if (Manager.Instance.edge_changes < 2 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
+            //checks to see if scan should be active or not
+            bool noscan = false;
+            if (obj)
+                noscan = false;
+            else if (Manager.Instance.edge_changes < 2)
+                noscan = true;
+
+            if (noscan || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1) || themWhiteLines.Length > 90)
             {
                 scan.GetComponent<Button>().interactable = false;
             }
@@ -132,6 +139,7 @@ public class scan_controls : MonoBehaviour
         }
     }
 
+    //bunch of checks for making the input buttons function
     public void profit_check()
     {
         if (profit_obj == 1)
