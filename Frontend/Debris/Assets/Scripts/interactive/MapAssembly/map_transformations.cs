@@ -48,6 +48,28 @@ public class map_transformations : MonoBehaviour {
         }
     }
 
+    public string active_eye()
+    {
+        Sprite[] open = { GameObject.FindGameObjectWithTag("redOpen").GetComponent<Image>().sprite,
+                          GameObject.FindGameObjectWithTag("blueOpen").GetComponent<Image>().sprite,
+                          GameObject.FindGameObjectWithTag("greenOpen").GetComponent<Image>().sprite
+                        };
+
+        string[] eyes = { "RedEye", "BlueEye", "GreenEye" };
+
+        string active = "none";
+
+        for (int i = 0; i < eyes.Length; i++)
+        {
+            if (GameObject.Find(eyes[i]).GetComponent<Image>().sprite == open[i])
+            {
+                active = GameObject.Find(eyes[i]).name;
+            }
+        }
+
+        return active;
+    }
+
     //turn cnc eyes on and off
     public void edge_mask(GameObject eye)
     {
@@ -110,7 +132,7 @@ public class map_transformations : MonoBehaviour {
                         {
                             foreach (GameObject heat in heats)
                             {
-                                if (heat.name.Contains(edge.name))
+                                if (heat.name.Contains(edge.name) && heat.GetComponent<SpriteRenderer>().maskInteraction == SpriteMaskInteraction.None)
                                 {
                                     heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                                     break;
@@ -126,7 +148,7 @@ public class map_transformations : MonoBehaviour {
                         {
                             foreach (GameObject heat in heats)
                             {
-                                if (heat.name.Contains(edge.name))
+                                if (heat.name.Contains(edge.name) && heat.GetComponent<SpriteRenderer>().maskInteraction == SpriteMaskInteraction.VisibleInsideMask)
                                 {
                                     heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
                                     break;

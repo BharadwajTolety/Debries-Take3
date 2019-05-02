@@ -91,11 +91,11 @@ public class ver_control : MonoBehaviour
                     ver_cont++;
             }
 
-            for (int i = 0, j = count_ver - 1; i < ver_cont; i++, j--)
+            for (int i = (ver_cont - 1), j = count_ver - 1; i >= 0 ; i--, j--)
             {
                 Button vers_button = ver_buttons[i];
                 vers_button.interactable = true;
-                vers_button.gameObject.name = (Manager.Instance.scans - j).ToString();
+                vers_button.gameObject.name = (Manager.Instance.scans - i).ToString();
 
                 //change the display of the button for user accessibility
                 vers_button.gameObject.GetComponent<Text>().text = vers_button.name;
@@ -111,6 +111,7 @@ public class ver_control : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 ver_buttons[i].interactable = false;
+                ver_buttons[i].name = i.ToString();
             }
             intersect.Clear();
             maxProfit.Clear();

@@ -34,8 +34,8 @@ edglist = finalmatrix(:,1:2);
 %EdgeList = unique(EdgeList, 'rows');
 for n = 1: size(EdgeList)
     for m = 1:size(finalmatrix)
-        flipthis = flip(EdgeList(n,:));
-        if(finalmatrix(m,1:2) == EdgeList(n,:))
+        flipthis = flip(EdgeList(n,1:2));
+        if(finalmatrix(m,1:2) == EdgeList(n,1:2))
             listu = [listu;finalmatrix(m,:)];
             break
         elseif(finalmatrix(m,1:2) == flipthis)

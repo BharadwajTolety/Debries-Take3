@@ -185,8 +185,9 @@ public class BarChart : MonoBehaviour
             labelY.SetParent(graphContainer, false);
             labelY.gameObject.SetActive(true);
             labelY.sizeDelta = new Vector2(2f,2f);
-            labelY.anchoredPosition = new Vector2(xPosition + 10, yPosition + 10);
+            labelY.anchoredPosition = new Vector2(xPosition, yPosition + 10);
             labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString();
+            labelY.GetComponent<Text>().fontSize = 30;
             gameObjectList.Add(labelY.gameObject);
 
             //Create the label for x axis

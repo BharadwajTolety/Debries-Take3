@@ -29,12 +29,20 @@ public class Manager : Singleton<Manager>
     public float[] cncTime = new float[3];
 
     //player id and session id 
-    public string playerId = "def" , sessionId = "def";
+    public string playerId = "def", sessionId = "def";
 
     //play time
-    public float playTime; 
+    public float playTime;
 
     public List<Dictionary<string, string>> map_info = new List<Dictionary<string, string>>();
+
+    public void reset_game()
+    {
+        //do the run update on its own
+        scans = 0;
+        edge_changes = 0;
+        map_version = 0;
+    }
 
     //save contractor information for the map 
     public void save_map(int map_ver, GameObject edge)

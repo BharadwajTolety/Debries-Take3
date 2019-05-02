@@ -51,7 +51,7 @@ public class read_Score : MonoBehaviour
                 //not reading anymore
                 reading_check = false;              
             }
-            else if (timespent > 15)
+            else if (timespent > 50)
             {
                 Debug.Log("Matlab taking too long something wrong - " + timespent);
 

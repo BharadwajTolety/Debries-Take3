@@ -58,8 +58,11 @@ public class contInfo_Matlab : classSocket
     public void run_generatecnc()
     {
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
-        if (themWhiteEdges.Length == 1)
+        if (themWhiteEdges.Length <= 1)
+        {
+            write_map_csv(csvPath, false, 0, 0, 0);
             setupSocket(true);
+        }
     }
 
     //write out the csv for matlab to read
@@ -210,7 +213,7 @@ public class contInfo_Matlab : classSocket
                 di.GetFiles()[0].Delete();
         }
 
-        string path = log_directory + "/Scan_" + Manager.Instance.scans + ".csv";
+        string path = log_directory + "/Scan_" + Manager.Instance.scans.ToString() + ".csv";
         File.WriteAllText(path, csv);
     }
 

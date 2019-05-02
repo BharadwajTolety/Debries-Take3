@@ -3,24 +3,47 @@ using System.Collections;
 
 public class heatMap : MonoBehaviour
 {
-    public GameObject legend;
+    public GameObject legend, help_legend;
 
     public void toggle_heatmap()
     {
         GameObject[] heats = GameObject.FindGameObjectsWithTag("heat");
 
-        foreach(GameObject heat in heats)
+        if (legend.activeSelf)
         {
-            if (heat.GetComponent<SpriteRenderer>().maskInteraction == SpriteMaskInteraction.None)
+            foreach (GameObject heat in heats)
             {
                 heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                 legend.SetActive(false);
             }
-            else
+        }
+        else
+        {
+            foreach (GameObject heat in heats)
             {
                 heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
                 legend.SetActive(true);
             }
+
+            string active = gameObject.GetComponent<map_transformations>().active_eye();
+
+            if(active != "none")
+            {
+                gameObject.GetComponent<map_transformations>().edge_mask(GameObject.Find(active));
+            }
+        }
+    }
+
+    //put it here coz debris also has legend toggling on and off.
+    public void toggle_help()
+    {
+        if (help_legend.activeSelf)
+        {
+            help_legend.SetActive(false);
+        }
+        else
+        {
+            help_legend.SetActive(true);
         }
     }
 }

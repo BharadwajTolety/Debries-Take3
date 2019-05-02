@@ -10,6 +10,7 @@ public class graph_view : MonoBehaviour {
     GameObject mapscreen;
 
     public GameObject scan, error, run_image, handle_mark;
+    public Text current_intersect_text;
     private Texture2D image_tex;
 
     private void Awake()
@@ -55,7 +56,7 @@ public class graph_view : MonoBehaviour {
     {
         if (scanning)
         {
-            string exPath = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_" + Manager.Instance.run + ".csv";
+            string exPath = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/Run_" + Manager.Instance.run.ToString() + ".csv";
             runSetup.log_data(exPath, profit_obj, time_obj, intersect_obj);
 
             update_graphs();
@@ -183,17 +184,15 @@ public void update_run_image(Dropdown op)
             text.text = ((GameObject.FindGameObjectsWithTag("objNode").Length-1)*2).ToString();
         }
 
-        intersect_slider.maxValue = GameObject.FindGameObjectsWithTag("objNode").Length*2;
-        if (intersect_slider.GetComponentInChildren<Text>().name == "current_overlap")
-        {
-            intersect_slider.value = intersect;
-            intersect_slider.GetComponentInChildren<Text>().text = intersect_slider.value.ToString();
-        }
+        intersect_slider.maxValue = (GameObject.FindGameObjectsWithTag("objNode").Length-1)*2;
+        intersect_slider.value = intersect;
+        current_intersect_text.text = intersect_slider.value.ToString();
 
         GameObject mark = Instantiate(handle_mark);
         mark.GetComponent<Image>().color = Color.yellow;
         mark.transform.position = intersect_slider.handleRect.position;
         mark.transform.SetParent(intersect_slider.fillRect.transform);
+        mark.GetComponentInChildren<Text>().text = Manager.Instance.scans.ToString();
     }
 
     private void update_graphs()

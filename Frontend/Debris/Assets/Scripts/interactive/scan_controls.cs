@@ -127,8 +127,6 @@ public class scan_controls : MonoBehaviour
             }
             else if (scan.GetComponent<Button>().interactable == false)
             {
-                //only update when scan is active cos only after clicking scan is the playtime logged
-                Manager.Instance.time_played = playTime;
                 scan.GetComponent<Button>().interactable = true;
             }
         }
@@ -185,6 +183,8 @@ public class scan_controls : MonoBehaviour
     //public method to call scanning functionality
     public void scan_check()
     {
+        //only update playtime right after scan is hit
+        Manager.Instance.time_played = playTime;
         manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
     }
 
@@ -202,7 +202,7 @@ public class scan_controls : MonoBehaviour
             player = Manager.Instance.playerId;
             session = Manager.Instance.sessionId;
         }
-        string exPath = Application.streamingAssetsPath + "/Database/Output/" + player + "_" + session + "/Run_" + Manager.Instance.run + ".csv";
+        string exPath = Application.streamingAssetsPath + "/Database/Output/" + player + "_" + session + "/Run_" + Manager.Instance.run.ToString() + ".csv";
         runSetup.log_data(exPath, profit_obj, time_obj, intersect_obj);
 
         new_run();
@@ -214,7 +214,7 @@ public class scan_controls : MonoBehaviour
         string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/";
         if (which_run.options[which_run.value].text == "Current")
         {
-            path += Manager.Instance.run.ToString() + ".csv";
+            path += "Run_" + Manager.Instance.run.ToString() + ".csv";
         }
         else
         {
@@ -225,6 +225,10 @@ public class scan_controls : MonoBehaviour
         //change name of the finalise run file to mark it as finalise then quit game.
         File.Move(path, newpath);
         File.Delete(path);
+
+        //reset game; everything reset
+        Manager.Instance.run = 0;
+        Manager.Instance.reset_game();
 
         SceneManager.LoadScene("HomeMenu");
     }
@@ -240,9 +244,9 @@ public class scan_controls : MonoBehaviour
 
         update_runList();
 
-        //new run; scan back to zero
+        //new run; everything else reset
         Manager.Instance.run += 1;
-        Manager.Instance.scans = 0;
+        Manager.Instance.reset_game();
     }
 
     private void update_button(Button butt, Sprite[] spri, int pressed)

@@ -221,7 +221,7 @@ public class LineChart : MonoBehaviour {
             float xPosition = (xSize + xIndex * xSize)/2;
 
             //setup dots on the graph - profit
-            float yPosition = (valuelist_[i]) / (graphHeight * .05f);
+            float yPosition = (valuelist_[i]) / (graphHeight * .15f);
             Debug.Log("yPosition: " + yPosition + " profit: " + valuelist_[i]);
 
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "profit");
@@ -238,12 +238,13 @@ public class LineChart : MonoBehaviour {
                 labelY.SetParent(graphContainer, false);
                 labelY.gameObject.SetActive(true);
                 labelY.sizeDelta = new Vector2();
-                labelY.anchoredPosition = new Vector2(xPosition, yPosition + 10);
+                labelY.anchoredPosition = new Vector2(xPosition - 10, yPosition + 20);
                 labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString() ;
+                labelY.GetComponent<Text>().fontSize = 30;
                 gameObjectList.Add(labelY.gameObject);
 
             //setup dots on the graph - time 
-            float yPosition2 = (valuelist2_[j]) / (graphHeight * .05f);
+            float yPosition2 = (valuelist2_[j]) / (graphHeight * .15f);
             Debug.Log("yPosition2: " + yPosition2 + " time: " + valuelist2_[j]);
             GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "time");
             gameObjectList.Add(circleGameObject2);
@@ -259,8 +260,9 @@ public class LineChart : MonoBehaviour {
                 labelY2.SetParent(graphContainer, false);
                 labelY2.gameObject.SetActive(true);
                 labelY2.sizeDelta = new Vector2();
-                labelY2.anchoredPosition = new Vector2(xPosition, yPosition2 + 10);
+                labelY2.anchoredPosition = new Vector2(xPosition - 10, yPosition2 + 20);
                 labelY2.GetComponent<Text>().text = ((int)valuelist2_[j]).ToString();
+                labelY2.GetComponent<Text>().fontSize = 30;
                 gameObjectList.Add(labelY2.gameObject);
 
             //Create the label for x axis

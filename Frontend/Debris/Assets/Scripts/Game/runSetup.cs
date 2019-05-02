@@ -44,7 +44,7 @@ public class runSetup : MonoBehaviour
         {
             takeScreenShotonNextFrame = false;
             //-1 quick fix for file name management
-            string run_image = Application.persistentDataPath + "/run_images" + "/run_" + (Manager.Instance.run - 1) + ".png";
+            string run_image = Application.persistentDataPath + "/run_images" + "/run_" + (Manager.Instance.run - 1).ToString() + ".png";
 
             RenderTexture renderTex = gameCamera.targetTexture;
 
@@ -136,7 +136,7 @@ public class runSetup : MonoBehaviour
         }
         
         //add all info in for this scan
-        line = "scans_" + Manager.Instance.scans + ',' + Manager.Instance.time_played.ToString() + ',' + Manager.Instance.maxProfit + ',' + Manager.Instance.minTime;
+        line = "scans_" + Manager.Instance.scans.ToString() + ',' + Manager.Instance.time_played.ToString() + ',' + Manager.Instance.maxProfit.ToString() + ',' + Manager.Instance.minTime.ToString();
 
         for (int i = 0; i < 3; i++)
         {
@@ -161,6 +161,8 @@ public class runSetup : MonoBehaviour
                 nc = "";
             else
             {
+                if (edge.tag.Contains("white"))
+                    nc += '0';
                 if (edge.tag.Contains("red"))
                     nc += '1';
                 if (edge.tag.Contains("green"))
