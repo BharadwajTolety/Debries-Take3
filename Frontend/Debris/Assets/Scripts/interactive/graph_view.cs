@@ -216,6 +216,7 @@ public void update_run_image(Dropdown op)
             mark.transform.position = intersect_slider.handleRect.position;
             mark.transform.SetParent(intersect_slider.fillRect.transform);
             mark.GetComponentInChildren<Text>().text = Manager.Instance.scans.ToString();
+            intersect_marks.Add(mark);
         }
     }
 

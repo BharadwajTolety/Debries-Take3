@@ -15,6 +15,7 @@ public class runSetup : MonoBehaviour
     private static JsonData mapItem;
     private bool screenshotdone = false;
     private bool found_brush = false, brush_done = false;
+    private bool print_header = false;
 
     private static runSetup instance;
     private static int x_, y_, w_, h_;
@@ -23,6 +24,7 @@ public class runSetup : MonoBehaviour
 
     private void Awake()
     {
+        print_header = false;
         takeScreenShotonNextFrame = false;
         gameCamera = gameObject.GetComponent<Camera>();
         instance = this;
@@ -39,6 +41,11 @@ public class runSetup : MonoBehaviour
                 file.Delete();
             }
         }
+    }
+
+    public static void reset_header()
+    {
+        instance.print_header = false;
     }
 
     private void OnPostRender()
@@ -140,9 +147,10 @@ public class runSetup : MonoBehaviour
         }
 
         //add the header
-        if (Manager.Instance.scans == 1)
+        if (!print_header)
         {
-            line = "-,time_played,MinProfit,MaxTime,red_profit,red_time,green_profit,green_time,blue_profit,blue_time,intersect,total_suggest,input_obj";
+            print_header = true;
+            line = "-,time_played,on_ver,MinProfit,MaxTime,red_profit,red_time,green_profit,green_time,blue_profit,blue_time,intersect,total_suggest,input_obj";
 
             for (int i = 0; i < number_of_edges; i++)
             {
@@ -154,7 +162,7 @@ public class runSetup : MonoBehaviour
         }
         
         //add all info in for this scan
-        line = "scans_" + Manager.Instance.scans.ToString() + ',' + Manager.Instance.time_played.ToString() + ',' + Manager.Instance.maxProfit.ToString() + ',' + Manager.Instance.minTime.ToString();
+        line = "scans_" + Manager.Instance.scans.ToString() + ',' + Manager.Instance.time_played.ToString() + ',' + Manager.Instance.on_ver.ToString()+ ',' + Manager.Instance.maxProfit.ToString() + ',' + Manager.Instance.minTime.ToString();
 
         for (int i = 0; i < 3; i++)
         {
@@ -238,6 +246,9 @@ public class runSetup : MonoBehaviour
             if(!found_brush)
                 line += ',' + nc;
         }
+
+        //equalise on ver with current scan
+        Manager.Instance.on_ver = Manager.Instance.scans;
 
         //reset the file: delete it and set brush to done for brushing update to the edges.
         if(found_brush)

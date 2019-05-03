@@ -58,7 +58,10 @@ public class LineChart : MonoBehaviour {
 
             maxVisibleValue = valueList.Count;
 
-            ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
+            List<float> time = new List<float>(valueList);
+            List<float> profit = new List<float>(valueList2);
+
+            ShowGraph(time, profit, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
         }
         else
         {
@@ -78,11 +81,14 @@ public class LineChart : MonoBehaviour {
         {
             if (this.name.EndsWith("total"))
             {
-                valueList.Add(Manager.Instance.maxProfit);
-                valueList2.Add(Manager.Instance.minTime);
+                valueList.Add(Manager.Instance.minTime);
+                valueList2.Add(Manager.Instance.maxProfit);
                 maxVisibleValue++;
 
-                ShowGraph(valueList, valueList2, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
+                List<float> time = new List<float>(valueList);
+                List<float> profit = new List<float>(valueList2);
+
+                ShowGraph(time, profit, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
             }
         }
     }
@@ -92,9 +98,9 @@ public class LineChart : MonoBehaviour {
         GameObject gameObject = new GameObject("Knob", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().sprite = circleSprite;
-        if (item == "profit")
+        if (item == "time")
             gameObject.GetComponent<Image>().color = Color.yellow;
-        else if (item == "time")
+        else if (item == "profit")
             gameObject.GetComponent<Image>().color = Color.blue;
         else
             gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
@@ -242,9 +248,9 @@ public class LineChart : MonoBehaviour {
 
             //setup dots on the graph - profit
             float yPosition = (valuelist_[i]) / (graphHeight * .15f);
-            Debug.Log("yPosition: " + yPosition + " profit: " + valuelist_[i]);
+            Debug.Log("yPosition: " + yPosition + " time: " + valuelist_[i]);
 
-            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "profit");
+            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "time");
             gameObjectList.Add(circleGameObject);
             if (lastCircleGameObject != null)
             {
@@ -268,8 +274,8 @@ public class LineChart : MonoBehaviour {
 
             //setup dots on the graph - time 
             float yPosition2 = (valuelist2_[j]) / (graphHeight * .15f);
-            Debug.Log("yPosition2: " + yPosition2 + " time: " + valuelist2_[j]);
-            GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "time");
+            Debug.Log("yPosition2: " + yPosition2 + " profit: " + valuelist2_[j]);
+            GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "profit");
             gameObjectList.Add(circleGameObject2);
             if (lastCircleGameObject2 != null)
             {

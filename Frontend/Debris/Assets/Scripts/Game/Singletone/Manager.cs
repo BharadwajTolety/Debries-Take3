@@ -17,6 +17,7 @@ public class Manager : Singleton<Manager>
     public bool flag = false; //flag checking whether map coloring has been changed or not
     public int edge_changes = 0;
 
+    public int on_ver; //to check which version we are on right now.
     public int[] suggest = new int[3]; //suggest clicks per scan
     public int scans = 0; //number of scans done
     public bool color_start = false;

@@ -83,6 +83,7 @@ public class scan_controls : MonoBehaviour
             manager.GetComponent<contInfo_Matlab>().run_generatecnc();
             GameObject.Find("GameManager").GetComponent<graph_view>().destroy_inter_marks();
 
+            check_deborah();
         }
     }
 
@@ -279,6 +280,7 @@ public class scan_controls : MonoBehaviour
         //new run; everything else reset
         Manager.Instance.run += 1;
         Manager.Instance.reset_game();
+        runSetup.reset_header();
     }
 
     private void update_button(Button butt, Sprite[] spri, int pressed)

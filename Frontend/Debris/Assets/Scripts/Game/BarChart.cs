@@ -183,7 +183,7 @@ public class BarChart : MonoBehaviour
         for (int i = Mathf.Max(valuelist_.Count - maxVisibleValueAmount, 0), j = 0; i < valuelist_.Count; i++, j++)
         {
             float xPosition = xSize * 0.5f + xIndex * xSize;
-            float yPosition = (valuelist_[i]) / (graphHeight * .05f);
+            float yPosition = (valuelist_[i]) / (graphHeight * .1f);
 
             if (valuelist_[i] == 0)
                 yPosition = 5;

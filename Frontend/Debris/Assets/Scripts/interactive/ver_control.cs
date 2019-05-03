@@ -8,8 +8,8 @@ public class ver_control : MonoBehaviour
 {
     public Button[] ver_buttons;
 
-    private List<float> maxProfit   = new List<float>();
-    private List<float> minTime     = new List<float>();
+    private List<float> maxProfit = new List<float>();
+    private List<float> minTime = new List<float>();
 
     private List<float>[] cncProfit;
     private List<float>[] cncTime;
@@ -60,7 +60,7 @@ public class ver_control : MonoBehaviour
             }
         }
 
-        if(restart)
+        if (restart)
         {
             update_verList(restart);
             restart_graphs();
@@ -70,7 +70,7 @@ public class ver_control : MonoBehaviour
     private void push_scoreList()
     {
         intersect.Add(Manager.Instance.intersect);
-        maxProfit.Add (Manager.Instance.maxProfit);
+        maxProfit.Add(Manager.Instance.maxProfit);
         minTime.Add(Manager.Instance.minTime);
 
         for (int i = 0; i < 3; i++)
@@ -82,7 +82,7 @@ public class ver_control : MonoBehaviour
 
     public void update_verList(bool restart = false)
     {
-        if(!restart)
+        if (!restart)
         {
             if (count_ver < Manager.Instance.scans)
             {
@@ -91,7 +91,7 @@ public class ver_control : MonoBehaviour
                     ver_cont++;
             }
 
-            for (int i = (ver_cont - 1), j = count_ver - 1; i >= 0 ; i--, j--)
+            for (int i = (ver_cont - 1), j = count_ver - 1; i >= 0; i--, j--)
             {
                 Button vers_button = ver_buttons[i];
                 vers_button.interactable = true;
@@ -123,14 +123,15 @@ public class ver_control : MonoBehaviour
                 cncTime[i].Clear();
             }
         }
-       
+
     }
 
     public void update_mapVer(GameObject ver)
     {
         //the version name should only be the version number
-        if(read_scanFile(ver.name))
+        if (read_scanFile(ver.name))
         {
+            Manager.Instance.on_ver = int.Parse(ver.name);
             mapBrushing.map_update_ver(map);
             reUpdate_graphs(int.Parse(ver.name));
         }
@@ -146,13 +147,12 @@ public class ver_control : MonoBehaviour
         GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(0f);
     }
 
-    //fix this
     private void reUpdate_graphs(int total)
     {
         float[] profit_verCont = maxProfit.GetRange(0,total).ToArray();
         float[] time_verCont = minTime.GetRange(0, total).ToArray();
 
-        GameObject.Find("current_total").GetComponent<LineChart>().reUpdate(profit_verCont, time_verCont);
+        GameObject.Find("current_total").GetComponent<LineChart>().reUpdate(time_verCont,profit_verCont);
 
         List<float> cncProfit_verCont = new List<float>();
         List<float> cncTime_verCont = new List<float>();
