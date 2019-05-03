@@ -106,19 +106,30 @@ public class BarChart : MonoBehaviour
     private void ShowGraph(List<float> valuelist_, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
         int valcheck = 0;
+        float largest = 0, percent = 1;
         foreach(float value in valuelist_)
         {
-                 if (value > 10000000)
-                valuelist_[valcheck] = value / 10000;
-            else if (value > 1000000)
-                valuelist_[valcheck] = value / 1000;
-            else if (value > 100000)
-                valuelist_[valcheck] = value / 100;
-            else if (value > 10000)
-                valuelist_[valcheck] = value / 10;
+            if(value > largest)
+                largest = value;
+        }
 
+        if (largest > 10000000)
+            percent = 10000;
+        else if (largest > 1000000)
+            percent = 1000;
+        else if (largest > 100000)
+            percent = 100;
+        else if (largest > 10000)
+            percent = 10;
+        else
+            percent = 1;
+
+        foreach (float value in valuelist_)
+        {
+            valuelist_[valcheck] = value / percent;
             valcheck++;
         }
+
 
         if (getAxisLableX == null)
         {
@@ -172,7 +183,7 @@ public class BarChart : MonoBehaviour
         for (int i = Mathf.Max(valuelist_.Count - maxVisibleValueAmount, 0), j = 0; i < valuelist_.Count; i++, j++)
         {
             float xPosition = xSize * 0.5f + xIndex * xSize;
-            float yPosition = ((valuelist_[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
+            float yPosition = (valuelist_[i]) / (graphHeight * .05f);
 
             if (valuelist_[i] == 0)
                 yPosition = 5;
@@ -185,7 +196,7 @@ public class BarChart : MonoBehaviour
             labelY.SetParent(graphContainer, false);
             labelY.gameObject.SetActive(true);
             labelY.sizeDelta = new Vector2(2f,2f);
-            labelY.anchoredPosition = new Vector2(xPosition, yPosition + 10);
+            labelY.anchoredPosition = new Vector2(xPosition + 20, yPosition + 10);
             labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString();
             labelY.GetComponent<Text>().fontSize = 30;
             gameObjectList.Add(labelY.gameObject);

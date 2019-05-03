@@ -23,6 +23,8 @@ public class scan_controls : MonoBehaviour
     private int scanned;
     private float playTime;
 
+    private bool rerun = false;
+
     private void Awake()
     {
         scanned = 0;
@@ -35,6 +37,19 @@ public class scan_controls : MonoBehaviour
         total = 0;
 
         update_runList();
+    }
+
+    private void Start()
+    {
+        GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
+
+        if (themWhiteEdges.Length <= 1)
+        {
+            manager.GetComponent<graph_view>().toggle_noti();
+            manager.GetComponent<contInfo_Matlab>().run_generatecnc();
+
+            rerun = true;
+        }
     }
 
     private void Update()
@@ -52,7 +67,7 @@ public class scan_controls : MonoBehaviour
             deborah_check();
         }
 
-        if (scanned != Manager.Instance.scans)
+        if (scanned != Manager.Instance.scans || rerun)
         {
             scanned = Manager.Instance.scans;
             deborah_check();
@@ -66,6 +81,8 @@ public class scan_controls : MonoBehaviour
             verControl.GetComponent<ver_control>().empty_folder(true);
 
             manager.GetComponent<contInfo_Matlab>().run_generatecnc();
+            GameObject.Find("GameManager").GetComponent<graph_view>().destroy_inter_marks();
+
         }
     }
 
@@ -222,7 +239,14 @@ public class scan_controls : MonoBehaviour
         string path = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/";
         if (which_run.options[which_run.value].text == "Current")
         {
-            path += "Run_" + Manager.Instance.run.ToString() + ".csv";
+            try
+            {
+                path += "Run_" + Manager.Instance.run.ToString() + ".csv";
+            }
+            catch
+            {
+                Debug.Log("can't finalise without atleast one scan");
+            }
         }
         else
         {

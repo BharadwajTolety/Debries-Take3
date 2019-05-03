@@ -133,6 +133,34 @@ time_vec=zeros(1,no_contractor);
     end
     fclose(fid);
     
+       
+    brushedFile = strcat(initPath,'\Database\Input\brushedEdges_Matlab.txt');
+    brushedFile = char(brushedFile);
+
+    fprintf('\n%s',brushedFile);
+    [fid, msg] = fopen(brushedFile,'w');
+    for j = 1:length(brushed_edges)
+            thiscell = '';
+        for k = 1:length(brushed_edges{j,3})
+            thiscell = strcat(thiscell, num2str(brushed_edges{j,3}(k)));
+        end
+        
+        if(length(brushed_edges{j,3}) == 0)
+            thiscell = '0';
+        end
+        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
+        brushed_print{j,1} = num2str(brushed_edges{j,1});
+        brushed_print{j,2} = num2str(brushed_edges{j,2});
+        brushed_print{j,3} = thiscell;
+        
+        if fid < 0 
+            error('Failed to open file "%s" because: "%s"', brushedFile, msg);
+        else
+            fprintf(fid,'%s,%s,%s\r\n',brushed_print{j,1},brushed_print{j,2},brushed_print{j,3});
+        end   
+    end
+    fclose(fid);
+    
     scoreFile = strcat(initPath,'\Database\Input\score_info_fromMatlab.txt');
     scoreFile = char(scoreFile);
 
@@ -147,29 +175,4 @@ time_vec=zeros(1,no_contractor);
         end
     end
     fclose(fid);
-    
-    brushedFile = strcat(initPath,'\Database\Input\brushedEdges_Matlab.csv');
-    brushedFile = char(brushedFile);
-
-    fprintf('\n%s',brushedFile);
-    [fid, msg] = fopen(brushedFile,'w');
-    for j = 1:length(brushed_edges)
-        thiscell = '';
-        for k = 1:length(brushed_edges{j,3})
-            thiscell = [thiscell,num2str(brushed_edges{j,3}(k))];
-        end
-        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
-        brushed_print(j,1) = brushed_edges(j,1);
-        brushed_print(j,2) = brushed_edges(j,2);
-        brushed_print(j,3) = cellstr(thiscell);
-    end
-    T = cell2table(brushed_print);
-    
-    if fid < 0 
-        error('Failed to open file "%s" because: "%s"', brushedFile, msg);
-    else
-        writetable(T,brushedFile);
-    end      
-    fclose(fid);
-    
-    fprintf('\nclosed file');
+ 

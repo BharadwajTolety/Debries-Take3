@@ -60,6 +60,12 @@ public class Map_Initiation : MonoBehaviour
 
         theSelectedObj = GameObject.FindGameObjectWithTag(strTag);
         NewObj = Instantiate(theSelectedObj, pos, Quaternion.identity);
+
+        if(name == "n_100")
+        {
+            NewObj.GetComponent<SpriteRenderer>().color = Color.magenta;
+            NewObj.transform.localScale = NewObj.transform.localScale * 2f;
+        }
         NewObj.transform.SetParent(gameObject.transform, true);
         NewObj.name = name;
     }

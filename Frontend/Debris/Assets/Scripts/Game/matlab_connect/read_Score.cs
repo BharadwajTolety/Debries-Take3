@@ -109,14 +109,14 @@ public class read_Score : MonoBehaviour
 
                 if (scoreInfo.Length > 2)
                 {
-                    Manager.Instance.cncProfit[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[1]);
-                    Manager.Instance.cncTime[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[2]);
+                    Manager.Instance.cncTime[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[1]);
+                    Manager.Instance.cncProfit[int.Parse(scoreInfo[0])-1] = float.Parse(scoreInfo[2]);
                     Manager.Instance.intersect = float.Parse(scoreInfo[3]);
                 }
                 else
                 {
-                    Manager.Instance.maxProfit = float.Parse(scoreInfo[0]);
-                    Manager.Instance.minTime = float.Parse(scoreInfo[1]);
+                    Manager.Instance.minTime = float.Parse(scoreInfo[0]);
+                    Manager.Instance.maxProfit = float.Parse(scoreInfo[1]);
                 }
             }
 
@@ -125,7 +125,7 @@ public class read_Score : MonoBehaviour
     }
      
     //keep reading the score file while matlab is calculating and done writing the score file
-    public void reading(int profit, int time, int intersect)
+    public void reading(int profit, int time, int intersect, bool rerun = false)
     {
         //reset score file so it be waiting for matlab new scores
         reset_score();

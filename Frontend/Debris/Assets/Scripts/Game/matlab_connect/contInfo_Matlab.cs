@@ -38,6 +38,9 @@ public class contInfo_Matlab : classSocket
                 file.Delete();
             }
         }
+
+        //mark color start as false unless said otherwise via generate cnc method
+        Manager.Instance.color_start = false;
     }
 
     private void Start()
@@ -50,8 +53,6 @@ public class contInfo_Matlab : classSocket
             deb.AppendLine(objline);
         }
         File.WriteAllText(debris_path, deb.ToString());
-
-        run_generatecnc();
     }
 
     //when we start off with a contractor list on the map run this function.
@@ -60,8 +61,8 @@ public class contInfo_Matlab : classSocket
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
         if (themWhiteEdges.Length <= 1)
         {
-            write_map_csv(csvPath, false, 0, 0, 0);
-            setupSocket(true);
+            Manager.Instance.color_start = true;
+            read_contractor_info(0, 0, 0, true);
         }
     }
 
@@ -80,12 +81,13 @@ public class contInfo_Matlab : classSocket
     }
 
     //read all the contractor info and then write that info into csv
-    public void read_contractor_info(int profit, int time, int intersect)
+    public void read_contractor_info(int profit, int time, int intersect, bool rerun = false)
     {
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
         if ((themWhiteEdges.Length == 1 && themWhiteEdges[0].name == "white") || Manager.Instance.scans > 0)
         {
-            Manager.Instance.scans += 1;
+            if(!rerun) // when rerun that is a scan zero
+                Manager.Instance.scans += 1;
             Manager.Instance.edge_changes = 0;
 
             int count_edges = write_map_csv(csvPath, false, profit, time, intersect);
@@ -93,7 +95,7 @@ public class contInfo_Matlab : classSocket
             Debug.Log("writting complete!! total edges - " + count_edges);
 
             //setup the client for the matlab server to read
-            if(run_count != Manager.Instance.run)
+            if(run_count != Manager.Instance.run || rerun)
             {
                 run_count = Manager.Instance.run;
                 setupSocket(true);
@@ -295,12 +297,12 @@ public class contInfo_Matlab : classSocket
     }
 
     //read score sent from matlab
-    private void call_reading(int profit_obj, int time_obj, int intersect_obj)
+    private void call_reading(int profit_obj, int time_obj, int intersect_obj, bool rerun = false)
     {
         GameObject gameManager = GameObject.Find("GameManager") ;
         read_Score read = (read_Score)gameManager.GetComponent(typeof(read_Score));
 
         //start reading
-        read.reading(profit_obj, time_obj, intersect_obj);   
+        read.reading(profit_obj, time_obj, intersect_obj, rerun);   
     }
 }

@@ -19,6 +19,7 @@ public class Manager : Singleton<Manager>
 
     public int[] suggest = new int[3]; //suggest clicks per scan
     public int scans = 0; //number of scans done
+    public bool color_start = false;
     public int run = 0;
     public float maxProfit, minTime, intersect; //the scores for the game
 

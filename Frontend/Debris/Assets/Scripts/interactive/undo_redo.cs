@@ -16,7 +16,7 @@ public class undo_redo : MonoBehaviour
     //redo button call
     public void redo()
     {
-        if (Manager.Instance.map_version <= undo_count && Manager.Instance.map_info.Count>1)
+        if (Manager.Instance.map_version < undo_count && Manager.Instance.map_info.Count>1)
         {
             Manager.Instance.map_version++;
             mapBrushing.map_update_undoRedo(Manager.Instance.map_info[Manager.Instance.map_version]);

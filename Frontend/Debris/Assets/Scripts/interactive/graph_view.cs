@@ -13,6 +13,8 @@ public class graph_view : MonoBehaviour {
     public Text current_intersect_text;
     private Texture2D image_tex;
 
+    private List<GameObject> intersect_marks = new List<GameObject>();
+
     private void Awake()
     {
         mapscreen = GameObject.Find("MapScreen");
@@ -21,6 +23,19 @@ public class graph_view : MonoBehaviour {
         //keep the texture empty
         image_tex = null;
         scan_disable();
+    }
+
+    private void Update()
+    {
+        if(scan.activeSelf)
+        {
+            if(runSetup.get_found_brush())
+            {
+                runSetup.set_found_brush(false);
+                mapBrushing.map_update_ver(runSetup.get_brush_map());
+                scan.SetActive(false);
+            }
+        }
     }
 
     public void toggle_noti()
@@ -65,7 +80,7 @@ public class graph_view : MonoBehaviour {
             //scanning done so reset suggest count for next logging.
             Manager.Instance.suggest = new int[] { 0, 0, 0 };
         }
-        scan.SetActive(false);
+        //scan.SetActive(false);
     }
 
 //work the dropdown
@@ -174,7 +189,13 @@ public void update_run_image(Dropdown op)
         }
     }
 
-    public void intersection_update(float intersect)
+    public void destroy_inter_marks()
+    {
+        foreach (GameObject mark in intersect_marks)
+            Destroy(mark);
+    }
+
+    public void intersection_update(float intersect, bool reupdate = false)
     {
         Text text = intersect_view.GetComponentInChildren<Text>();
         Slider intersect_slider = intersect_view.GetComponentInChildren<Slider>();
@@ -188,11 +209,14 @@ public void update_run_image(Dropdown op)
         intersect_slider.value = intersect;
         current_intersect_text.text = intersect_slider.value.ToString();
 
-        GameObject mark = Instantiate(handle_mark);
-        mark.GetComponent<Image>().color = Color.yellow;
-        mark.transform.position = intersect_slider.handleRect.position;
-        mark.transform.SetParent(intersect_slider.fillRect.transform);
-        mark.GetComponentInChildren<Text>().text = Manager.Instance.scans.ToString();
+        if(!reupdate)
+        {
+            GameObject mark = Instantiate(handle_mark);
+            mark.GetComponent<Image>().color = Color.yellow;
+            mark.transform.position = intersect_slider.handleRect.position;
+            mark.transform.SetParent(intersect_slider.fillRect.transform);
+            mark.GetComponentInChildren<Text>().text = Manager.Instance.scans.ToString();
+        }
     }
 
     private void update_graphs()

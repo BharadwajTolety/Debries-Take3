@@ -14,9 +14,12 @@ public class runSetup : MonoBehaviour
     private string JSONstring;
     private static JsonData mapItem;
     private bool screenshotdone = false;
+    private bool found_brush = false, brush_done = false;
 
     private static runSetup instance;
     private static int x_, y_, w_, h_;
+
+    private Dictionary<string, string> brush_map = new Dictionary<string, string>();
 
     private void Awake()
     {
@@ -97,6 +100,21 @@ public class runSetup : MonoBehaviour
         return image;
     }
 
+    public static Dictionary<string, string> get_brush_map()
+    {
+        return instance.brush_map;
+    }
+
+    public static bool get_found_brush()
+    {
+        return instance.brush_done;
+    }
+
+    public static void set_found_brush(bool set)
+    {
+        instance.brush_done = set;
+    }
+
     private void logging(string path, int prft_obj, int time_obj, int inter_obj)
     {
         StringBuilder csv = new StringBuilder();
@@ -105,7 +123,7 @@ public class runSetup : MonoBehaviour
         int source, dest, number_of_edges = mapItem["EdgeData"].Count;
 
         //read the brushed_edges from matlab to log them here
-        string scanFile = Application.streamingAssetsPath + "/Database/Input/brushedEdges_Matlab.csv";
+        string scanFile = Application.streamingAssetsPath + "/Database/Input/brushedEdges_Matlab.txt";
         string[] readBrush = new string[number_of_edges + 1]; //+1 just to be extra safe but the brushfile cannot have more lines than number of edges
         bool brush_error = false;
         try
@@ -148,6 +166,7 @@ public class runSetup : MonoBehaviour
 
         line += ',' + Manager.Instance.intersect.ToString() + ',' + suggest + ',' + inputObj;
 
+        brush_map.Clear();
         for (int i = 0; i < number_of_edges; i++)
         {
             source = (int)mapItem["EdgeData"][i]["From"];
@@ -158,11 +177,11 @@ public class runSetup : MonoBehaviour
 
             //checking player inputs for colors
             if (edge.tag == "white")
-                nc = "";
+                nc = "0";
+            else if (edge.tag == "AllColor")
+                nc = "123";
             else
             {
-                if (edge.tag.Contains("white"))
-                    nc += '0';
                 if (edge.tag.Contains("red"))
                     nc += '1';
                 if (edge.tag.Contains("green"))
@@ -172,7 +191,7 @@ public class runSetup : MonoBehaviour
             }
 
             //checking matlab brush file results for this scan
-            bool found_brush = false;
+            found_brush = false;
             if(!brush_error)
             {
                 string[] brush_info = new string[3];
@@ -181,6 +200,33 @@ public class runSetup : MonoBehaviour
                     brush_info = brush_edge.Split(',');
                     if((source + "_" + dest) == (brush_info[0] + "_" + brush_info[1]))
                     {
+                        switch (brush_info[2])
+                        {
+                            case "1":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "red");
+                                break;
+                            case "2":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "green");
+                                break;
+                            case "3":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "blue");
+                                break;
+                            case "13":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "red+blue");
+                                break;
+                            case "23":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "green+blue");
+                                break;
+                            case "12":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "red+green");
+                                break;
+                            case "123":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "red+blue+green");
+                                break;
+                            case "":
+                                brush_map.Add("_" + brush_info[0] + "_" + brush_info[1], "white");
+                                break;
+                        }
                         line += ',' + nc + '_' + brush_info[2];
                         found_brush = true;
                         break;
@@ -191,6 +237,13 @@ public class runSetup : MonoBehaviour
             //if no matlab brush info found on this edge just add player input
             if(!found_brush)
                 line += ',' + nc;
+        }
+
+        //reset the file: delete it and set brush to done for brushing update to the edges.
+        if(found_brush)
+        {
+            brush_done = true;
+            File.Delete(scanFile);
         }
         csv.AppendLine(line);
 

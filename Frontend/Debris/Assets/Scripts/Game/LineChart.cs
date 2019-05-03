@@ -109,32 +109,52 @@ public class LineChart : MonoBehaviour {
     private void ShowGraph(List<float> valuelist_, List<float> valuelist2_, int maxVisibleValueAmount, Func<int, string> getAxisLableX = null, Func<float, string> getAxisLableY = null)
     {
         int valcheck = 0;
+        float largest = 0, percent = 1;
         foreach (float value in valuelist_)
         {
-            if (value > 10000000)
-                valuelist_[valcheck] = value / 10000;
-            else if (value > 1000000)
-                valuelist_[valcheck] = value / 1000;
-            else if (value > 100000)
-                valuelist_[valcheck] = value / 100;
-            else if (value > 10000)
-                valuelist_[valcheck] = value / 10;
+            if (value > largest)
+                largest = value;
+        }
 
+        if (largest > 10000000)
+            percent = 10000;
+        else if (largest > 1000000)
+            percent = 1000;
+        else if (largest > 100000)
+            percent = 100;
+        else if (largest > 10000)
+            percent = 10;
+        else
+            percent = 1;
+
+        foreach (float value in valuelist_)
+        {
+            valuelist_[valcheck] = value / percent;
             valcheck++;
         }
 
         valcheck = 0;
+        largest = 0; percent = 10;
         foreach (float value in valuelist2_)
         {
-            if (value > 10000000)
-                valuelist2_[valcheck] = value / 10000;
-            else if (value > 1000000)
-                valuelist2_[valcheck] = value / 1000;
-            else if (value > 100000)
-                valuelist2_[valcheck] = value / 100;
-            else if (value > 10000)
-                valuelist2_[valcheck] = value / 10;
+            if (value > largest)
+                largest = value;
+        }
 
+        if (largest > 10000000)
+            percent = 10000;
+        else if (largest > 1000000)
+            percent = 1000;
+        else if (largest > 100000)
+            percent = 100;
+        else if (largest > 10000)
+            percent = 10;
+        else
+            percent = 1;
+
+        foreach (float value in valuelist2_)
+        {
+            valuelist2_[valcheck] = value / percent;
             valcheck++;
         }
 
@@ -233,15 +253,18 @@ public class LineChart : MonoBehaviour {
             }
             lastCircleGameObject = circleGameObject;
 
+            if (i == valuelist_.Count - 1 || i ==0)
+            {
                 //Create the label for y axis info over dot for the first one - Profit
                 RectTransform labelY = Instantiate(labelTemplateY);
                 labelY.SetParent(graphContainer, false);
                 labelY.gameObject.SetActive(true);
                 labelY.sizeDelta = new Vector2();
                 labelY.anchoredPosition = new Vector2(xPosition - 10, yPosition + 20);
-                labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString() ;
+                labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString();
                 labelY.GetComponent<Text>().fontSize = 30;
                 gameObjectList.Add(labelY.gameObject);
+            }
 
             //setup dots on the graph - time 
             float yPosition2 = (valuelist2_[j]) / (graphHeight * .15f);
@@ -255,6 +278,8 @@ public class LineChart : MonoBehaviour {
             }
             lastCircleGameObject2 = circleGameObject2;
 
+            if(i == valuelist_.Count - 1 || i == 0)
+            {
                 //Create the label for y axis info over dot for the second one - time
                 RectTransform labelY2 = Instantiate(labelTemplateY);
                 labelY2.SetParent(graphContainer, false);
@@ -264,6 +289,7 @@ public class LineChart : MonoBehaviour {
                 labelY2.GetComponent<Text>().text = ((int)valuelist2_[j]).ToString();
                 labelY2.GetComponent<Text>().fontSize = 30;
                 gameObjectList.Add(labelY2.gameObject);
+            }
 
             //Create the label for x axis
             RectTransform labelX = Instantiate(labelTemplateX);

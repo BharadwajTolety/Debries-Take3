@@ -142,6 +142,7 @@ public class ver_control : MonoBehaviour
         GameObject.Find("current_total").GetComponent<LineChart>().reUpdate(null, null, true);
         GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(null, true);
         GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(null, true);
+        GameObject.Find("GameManager").GetComponent<graph_view>().destroy_inter_marks();
         GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(0f);
     }
 
@@ -167,7 +168,7 @@ public class ver_control : MonoBehaviour
         GameObject.Find("current_profit").GetComponent<BarChart>().reUpdate(cncProfit_verCont);
         GameObject.Find("current_time").GetComponent<BarChart>().reUpdate(cncTime_verCont);
 
-        GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(intersect[total-1]);
+        GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(intersect[total-1], true);
     }
 
     //this needs to be updated for multiple edge contractors
