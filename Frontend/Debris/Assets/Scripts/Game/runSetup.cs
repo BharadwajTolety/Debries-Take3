@@ -114,10 +114,15 @@ public class runSetup : MonoBehaviour
 
     public static bool get_found_brush()
     {
+        return instance.found_brush;
+    }
+
+    public static bool get_brush_done()
+    {
         return instance.brush_done;
     }
 
-    public static void set_found_brush(bool set)
+    public static void set_brush_done(bool set)
     {
         instance.brush_done = set;
     }
@@ -240,8 +245,8 @@ public class runSetup : MonoBehaviour
                         break;
                     }
                 }
+                Debug.Log("brushfile found and read");
             }
-            
             //if no matlab brush info found on this edge just add player input
             if(!found_brush)
                 line += ',' + nc;

@@ -14,16 +14,16 @@
 %debris=debris2; %Previous wrong calculation of debris
 
 %%%% Different debris distribution instances
-max_debris = max(debris);
-min_debris = min(debris);
+% max_debris = max(debris);
+% min_debris = min(debris);
 
 %Uniformly draw integers 
-random_debris1 = randsample(ceil(max_debris),no_roads);
+%random_debris1 = randsample(ceil(max_debris),no_roads);
 %Uniformly distribute the debris to different roads
 %random_debris2 = debris(randperm(no_roads));
 
 %debris = random_debris2;
-debris = random_debris1;
+%debris = random_debris1;
 
 Time=zeros(no_nodes); Debris_original=zeros(no_nodes); 
 for i=1:no_roads
@@ -232,29 +232,43 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
         
     brushedFile = strcat(initPath,'\Database\Input\brushedEdges_Matlab.txt');
     brushedFile = char(brushedFile);
-
+        
     fprintf('\n%s',brushedFile);
     [fd, msg] = fopen(brushedFile,'w');
-    for j = 1:length(brushed_edges)
-            thiscell = '';
-        for k = 1:length(brushed_edges{j,3})
-            thiscell = strcat(thiscell, num2str(brushed_edges{j,3}(k)));
-        end
+    
+    ee = [];
+    for i=1:no_contractor
+        e = cell2mat(Contractor{i}.Edges);
+        e = [e , i*ones( length(e),1)];
+        ee = [ee ; e];
+    end 
+    
+    for j=1:length(EdgeList)
         
-        if(length(brushed_edges{j,3}) == 0)
-            thiscell = '0';
+        c = [EdgeList(j,1), EdgeList(j,2)];
+        [~, ix] = ismember(ee(:,[1,2]), c, 'rows');
+        
+        all_conts = ee(logical(ix),3);
+        brush{j,1} = EdgeList(j,1); brush{j,2} = EdgeList(j,2); 
+        brush{j,3} = all_conts;
+    end
+    
+    for j = 1:length(brush)
+        brushed_print{j,1} = num2str(brush {j,1});
+        brushed_print{j,2} = num2str(brush {j,2});
+        
+        thiscell = '';
+        for k = 1:length(brush{j,3})
+            thiscell = strcat(thiscell, num2str(brush{j,3}(k)));
         end
-        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
-        brushed_print{j,1} = num2str(brushed_edges{j,1});
-        brushed_print{j,2} = num2str(brushed_edges{j,2});
         brushed_print{j,3} = thiscell;
         
         if fd < 0 
             error('Failed to open file "%s" because: "%s"', brushedFile, msg);
         else
             fprintf(fd,'%s,%s,%s\r\n',brushed_print{j,1},brushed_print{j,2},brushed_print{j,3});
-        end   
-    end
+        end 
+    end 
     fclose(fd); 
     
     scoreFile = strcat(initPath,'\Database\Input\score_info_fromMatlab.txt');

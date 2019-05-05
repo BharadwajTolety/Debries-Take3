@@ -138,28 +138,43 @@ time_vec=zeros(1,no_contractor);
     brushedFile = char(brushedFile);
 
     fprintf('\n%s',brushedFile);
-    [fid, msg] = fopen(brushedFile,'w');
-    for j = 1:length(brushed_edges)
-            thiscell = '';
-        for k = 1:length(brushed_edges{j,3})
-            thiscell = strcat(thiscell, num2str(brushed_edges{j,3}(k)));
-        end
+    [fd, msg] = fopen(brushedFile,'w');
+    
+    
+    ee = [];
+    for i=1:no_contractor
+        e = cell2mat(Contractor{i}.Edges(:,end));
+        e = [e , i*ones( length(e),1)];
+        ee = [ee ; e];
+    end 
+    
+    for j=1:length(EdgeList)
         
-        if(length(brushed_edges{j,3}) == 0)
-            thiscell = '0';
+        c = [EdgeList(j,1), EdgeList(j,2)];
+        [~, ix] = ismember(ee(:,[1,2]), c, 'rows');
+        
+        all_conts = ee(logical(ix),3)';
+        brush{j,1} = EdgeList(j,1); brush{j,2} = EdgeList(j,2); 
+        brush{j,3} = all_conts;
+    end
+    
+    for j = 1:length(brush)
+        brushed_print{j,1} = num2str(brush {j,1});
+        brushed_print{j,2} = num2str(brush {j,2});
+        
+        thiscell = '';
+        for k = 1:length(brush{j,3})
+            thiscell = strcat(thiscell, num2str(brush{j,3}(k)));
         end
-        %thiscell = cellfun(@num2str,brushed_edges(j,3),"un", 0);
-        brushed_print{j,1} = num2str(brushed_edges{j,1});
-        brushed_print{j,2} = num2str(brushed_edges{j,2});
         brushed_print{j,3} = thiscell;
         
-        if fid < 0 
+        if fd < 0 
             error('Failed to open file "%s" because: "%s"', brushedFile, msg);
         else
-            fprintf(fid,'%s,%s,%s\r\n',brushed_print{j,1},brushed_print{j,2},brushed_print{j,3});
-        end   
-    end
-    fclose(fid);
+            fprintf(fd,'%s,%s,%s\r\n',brushed_print{j,1},brushed_print{j,2},brushed_print{j,3});
+        end 
+    end 
+    fclose(fd);
     
     scoreFile = strcat(initPath,'\Database\Input\score_info_fromMatlab.txt');
     scoreFile = char(scoreFile);

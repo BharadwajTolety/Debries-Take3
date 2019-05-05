@@ -29,11 +29,17 @@ public class graph_view : MonoBehaviour {
     {
         if(scan.activeSelf)
         {
-            if(runSetup.get_found_brush())
+            if(runSetup.get_brush_done())
             {
-                runSetup.set_found_brush(false);
+
+                runSetup.set_brush_done(false);
                 mapBrushing.map_update_ver(runSetup.get_brush_map());
                 scan.SetActive(false);
+            }
+            else if(!runSetup.get_found_brush())
+            {
+                Debug.Log("matlab brush info not found");
+                //scan.SetActive(false);
             }
         }
     }

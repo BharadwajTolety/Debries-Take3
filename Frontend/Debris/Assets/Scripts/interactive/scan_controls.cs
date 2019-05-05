@@ -128,7 +128,7 @@ public class scan_controls : MonoBehaviour
 
         if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1)
         {
-            if (Manager.Instance.edge_changes > 40 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1)
+            if (Manager.Instance.edge_changes > 40 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1 || Manager.Instance.color_start)
             {
                 foreach (GameObject blinker in blinkers)
                     blinker.GetComponent<Toggle>().interactable = false;
