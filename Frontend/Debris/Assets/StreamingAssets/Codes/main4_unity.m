@@ -2,8 +2,8 @@
 %This loops through the repair solution with different objectives
 % After user makes the changes - repair algorithm
  
-time_selected = header(1);
-profit_selected = header(2);
+time_selected = header(2);
+profit_selected = header(1);
 intersection_selected = header(3);
 
 oo = [time_selected, profit_selected, intersection_selected];
@@ -143,7 +143,16 @@ time_vec=zeros(1,no_contractor);
     
     ee = [];
     for i=1:no_contractor
-        e = cell2mat(Contractor{i}.Edges(:,end));
+        j = length(Contractor{i}.Edges);
+        if(j > 1)
+            e = [];
+            for j = 1:length(Contractor{i}.Edges)
+                e = [e; cell2mat(Contractor{i}.Edges(j))];
+            end
+        else
+            e = cell2mat(Contractor{i}.Edges);
+        end
+        %e = cell2mat(Contractor{i}.Edges(:,end));
         e = [e , i*ones( length(e),1)];
         ee = [ee ; e];
     end 

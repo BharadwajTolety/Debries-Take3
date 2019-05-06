@@ -77,12 +77,18 @@ public class scan_controls : MonoBehaviour
         if (runSetup.screenshot())
         {
             runSetup.screenshot_done(false);
-            mapscreen.GetComponent<Map_Initiation>().drawMap_again();
             verControl.GetComponent<ver_control>().empty_folder(true);
 
-            manager.GetComponent<contInfo_Matlab>().run_generatecnc();
             GameObject.Find("GameManager").GetComponent<graph_view>().destroy_inter_marks();
 
+            //run generate contractor via matlab for non scratch level
+            GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
+            if (themWhiteEdges.Length <= 1)
+            {
+                manager.GetComponent<graph_view>().toggle_noti();
+                manager.GetComponent<contInfo_Matlab>().run_generatecnc();
+            }
+            rerun = true;
             check_deborah();
         }
     }
@@ -126,12 +132,20 @@ public class scan_controls : MonoBehaviour
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
 
-        if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1)
+        if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1 || rerun)
         {
-            if (Manager.Instance.edge_changes > 40 || themWhiteLines.Length > 1 && Manager.Instance.scans < 1 || Manager.Instance.color_start)
+            if (Manager.Instance.edge_changes > 40 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
             {
-                foreach (GameObject blinker in blinkers)
-                    blinker.GetComponent<Toggle>().interactable = false;
+                if (rerun)
+                {
+                    foreach (GameObject blinker in blinkers)
+                        blinker.GetComponent<Toggle>().interactable = true;
+                }
+                else
+                {
+                    foreach (GameObject blinker in blinkers)
+                        blinker.GetComponent<Toggle>().interactable = false;
+                }            
             }
             else
             {
@@ -146,9 +160,10 @@ public class scan_controls : MonoBehaviour
             else if (Manager.Instance.edge_changes < 2)
                 noscan = true;
 
-            if (noscan || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1) || themWhiteLines.Length > 90)
+            if (noscan || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1 && !rerun) || themWhiteLines.Length > 120)
             {
                 scan.GetComponent<Button>().interactable = false;
+                rerun = false;   
             }
             else if (scan.GetComponent<Button>().interactable == false)
             {
@@ -211,6 +226,7 @@ public class scan_controls : MonoBehaviour
     {
         //only update playtime right after scan is hit
         Manager.Instance.time_played = playTime;
+        Manager.Instance.color_start = false;
         manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
     }
 
@@ -271,7 +287,8 @@ public class scan_controls : MonoBehaviour
     {
         runSetup.takeScreenShot_static(wid, hght, x, y, w, h);
 
-        //two steps in update hacky fix
+        mapscreen.GetComponent<Map_Initiation>().drawMap_again();
+        //some steps in update hacky fix
         //mapscreen.GetComponent<Map_Initiation>().drawMap_again();
         //verControl.GetComponent<ver_control>().empty_folder(true);
 

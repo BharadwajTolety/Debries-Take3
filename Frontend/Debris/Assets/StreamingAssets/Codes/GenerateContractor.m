@@ -238,7 +238,17 @@ EdgeListMatrix = GenerateEdgeList( Contractor );
     
     ee = [];
     for i=1:no_contractor
-        e = cell2mat(Contractor{i}.Edges);
+         j = length(Contractor{i}.Edges);
+        if(j > 1)
+            e = [];
+            for j = 1:length(Contractor{i}.Edges)
+                e = [e; cell2mat(Contractor{i}.Edges(j))];
+            end
+        else
+            e = cell2mat(Contractor{i}.Edges);
+        end
+        
+        %e = cell2mat(Contractor{i}.Edges);
         e = [e , i*ones( length(e),1)];
         ee = [ee ; e];
     end 

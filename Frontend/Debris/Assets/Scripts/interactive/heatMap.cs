@@ -16,6 +16,7 @@ public class heatMap : MonoBehaviour
                 heat.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
                 legend.SetActive(false);
             }
+            Manager.Instance.debris_check += 1;
         }
         else
         {

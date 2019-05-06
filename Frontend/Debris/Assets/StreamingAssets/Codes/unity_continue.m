@@ -2,10 +2,10 @@
 %% update problem data edgelist.
 
 %% run main
-%clear X
-%clear brushed_edges
-clc
-clearvars -except tcpipServer
+clear X
+clear brushed_edges
+%clc
+%clearvars -except tcpipServer
     pathSplit=regexp(pwd,'\','split');
     initPath = '';
 

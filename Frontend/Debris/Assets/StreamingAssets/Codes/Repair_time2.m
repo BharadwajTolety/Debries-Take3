@@ -46,7 +46,7 @@ while all(change_check) == 1
 %                 catch
 %                 4
 %                 end
-                f_shared_nodes = node_intersection(nc, nodes) > 0; %find shared nodes by other contractors
+                f_shared_nodes = node_intersection(1, nodes) > 0; %find shared nodes by other contractors
                 shared_nodes = nodes(f_shared_nodes);
                 % try to find edges which's debris is collected by other
                 % contractors - and steal that debris to increase time of the

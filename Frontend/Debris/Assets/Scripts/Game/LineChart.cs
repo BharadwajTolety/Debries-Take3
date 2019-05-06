@@ -122,22 +122,22 @@ public class LineChart : MonoBehaviour {
                 largest = value;
         }
 
-        if (largest > 10000000)
-            percent = 10000;
-        else if (largest > 1000000)
-            percent = 1000;
-        else if (largest > 100000)
-            percent = 100;
-        else if (largest > 10000)
-            percent = 10;
-        else
-            percent = 1;
+  //      if (largest > 10000000)
+  //          percent = 10000;
+  //      else if (largest > 1000000)
+  //          percent = 1000;
+  //      else if (largest > 100000)
+  //          percent = 100;
+  //      else if (largest > 10000)
+  //          percent = 10;
+  //      else
+  //          percent = 1;
 
-        foreach (float value in valuelist_)
-        {
-            valuelist_[valcheck] = value / percent;
-            valcheck++;
-        }
+       //foreach (float value in valuelist_)
+       //{
+       //    valuelist_[valcheck] = value / percent;
+       //    valcheck++;
+       //}
 
         valcheck = 0;
         largest = 0; percent = 10;
@@ -147,22 +147,22 @@ public class LineChart : MonoBehaviour {
                 largest = value;
         }
 
-        if (largest > 10000000)
-            percent = 10000;
-        else if (largest > 1000000)
-            percent = 1000;
-        else if (largest > 100000)
-            percent = 100;
-        else if (largest > 10000)
-            percent = 10;
-        else
-            percent = 1;
+//        if (largest > 10000000)
+//            percent = 10000;
+//        else if (largest > 1000000)
+//            percent = 1000;
+//        else if (largest > 100000)
+//            percent = 100;
+//        else if (largest > 10000)
+//            percent = 10;
+//        else
+//            percent = 1;
 
-        foreach (float value in valuelist2_)
-        {
-            valuelist2_[valcheck] = value / percent;
-            valcheck++;
-        }
+        //foreach (float value in valuelist2_)
+        //{
+        //    valuelist2_[valcheck] = value / percent;
+        //    valcheck++;
+        //}
 
         if (getAxisLableX == null) {
             getAxisLableX = delegate (int _i) { return _i.ToString(); };
@@ -178,7 +178,7 @@ public class LineChart : MonoBehaviour {
         gameObjectList.Clear();
 
         float graphWidth = graphContainer.sizeDelta.x;
-        float graphHeight = graphContainer.sizeDelta.y;
+        float graphHeight = graphContainer.sizeDelta.y*0.80f;
 
         //setting up max and mins for first line - profit
         float yMaximum = valuelist_[0];
@@ -238,6 +238,11 @@ public class LineChart : MonoBehaviour {
         float xSize = (graphWidth / maxVisibleValueAmount);
         int xIndex = 0;
         int graph_size = 1;
+        float Maxy;
+        if (yMaximum > yMaximum2)
+            Maxy = yMaximum;
+        else
+            Maxy = yMaximum2;
 
         //instantiate and setup each value dot on the graph and connecting them
         GameObject lastCircleGameObject = null, lastCircleGameObject2 = null;
@@ -247,7 +252,8 @@ public class LineChart : MonoBehaviour {
             float xPosition = (xSize + xIndex * xSize)/2;
 
             //setup dots on the graph - profit
-            float yPosition = (valuelist_[i]) / (graphHeight * .15f);
+            // float yPosition = (valuelist_[i]) / (graphHeight * .15f);
+            float yPosition = (graphHeight / Maxy) * valuelist_[i];
             Debug.Log("yPosition: " + yPosition + " time: " + valuelist_[i]);
 
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition), "time");
@@ -267,13 +273,14 @@ public class LineChart : MonoBehaviour {
                 labelY.gameObject.SetActive(true);
                 labelY.sizeDelta = new Vector2();
                 labelY.anchoredPosition = new Vector2(xPosition - 10, yPosition + 20);
-                labelY.GetComponent<Text>().text = ((int)valuelist_[i]).ToString();
+                labelY.GetComponent<Text>().text = (((int)valueList[i]) / 1000).ToString();
                 labelY.GetComponent<Text>().fontSize = 30;
                 gameObjectList.Add(labelY.gameObject);
             }
 
             //setup dots on the graph - time 
-            float yPosition2 = (valuelist2_[j]) / (graphHeight * .15f);
+            //float yPosition2 = (valuelist2_[j]) / (graphHeight * .15f);
+            float yPosition2 = (graphHeight / Maxy) * valuelist2_[j];
             Debug.Log("yPosition2: " + yPosition2 + " profit: " + valuelist2_[j]);
             GameObject circleGameObject2 = CreateCircle(new Vector2(xPosition, yPosition2), "profit");
             gameObjectList.Add(circleGameObject2);
@@ -292,7 +299,7 @@ public class LineChart : MonoBehaviour {
                 labelY2.gameObject.SetActive(true);
                 labelY2.sizeDelta = new Vector2();
                 labelY2.anchoredPosition = new Vector2(xPosition - 10, yPosition2 + 20);
-                labelY2.GetComponent<Text>().text = ((int)valuelist2_[j]).ToString();
+                labelY2.GetComponent<Text>().text = (((int)valueList2[i]) / 1000).ToString();
                 labelY2.GetComponent<Text>().fontSize = 30;
                 gameObjectList.Add(labelY2.gameObject);
             }

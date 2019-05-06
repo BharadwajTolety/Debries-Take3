@@ -201,6 +201,12 @@ public void update_run_image(Dropdown op)
             Destroy(mark);
     }
 
+    public void slider_textVal_update(Text val)
+    {
+        Slider intersect_slider = intersect_view.GetComponentInChildren<Slider>();
+        val.text = intersect_slider.value.ToString();
+    }
+
     public void intersection_update(float intersect, bool reupdate = false)
     {
         Text text = intersect_view.GetComponentInChildren<Text>();

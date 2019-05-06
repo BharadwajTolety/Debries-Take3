@@ -117,7 +117,7 @@ public class Map_Initiation : MonoBehaviour
     }
 
     //draw the map again for new run setup
-    public void drawMap_again()
+    public bool drawMap_again()
     {
         int number_of_edges = itemData["EdgeData"].Count;
         int source;
@@ -145,7 +145,9 @@ public class Map_Initiation : MonoBehaviour
             else
             if (contractorCode == 3) { addEdge_again(edgeNumber, source, dest, "green"); }
         }
+
         Debug.Log("new run starting, run no.: " + Manager.Instance.run);
+        return true;
     }
 
     void addEdge_again(int EdgeNumber, int nFrom, int nTo, string strType)
@@ -156,8 +158,39 @@ public class Map_Initiation : MonoBehaviour
         GameObject restart_edge = GameObject.Find(strType);
 
         //tell which object to change to which object.
-        mapBrushing.new_run_update(to_update, restart_edge);
+
+        //for new run edge update
+        GameObject new_run_edge = update_it_newrun(to_update, restart_edge);
+            if (new_run_edge == null)
+                Destroy(new_run_edge);
+            else
+                new_run_edge.name = to_update.name;
     }
+
+    private GameObject update_it_newrun(GameObject theSelectedObj, GameObject NewObj)
+    {
+
+        Vector3 distance = theSelectedObj.transform.localScale;
+
+        Vector3 objScale = theSelectedObj.transform.localScale;
+        Vector3 between2 = theSelectedObj.transform.position;
+        Quaternion tetha = theSelectedObj.transform.rotation;
+
+        // make sure you are deleting a line
+        string objectName = theSelectedObj.name;
+        if (objectName.Contains("E_"))
+        {
+            Destroy(theSelectedObj);
+            GameObject created = Instantiate(NewObj, between2, Quaternion.identity);
+            created.transform.rotation = tetha;//Rotate (startPoint, tetha);
+            created.transform.parent = GameObject.Find("MapScreen").gameObject.transform;
+            created.transform.localScale = distance;
+            return created;
+        }
+        return null;
+    }
+
+
 
     /// <summary>
     /// Draws the map.

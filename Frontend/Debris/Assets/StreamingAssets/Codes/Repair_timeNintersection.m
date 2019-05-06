@@ -34,7 +34,7 @@ while all(change_check) == 1
              nc = edge_change(f,3); cl = edge_change(f,4); tr = edge_change(f,5);
             if updated_time_vec(nc) <= q_t %Still smaller?
                 nodes = unique(Contractor{nc}.trips{1,cl}{tr,1}); %nodes on that trip
-                f_shared_nodes = node_intersection(nc, nodes) > 0; %find shared nodes bu other contractors
+                f_shared_nodes = node_intersection(1, nodes) > 0; %find shared nodes bu other contractors
                 shared_nodes = nodes(f_shared_nodes);
                 % try to find edges which's debris is collected by other
                 % contractors - and steal that debris to increase time of the

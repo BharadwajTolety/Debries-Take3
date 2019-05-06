@@ -131,7 +131,7 @@ public class runSetup : MonoBehaviour
     {
         StringBuilder csv = new StringBuilder();
 
-        string line, suggest, inputObj;
+        string line, debCheck, suggest, inputObj;
         int source, dest, number_of_edges = mapItem["EdgeData"].Count;
 
         //read the brushed_edges from matlab to log them here
@@ -155,7 +155,7 @@ public class runSetup : MonoBehaviour
         if (!print_header)
         {
             print_header = true;
-            line = "-,time_played,on_ver,MinProfit,MaxTime,red_profit,red_time,green_profit,green_time,blue_profit,blue_time,intersect,total_suggest,input_obj";
+            line = "-,time_played,on_ver,MinProfit,MaxTime,red_profit,red_time,green_profit,green_time,blue_profit,blue_time,intersect,total_debCheck,total_suggest,input_obj";
 
             for (int i = 0; i < number_of_edges; i++)
             {
@@ -174,10 +174,11 @@ public class runSetup : MonoBehaviour
             line += ',' + Manager.Instance.cncProfit[i].ToString() + ',' + Manager.Instance.cncTime[i].ToString();
         }
 
+        debCheck = Manager.Instance.debris_check.ToString();
         suggest = Manager.Instance.suggest[0].ToString() + '_' + Manager.Instance.suggest[1].ToString() + '_' + Manager.Instance.suggest[2].ToString();
         inputObj = prft_obj.ToString() + '_' + time_obj.ToString() + '_' + inter_obj.ToString();
 
-        line += ',' + Manager.Instance.intersect.ToString() + ',' + suggest + ',' + inputObj;
+        line += ',' + Manager.Instance.intersect.ToString() + ',' + debCheck + ',' + suggest + ',' + inputObj;
 
         brush_map.Clear();
         for (int i = 0; i < number_of_edges; i++)

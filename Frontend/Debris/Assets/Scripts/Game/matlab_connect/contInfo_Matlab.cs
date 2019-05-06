@@ -61,6 +61,7 @@ public class contInfo_Matlab : classSocket
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
         if (themWhiteEdges.Length <= 1)
         {
+           // Manager.Instance.debris_check = 0;
             Manager.Instance.color_start = true;
             read_contractor_info(0, 0, 0, true);
         }

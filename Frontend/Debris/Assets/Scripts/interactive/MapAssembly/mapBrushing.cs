@@ -156,7 +156,6 @@ public class mapBrushing : MonoBehaviour
             created.transform.rotation = tetha;//Rotate (startPoint, tetha);
             created.transform.parent = GameObject.Find("MapScreen").gameObject.transform;
             created.transform.localScale = distance;
-
             return created;
         }
         return null;
