@@ -223,6 +223,14 @@ public void update_run_image(Dropdown op)
 
         if(!reupdate)
         {
+            foreach(GameObject mks in intersect_marks)
+            {
+                if (intersect_slider.handleRect.position.magnitude - 10 < mks.transform.position.magnitude && mks.transform.position.magnitude < intersect_slider.handleRect.position.magnitude + 10 )
+                {
+                    mks.GetComponentInChildren<Text>().text += "\n" + Manager.Instance.scans.ToString();
+                    return;
+                }
+            }
             GameObject mark = Instantiate(handle_mark);
             mark.GetComponent<Image>().color = Color.yellow;
             mark.transform.position = intersect_slider.handleRect.position;
