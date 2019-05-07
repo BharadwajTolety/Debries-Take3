@@ -171,8 +171,6 @@ public class scan_controls : MonoBehaviour
         else
         {
             scan.GetComponent<Button>().interactable = false;
-            foreach (GameObject blinker in blinkers)
-                blinker.GetComponent<Toggle>().interactable = false;
         }
     }
 

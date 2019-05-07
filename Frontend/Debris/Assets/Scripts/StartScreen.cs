@@ -13,6 +13,7 @@ public class StartScreen : MonoBehaviour {
 
     private void Awake()
     {
+        Cursor.visible = true;
         //get the options setup
         string setup = Application.streamingAssetsPath + "/Database/Input/res_setup/setup_1.txt";
 

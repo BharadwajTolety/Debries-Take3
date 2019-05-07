@@ -51,7 +51,7 @@ public class read_Score : MonoBehaviour
                 //not reading anymore
                 reading_check = false;              
             }
-            else if (timespent > 50)
+            else if (timespent > 120)
             {
                 Debug.Log("Matlab taking too long something wrong - " + timespent);
 
@@ -97,7 +97,7 @@ public class read_Score : MonoBehaviour
             catch (Exception e)
             {
                 Debug.Log("the file couldnt be read - " + e.Message);
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
+                //GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                 return false;
             }
 
