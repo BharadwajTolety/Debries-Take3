@@ -46,9 +46,9 @@ public class scan_controls : MonoBehaviour
         if (themWhiteEdges.Length <= 1)
         {
             manager.GetComponent<graph_view>().toggle_noti();
-            manager.GetComponent<contInfo_Matlab>().run_generatecnc();
 
-            rerun = true;
+            if(manager.GetComponent<contInfo_Matlab>().run_generatecnc())
+                rerun = true;
         }
     }
 
@@ -78,8 +78,6 @@ public class scan_controls : MonoBehaviour
         {
             runSetup.screenshot_done(false);
             verControl.GetComponent<ver_control>().empty_folder(true);
-
-            GameObject.Find("GameManager").GetComponent<graph_view>().destroy_inter_marks();
 
             //run generate contractor via matlab for non scratch level
             GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
@@ -134,6 +132,7 @@ public class scan_controls : MonoBehaviour
 
         if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1 || rerun)
         {
+            rerun = false;
             if (Manager.Instance.edge_changes > 40 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
             {
                 if (rerun)
@@ -163,12 +162,17 @@ public class scan_controls : MonoBehaviour
             if (noscan || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1 && !rerun) || themWhiteLines.Length > 120)
             {
                 scan.GetComponent<Button>().interactable = false;
-                rerun = false;   
             }
             else if (scan.GetComponent<Button>().interactable == false)
             {
                 scan.GetComponent<Button>().interactable = true;
             }
+        }
+        else
+        {
+            scan.GetComponent<Button>().interactable = false;
+            foreach (GameObject blinker in blinkers)
+                blinker.GetComponent<Toggle>().interactable = false;
         }
     }
 
@@ -228,6 +232,7 @@ public class scan_controls : MonoBehaviour
         Manager.Instance.time_played = playTime;
         Manager.Instance.color_start = false;
         manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
+        //rerun = false;
     }
 
     //submit the current run and log it down.

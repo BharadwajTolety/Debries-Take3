@@ -246,7 +246,7 @@ public class runSetup : MonoBehaviour
                         break;
                     }
                 }
-                Debug.Log("brushfile found and read");
+                //Debug.Log("brushfile found and read");
             }
             //if no matlab brush info found on this edge just add player input
             if(!found_brush)

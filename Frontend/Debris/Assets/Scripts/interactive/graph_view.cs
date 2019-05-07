@@ -9,6 +9,7 @@ public class graph_view : MonoBehaviour {
     GameObject intersect_view;
     GameObject mapscreen;
 
+    public GameObject onCursor;
     public GameObject scan, error, run_image, handle_mark;
     public Text current_intersect_text;
     private Texture2D image_tex;
@@ -38,7 +39,7 @@ public class graph_view : MonoBehaviour {
             }
             else if(!runSetup.get_found_brush())
             {
-                Debug.Log("matlab brush info not found");
+               // Debug.Log("matlab brush info not found");
                 //scan.SetActive(false);
             }
         }
@@ -135,11 +136,13 @@ public void update_run_image(Dropdown op)
             {
                 graph_anim.SetInteger("time_state", 1);
                 map_anim.SetInteger("map_state", 1);
+                onCursor.SetActive(true);
             }
             else
             {
                 graph_anim.SetInteger("time_state", 2);
                 map_anim.SetInteger("map_state", 3);
+                onCursor.SetActive(false);
             }
         }
         else if(graph.name.Contains("_profit"))
@@ -152,11 +155,13 @@ public void update_run_image(Dropdown op)
             {
                 graph_anim.SetInteger("profit_state", 1);
                 map_anim.SetInteger("map_state", 1);
+                onCursor.SetActive(true);
             }
             else
             {
                 graph_anim.SetInteger("profit_state", 2);
                 map_anim.SetInteger("map_state", 2);
+                onCursor.SetActive(false);
             }
         }
         else if(graph.name.Contains("_total"))
@@ -169,11 +174,13 @@ public void update_run_image(Dropdown op)
             {
                 graph_anim.SetInteger("progress_state", 1);
                 map_anim.SetInteger("map_state", 1);
+                onCursor.SetActive(true);
             }
             else
             {
                 graph_anim.SetInteger("progress_state", 2);
                 map_anim.SetInteger("map_state", 4);
+                onCursor.SetActive(false);
             }
         }
         else if(graph.name == "intersection_overlaps")
@@ -186,11 +193,13 @@ public void update_run_image(Dropdown op)
             {
                 graph_anim.SetInteger("intersect_state", 1);
                 map_anim.SetInteger("map_state", 1);
+                onCursor.SetActive(true);
             }
             else
             {
                 graph_anim.SetInteger("intersect_state", 2);
                 map_anim.SetInteger("map_state", 5);
+                onCursor.SetActive(false);
             }
         }
     }
@@ -199,6 +208,8 @@ public void update_run_image(Dropdown op)
     {
         foreach (GameObject mark in intersect_marks)
             Destroy(mark);
+
+        intersect_marks.Clear();
     }
 
     public void slider_textVal_update(Text val)

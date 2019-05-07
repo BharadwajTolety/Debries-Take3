@@ -37,7 +37,7 @@ public class Map_Initiation : MonoBehaviour
         //C1- read the data for the nodes and put them into itemdata
         //C2- Run DrawMap()
         if (Manager.Instance.map_json == "" || Manager.Instance.map_json == null)
-            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Scratch_1.json";
+            Manager.Instance.map_json = Application.streamingAssetsPath + "/Database/Input/Level_1.json";
 
         JSONstring = File.ReadAllText(Manager.Instance.map_json);
 

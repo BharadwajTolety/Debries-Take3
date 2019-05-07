@@ -56,7 +56,7 @@ public class contInfo_Matlab : classSocket
     }
 
     //when we start off with a contractor list on the map run this function.
-    public void run_generatecnc()
+    public bool run_generatecnc()
     {
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
         if (themWhiteEdges.Length <= 1)
@@ -64,7 +64,10 @@ public class contInfo_Matlab : classSocket
            // Manager.Instance.debris_check = 0;
             Manager.Instance.color_start = true;
             read_contractor_info(0, 0, 0, true);
+
+            return true;
         }
+        return false;
     }
 
     //write out the csv for matlab to read
@@ -85,27 +88,27 @@ public class contInfo_Matlab : classSocket
     public void read_contractor_info(int profit, int time, int intersect, bool rerun = false)
     {
         GameObject[] themWhiteEdges = GameObject.FindGameObjectsWithTag("white");
-        if ((themWhiteEdges.Length == 1 && themWhiteEdges[0].name == "white") || Manager.Instance.scans > 0)
+        //if ((themWhiteEdges.Length == 1 && themWhiteEdges[0].name == "white") || Manager.Instance.scans > 0)
+       // {
+        if(!rerun) // when rerun that is a scan zero
+            Manager.Instance.scans += 1;
+        Manager.Instance.edge_changes = 0;
+
+        int count_edges = write_map_csv(csvPath, false, profit, time, intersect);
+
+        Debug.Log("writting complete!! total edges - " + count_edges);
+
+        //setup the client for the matlab server to read
+        if(run_count != Manager.Instance.run || rerun)
         {
-            if(!rerun) // when rerun that is a scan zero
-                Manager.Instance.scans += 1;
-            Manager.Instance.edge_changes = 0;
-
-            int count_edges = write_map_csv(csvPath, false, profit, time, intersect);
-
-            Debug.Log("writting complete!! total edges - " + count_edges);
-
-            //setup the client for the matlab server to read
-            if(run_count != Manager.Instance.run || rerun)
-            {
-                run_count = Manager.Instance.run;
-                setupSocket(true);
-            }
-            else
-                setupSocket(false);
-
-            call_reading(profit, time, intersect);
+            run_count = Manager.Instance.run;
+            setupSocket(true);
         }
+        else
+            setupSocket(false);
+
+        call_reading(profit, time, intersect);
+       // }
     }
 
     public void write_log(string path, int profit_obj, int time_obj, int intersect_obj)
