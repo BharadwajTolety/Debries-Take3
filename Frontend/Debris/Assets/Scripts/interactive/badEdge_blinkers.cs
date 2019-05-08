@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class badEdge_blinkers : MonoBehaviour {
 
+    public Toggle blink_profit, blink_intersect, blink_time;
     private List<string>[] bad_edges;
     private bool on = true;
     private string[] badEdge_path;
@@ -97,7 +98,49 @@ public class badEdge_blinkers : MonoBehaviour {
     {
         //read_badEdges();
         on = toggle.GetComponent<Toggle>().isOn;
-        if(bad_edges != null)
+
+        //fix the toggle swap issue, now one has to turn toggle on and off individual before moving on
+        switch (toggle.name)
+        {
+            case "Intersect_toggle":
+                if (on)
+                {
+                    blink_profit.interactable = false;
+                    blink_time.interactable = false;
+                }
+                else
+                {
+                    blink_profit.interactable = true;
+                    blink_time.interactable = true;
+                }
+                break;
+            case "Profit_toggle":
+                if (on)
+                {
+                    blink_intersect.interactable = false;
+                    blink_time.interactable = false;
+                }
+                else
+                {
+                    blink_intersect.interactable = true;
+                    blink_time.interactable = true;
+                }
+                break;
+            case "Time_toggle":
+                if (on)
+                {
+                    blink_profit.interactable = false;
+                    blink_intersect.interactable = false;
+                }
+                else
+                {
+                    blink_profit.interactable = true;
+                    blink_intersect.interactable = true;
+                }
+                break;
+        }
+
+        if (bad_edges != null)
         {
             int this_case = 0;
 
