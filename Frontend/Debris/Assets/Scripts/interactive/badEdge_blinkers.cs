@@ -53,7 +53,7 @@ public class badEdge_blinkers : MonoBehaviour {
             if (!File.Exists(bad_path))
             {
                 Debug.Log("something went wrong with matlab there is no badedge file available");
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
+                //GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                 continue;
             }
             else
@@ -85,7 +85,7 @@ public class badEdge_blinkers : MonoBehaviour {
                 catch (Exception e)
                 {
                     Debug.Log("the file couldnt be read - " + e.Message);
-                    GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
+                    //GameObject.FindGameObjectWithTag("GameController").GetComponent<graph_view>().error_msg_open();
                     continue;
                 }
             }

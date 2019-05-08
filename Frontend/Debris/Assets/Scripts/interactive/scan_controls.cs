@@ -132,7 +132,6 @@ public class scan_controls : MonoBehaviour
 
         if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1 || rerun)
         {
-            rerun = false;
             if (Manager.Instance.edge_changes > 40 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
             {
                 if (rerun)
@@ -230,7 +229,7 @@ public class scan_controls : MonoBehaviour
         Manager.Instance.time_played = playTime;
         Manager.Instance.color_start = false;
         manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
-        //rerun = false;
+        rerun = false;
     }
 
     //submit the current run and log it down.
