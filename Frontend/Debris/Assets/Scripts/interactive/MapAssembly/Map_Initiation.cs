@@ -16,6 +16,8 @@ public class Map_Initiation : MonoBehaviour
 {
     private string JSONstring, JSON_Edges, JSON_Contractors;
     private JsonData itemData, edgeNamesData, ContractorsData;
+
+    public float debris_max;
     public float unit_r;
     public float TransX;
     public float TransY;
@@ -301,13 +303,16 @@ public class Map_Initiation : MonoBehaviour
             heat_map.transform.localScale = new Vector3(0.3f, distance, 0.0f);
             heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
 
-            if (debris <= 83)
+            if (debris <= 62)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(0.7827874f, 1f, 0.4481132f, 0.8509804f);
+            else if (62 <= debris && debris < 124)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(.42f, .91f, .18f, .85f);
-            else if (83 < debris && debris < 166)
-//current
-                heat_map.GetComponent<SpriteRenderer>().color = new Color(.905f, .71f, .2f, .85f);
-            else if (debris >= 166)
+            else if (124 <= debris && debris < 186)
+                heat_map.GetComponent<SpriteRenderer>().color = new Color(0.9811321f, 0.8611538f, 0f, .85f);
+            else if (186 <= debris)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(0.6f, .38f, .27f, .85f);
+            //else if (debris >= 200)
+            //  heat_map.GetComponent<SpriteRenderer>().color = new Color(0.3113208f, 0.1799918f, 0.116011f, 0.8823529f);
 
             heat_map.transform.parent = gameObject.transform;
             heat_map.name = "heat_" + name;
