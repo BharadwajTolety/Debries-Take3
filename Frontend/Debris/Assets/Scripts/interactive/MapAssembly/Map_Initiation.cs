@@ -303,7 +303,7 @@ public class Map_Initiation : MonoBehaviour
             heat_map.transform.localScale = new Vector3(0.3f, distance, 0.0f);
             heat_map.transform.Rotate(Vector3.forward * 1 * tetha);
 
-            if (debris <= 62)
+            if (debris < 62)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(0.7827874f, 1f, 0.4481132f, 0.8509804f);
             else if (62 <= debris && debris < 124)
                 heat_map.GetComponent<SpriteRenderer>().color = new Color(.42f, .91f, .18f, .85f);
