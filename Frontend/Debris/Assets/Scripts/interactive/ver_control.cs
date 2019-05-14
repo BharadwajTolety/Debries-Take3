@@ -8,13 +8,16 @@ public class ver_control : MonoBehaviour
 {
     public Button[] ver_buttons;
 
-    private List<float> maxProfit = new List<float>();
-    private List<float> minTime = new List<float>();
+    private List<float> maxProfit = new List<float>(); //really this is minprofit
+    private List<float> minTime = new List<float>();    //really this is max time
 
     private List<float>[] cncProfit;
     private List<float>[] cncTime;
 
+    private string ver_directory;
+
     private List<float> intersect;
+    private int index_lines;
 
     private Dictionary<string, string> map = new Dictionary<string, string>();
 
@@ -23,6 +26,7 @@ public class ver_control : MonoBehaviour
 
     private void Awake()
     {
+        ver_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
         intersect = new List<float>();
 
         cncProfit = new List<float>[3];
@@ -40,30 +44,41 @@ public class ver_control : MonoBehaviour
         }
 
         //empty the folder for a new game
-        empty_folder();
+        empty_folder(true);
     }
 
     public void empty_folder(bool restart = false)
     {
-        string log_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
-        if (!Directory.Exists(log_directory))
+        if (!Directory.Exists(ver_directory))
         {
-            Directory.CreateDirectory(log_directory);
+            Directory.CreateDirectory(ver_directory);
         }
         else
         {
-            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+            System.IO.DirectoryInfo di = new DirectoryInfo(ver_directory);
 
-            foreach (FileInfo file in di.GetFiles())
+            if (restart)
             {
-                file.Delete();
-            }
-        }
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
 
-        if (restart)
-        {
-            update_verList(restart);
-            restart_graphs();
+                restart_graphs();
+                update_verList(true);
+            }
+            else
+            {
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    string s = file.Name.Substring(5,1);
+                    int ver = (int.Parse(s));
+                    if (ver > Manager.Instance.on_ver)
+                        file.Delete();
+                }
+
+                reset_lists_forScan();
+            }
         }
     }
 
@@ -91,49 +106,98 @@ public class ver_control : MonoBehaviour
                     ver_cont++;
             }
 
-            for (int i = (ver_cont - 1), j = count_ver - 1; i >= 0; i--, j--)
-            {
-                Button vers_button = ver_buttons[i];
-                vers_button.interactable = true;
-                vers_button.gameObject.name = (Manager.Instance.scans - i).ToString();
+            //for (int i = (ver_cont - 1); i >= 0; i--)
+            //{
+            //    Button vers_button = ver_buttons[i];
+            //    vers_button.interactable = true;
+            //
+            //    //keep the gameobject names static to calculate total based on size of lists for graphs
+            //    //vers_button.gameObject.name = (Manager.Instance.scans - i).ToString();
+            //
+            //    //change the display of the button for user accessibility
+            //    vers_button.gameObject.GetComponent<Text>().text = (Manager.Instance.scans - i).ToString();
+            //}
 
-                //change the display of the button for user accessibility
-                vers_button.gameObject.GetComponent<Text>().text = vers_button.name;
+            System.IO.DirectoryInfo di = new DirectoryInfo(ver_directory);
+            int text_number = 0;
+            for (int k = di.GetFiles().Length - 1; k >= 0; k--)
+                if (di.GetFiles()[k].Name.EndsWith(".csv"))
+                    text_number++;
+                
+            for (int i = 0, j = di.GetFiles().Length - 1; j >= 0 ; j--)
+            {
+                if (di.GetFiles()[j].Name.EndsWith(".csv"))
+                {
+                    ver_buttons[i].interactable = true;
+                    ver_buttons[i].name = di.GetFiles()[j].Name.Substring(5, 1);
+                    ver_buttons[i].gameObject.GetComponent<Text>().text = text_number.ToString();
+                    text_number--;
+                    i++;
+                }
             }
+
             push_scoreList();
         }
         else
         {
-            //reset everything for a new run
-            count_ver = 0;
-            ver_cont = 0;
+            clear_lists_names();
+        }
+    }
 
-            for (int i = 0; i < 5; i++)
-            {
-                ver_buttons[i].interactable = false;
-                ver_buttons[i].name = i.ToString();
-            }
-            intersect.Clear();
-            maxProfit.Clear();
-            minTime.Clear();
+    private void reset_lists_forScan()
+    {
+        ver_cont = 0;
 
-            for (int i = 0; i < 3; i++)
-            {
-                cncProfit[i].Clear();
-                cncTime[i].Clear();
-            }
+        for (int i = 0, j  = ver_buttons.Length; i < ver_buttons.Length; i++, j--)
+        {   
+            Button vers_button = ver_buttons[i];
+            vers_button.interactable = false;
+            vers_button.gameObject.GetComponent<Text>().text = "-";
         }
 
+        minTime.RemoveRange(index_lines,minTime.Count- index_lines);
+        maxProfit.RemoveRange(index_lines,maxProfit.Count- index_lines);
+        intersect.RemoveRange(index_lines,intersect.Count - index_lines);
+
+        for (int i = 0; i < 3; i++)
+        {
+            cncProfit[i].RemoveRange(index_lines, cncProfit[i].Count - index_lines);
+            cncTime[i].RemoveRange(index_lines, cncTime[i].Count - index_lines);
+        }
+    }
+
+    private void clear_lists_names()
+    {
+        //reset everything for a new run
+        count_ver = 0;
+        ver_cont = 0;
+
+        for (int i = 0,j = ver_buttons.Length; i < ver_buttons.Length; i++, j--)
+        {
+            ver_buttons[i].interactable = false;
+            ver_buttons[i].gameObject.GetComponent<Text>().text = "-";
+        }
+
+        intersect.Clear();
+        maxProfit.Clear();
+        minTime.Clear();
+
+        for (int i = 0; i < 3; i++)
+        {
+            cncProfit[i].Clear();
+            cncTime[i].Clear();
+        }
     }
 
     public void update_mapVer(GameObject ver)
     {
+        string total = ver.tag.Substring(4,1);
         //the version name should only be the version number
         if (read_scanFile(ver.name))
         {
             Manager.Instance.on_ver = int.Parse(ver.name);
             mapBrushing.map_update_ver(map);
-            reUpdate_graphs(int.Parse(ver.name));
+            reUpdate_graphs(int.Parse(total));
         }
     }
 
@@ -147,8 +211,10 @@ public class ver_control : MonoBehaviour
         GameObject.Find("GameManager").GetComponent<graph_view>().intersection_update(0f);
     }
 
-    private void reUpdate_graphs(int total)
+    private void reUpdate_graphs(int index)
     {
+        int total = maxProfit.Count - (index-1);
+        index_lines = total;
         float[] profit_verCont = maxProfit.GetRange(0,total).ToArray();
         float[] time_verCont = minTime.GetRange(0, total).ToArray();
 
@@ -186,7 +252,7 @@ public class ver_control : MonoBehaviour
             string[] readScan = File.ReadAllLines(scanFile);
             string[] scoreInfo = new string[3];
 
-            for (int i = 1; i<readScan.Length;i++)
+            for (int i = 0; i<readScan.Length;i++)
             {
                 scoreInfo =  readScan[i].Split(',');
                 switch(scoreInfo[2])

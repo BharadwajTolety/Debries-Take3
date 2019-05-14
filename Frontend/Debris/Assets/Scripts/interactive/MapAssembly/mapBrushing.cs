@@ -16,7 +16,7 @@ public class mapBrushing : MonoBehaviour
         GameObject theSelectedObj = GameObject.Find(lineName);
         GameObject NewObj = GameObject.Find(lineType);
 
-        if (theSelectedObj.tag.Contains("+"))
+        if (theSelectedObj.tag.Contains("+") && lineType != "white")
         {
             NewObj = GameObject.FindGameObjectWithTag("AllColor");
         }
@@ -27,7 +27,9 @@ public class mapBrushing : MonoBehaviour
         else if(Manager.Instance.scans > 0 || Manager.Instance.color_start) //we don't want multple contractors on same edge before first scans
         {
             string update = NewObj.tag + theSelectedObj.tag;
-            if (update.Contains("red") && update.Contains("blue"))
+            if(NewObj.tag == "white")
+                update = "white";
+            else if (update.Contains("red") && update.Contains("blue"))
                 update = "red+blue";
             else if (update.Contains("red") && update.Contains("green"))
                 update = "red+green";

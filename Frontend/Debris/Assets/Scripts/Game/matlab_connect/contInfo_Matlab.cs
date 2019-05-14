@@ -33,6 +33,14 @@ public class contInfo_Matlab : classSocket
 
             System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
 
+            foreach(var fold in di.GetDirectories())
+            {
+                foreach (FileInfo file in fold.GetFiles())
+                {
+                    file.Delete();
+                }
+                fold.Delete();
+            }
             foreach (FileInfo file in di.GetFiles())
             {
                 file.Delete();
@@ -99,7 +107,7 @@ public class contInfo_Matlab : classSocket
         Debug.Log("writting complete!! total edges - " + count_edges);
 
         //setup the client for the matlab server to read
-        if(run_count != Manager.Instance.run || rerun)
+        if(run_count != Manager.Instance.run || rerun) //|| (Manager.Instance.scans == 1 && !rerun))
         {
             run_count = Manager.Instance.run;
             setupSocket(true);
@@ -189,38 +197,7 @@ public class contInfo_Matlab : classSocket
 
         //write down the edge list for matlab
         File.WriteAllText(path, csv.ToString());
-
-        ver_control_file(csv.ToString());
         return count_edges;
-    }
-
-    //write down the scan file for version control needs
-    private void ver_control_file(string csv)
-    {
-        string log_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
-        if (!Directory.Exists(log_directory))
-        {
-            Directory.CreateDirectory(log_directory);
-        }
-        else
-        {
-            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
-
-            int count = 0;
-            foreach (FileInfo file in di.GetFiles())
-            {
-                if(file.Name.EndsWith(".csv"))
-                {
-                    count++;
-                }
-            }
-
-            if (count >= 5)
-                di.GetFiles()[0].Delete();
-        }
-
-        string path = log_directory + "/Scan_" + Manager.Instance.scans.ToString() + ".csv";
-        File.WriteAllText(path, csv);
     }
 
     //private string write_scores()

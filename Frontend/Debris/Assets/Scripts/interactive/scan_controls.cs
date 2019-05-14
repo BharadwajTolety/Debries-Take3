@@ -36,6 +36,7 @@ public class scan_controls : MonoBehaviour
         intersect_obj = 0;
         total = 0;
 
+        Manager.Instance.reset_game();
         update_runList();
     }
 
@@ -228,6 +229,15 @@ public class scan_controls : MonoBehaviour
         //only update playtime right after scan is hit
         Manager.Instance.time_played = playTime;
         Manager.Instance.color_start = false;
+
+        //at this point on_ver and scans are always same, 
+        //scan is updated in read contractor and then both these variables even out in logging
+        //if they are not the same it means we went back to a different version and should empty out ver control when scanned
+        if (Manager.Instance.on_ver != Manager.Instance.scans)
+            verControl.GetComponent<ver_control>().empty_folder();
+
+        runSetup.takeScreenShot_static(wid, hght, 0, 0, 0, 0, true); // take scan pic for experiment analysis accessibility
+        manager.GetComponent<graph_view>().toggle_noti();
         manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
         rerun = false;
     }

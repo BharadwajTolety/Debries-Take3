@@ -16,6 +16,7 @@ public class runSetup : MonoBehaviour
     private bool screenshotdone = false;
     private bool found_brush = false, brush_done = false;
     private bool print_header = false;
+    private bool scan_ease_pic = false;
 
     private static runSetup instance;
     private static int x_, y_, w_, h_;
@@ -61,6 +62,25 @@ public class runSetup : MonoBehaviour
             Texture2D renderResult = new Texture2D(renderTex.width, renderTex.height, TextureFormat.RGBAFloat, false);
             Rect rect = new Rect(x_, y_, w_, h_);
 
+            if (scan_ease_pic)
+            {
+                if (Manager.Instance.playerId == "" || Manager.Instance.sessionId == "")
+                {
+                    Manager.Instance.playerId = "def";
+                    Manager.Instance.sessionId = "def";
+                }
+
+                string log_directory = Application.streamingAssetsPath + "/Database/Output/" + Manager.Instance.playerId + "_" + Manager.Instance.sessionId + "/scan_pics";
+                if (!Directory.Exists(log_directory))
+                {
+                    Directory.CreateDirectory(log_directory);
+                }
+
+                run_image = log_directory + "/scan_" + Manager.Instance.scans + ".png";
+
+                rect = new Rect(x_, y_, renderTex.width, renderTex.height);
+            }
+
             renderResult.ReadPixels(rect, 0, 0);
 
             byte[] byteArr = renderResult.EncodeToPNG();
@@ -72,7 +92,8 @@ public class runSetup : MonoBehaviour
             RenderTexture.ReleaseTemporary(renderTex);
             gameCamera.targetTexture = null;
 
-            screenshot_done(true);
+            if (!scan_ease_pic) // dont done screenshot for scan help pic this is only for run_setup screenshot. I'm getting tired working on this now :(
+                screenshot_done(true);
         }
     }
 
@@ -260,11 +281,41 @@ public class runSetup : MonoBehaviour
         if(found_brush)
         {
             brush_done = true;
-            File.Delete(scanFile);
+            ver_control_file(scanFile);
         }
         csv.AppendLine(line);
 
         File.AppendAllText(path, csv.ToString());
+    }
+
+    //write down the scan file for version control needs
+    private void ver_control_file(string path)
+    {
+        string log_directory = Application.streamingAssetsPath + "/Database/Input/ver_cntrl";
+        if (!Directory.Exists(log_directory))
+        {
+            Directory.CreateDirectory(log_directory);
+        }
+        else
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
+
+            int count = 0;
+            foreach (FileInfo file in di.GetFiles())
+            {
+                if (file.Name.EndsWith(".csv"))
+                {
+                    count++;
+                }
+            }
+
+            if (count >= 5)
+                di.GetFiles()[0].Delete();
+        }
+
+        string newpath = log_directory + "/Scan_" + Manager.Instance.scans.ToString() + ".csv";
+        File.Move(path, newpath);
+        File.Delete(path);
     }
 
     //hacky way to track when screenshot is shot
@@ -279,8 +330,9 @@ public class runSetup : MonoBehaviour
     }
 
     //different values to get the right fit for the screenshot
-    public static void takeScreenShot_static(int width, int height, int x, int y, int w, int h)
+    public static void takeScreenShot_static(int width, int height, int x, int y, int w, int h, bool scan_pic = false)
     {
+        instance.scan_ease_pic = scan_pic;
         instance.takeScreenShot(width , height);
 
         w_ = w;

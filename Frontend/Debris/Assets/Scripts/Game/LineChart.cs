@@ -61,7 +61,7 @@ public class LineChart : MonoBehaviour {
             List<float> time = new List<float>(valueList);
             List<float> profit = new List<float>(valueList2);
 
-            ShowGraph(time, profit, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
+            ShowGraph(time, profit, maxVisibleValue, (int _i) => "S." + (_i + 1));
         }
         else
         {
@@ -88,7 +88,7 @@ public class LineChart : MonoBehaviour {
                 List<float> time = new List<float>(valueList);
                 List<float> profit = new List<float>(valueList2);
 
-                ShowGraph(time, profit, maxVisibleValue, (int _i) => "SCAN." + (_i + 1));
+                ShowGraph(time, profit, maxVisibleValue, (int _i) => "S." + (_i + 1));
             }
         }
     }

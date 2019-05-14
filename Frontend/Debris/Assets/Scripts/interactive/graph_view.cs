@@ -212,6 +212,14 @@ public void update_run_image(Dropdown op)
         }
     }
 
+    public void destroy_some_inter_marks()
+    {
+        foreach (GameObject mark in intersect_marks)
+            Destroy(mark);
+
+        intersect_marks.Clear();
+    }
+
     public void destroy_inter_marks()
     {
         foreach (GameObject mark in intersect_marks)
@@ -271,7 +279,7 @@ public void update_run_image(Dropdown op)
     //just update version control scores every scan
     private void update_verCont()
     {
-        GameObject.Find("ver_control").GetComponent<ver_control>().update_verList();
+        GameObject.Find("ver_control").GetComponent<ver_control>().update_verList(false);
     }
 
     public void error_msg_open()
