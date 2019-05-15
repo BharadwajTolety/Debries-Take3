@@ -131,27 +131,27 @@ public class scan_controls : MonoBehaviour
     {
         GameObject[] themWhiteLines = GameObject.FindGameObjectsWithTag("white");
 
-        if(profit_obj == 1 || time_obj == 1 || intersect_obj ==1 || rerun)
+        if (Manager.Instance.edge_changes > 40 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
         {
-            if (Manager.Instance.edge_changes > 40 || (themWhiteLines.Length > 1 && Manager.Instance.scans < 1))
-            {
-                if (rerun)
-                {
-                    foreach (GameObject blinker in blinkers)
-                        blinker.GetComponent<Toggle>().interactable = true;
-                }
-                else
-                {
-                    foreach (GameObject blinker in blinkers)
-                        blinker.GetComponent<Toggle>().interactable = false;
-                }            
-            }
-            else
+            if (rerun)
             {
                 foreach (GameObject blinker in blinkers)
                     blinker.GetComponent<Toggle>().interactable = true;
             }
+            else
+            {
+                foreach (GameObject blinker in blinkers)
+                    blinker.GetComponent<Toggle>().interactable = false;
+            }
+        }
+        else
+        {
+            foreach (GameObject blinker in blinkers)
+                blinker.GetComponent<Toggle>().interactable = true;
+        }
 
+        if (profit_obj == 1 || time_obj == 1 || intersect_obj ==1)
+        {
             //checks to see if scan should be active or not
             bool noscan = false;
             if (obj)
@@ -172,6 +172,8 @@ public class scan_controls : MonoBehaviour
         {
             scan.GetComponent<Button>().interactable = false;
         }
+
+        rerun = false;
     }
 
     //bunch of checks for making the input buttons function
@@ -228,7 +230,6 @@ public class scan_controls : MonoBehaviour
     {
         //only update playtime right after scan is hit
         Manager.Instance.time_played = playTime;
-        Manager.Instance.color_start = false;
 
         //at this point on_ver and scans are always same, 
         //scan is updated in read contractor and then both these variables even out in logging
@@ -239,7 +240,7 @@ public class scan_controls : MonoBehaviour
         runSetup.takeScreenShot_static(wid, hght, 0, 0, 0, 0, true); // take scan pic for experiment analysis accessibility
         manager.GetComponent<graph_view>().toggle_noti();
         manager.GetComponent<contInfo_Matlab>().read_contractor_info(profit_obj, time_obj, intersect_obj);
-        rerun = false;
+        Manager.Instance.color_start = false;
     }
 
     //submit the current run and log it down.

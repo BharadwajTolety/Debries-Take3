@@ -298,24 +298,10 @@ public class runSetup : MonoBehaviour
         }
         else
         {
-            System.IO.DirectoryInfo di = new DirectoryInfo(log_directory);
-
-            int count = 0;
-            foreach (FileInfo file in di.GetFiles())
-            {
-                if (file.Name.EndsWith(".csv"))
-                {
-                    count++;
-                }
-            }
-
-            if (count >= 5)
-                di.GetFiles()[0].Delete();
+            string newpath = log_directory + "/" + Manager.Instance.scans.ToString() + "_Scan.csv";
+            File.Move(path, newpath);
+            File.Delete(path);
         }
-
-        string newpath = log_directory + "/Scan_" + Manager.Instance.scans.ToString() + ".csv";
-        File.Move(path, newpath);
-        File.Delete(path);
     }
 
     //hacky way to track when screenshot is shot

@@ -107,7 +107,7 @@ public class contInfo_Matlab : classSocket
         Debug.Log("writting complete!! total edges - " + count_edges);
 
         //setup the client for the matlab server to read
-        if(run_count != Manager.Instance.run || rerun) //|| (Manager.Instance.scans == 1 && !rerun))
+        if(run_count != Manager.Instance.run || rerun || (Manager.Instance.scans == 1 && !Manager.Instance.color_start))
         {
             run_count = Manager.Instance.run;
             setupSocket(true);

@@ -200,23 +200,23 @@ public class badEdge_blinkers : MonoBehaviour {
 
     void update_bad(GameObject[] lines, string bad_edge, bool on)
     {
-        Vector3 wobble = new Vector3(.3f, .3f, 0);
+        Vector3 wobble = new Vector3(.1f, .1f, 0);
 
         foreach (GameObject line in lines)
         {
-            Color lineColor = line.GetComponent<SpriteRenderer>().color;
+            //Color lineColor = line.GetComponent<SpriteRenderer>().color;
 
             if (line.name.EndsWith("_" + bad_edge))
             {
                 if(on)
                 {
-                    //line.GetComponent<SpriteRenderer>().color = Color.yellow;
-                    line.GetComponent<Transform>().localScale += wobble;
+                    line.GetComponent<SpriteRenderer>().color = new Color(1,1,1,0.2f);
+                    //line.GetComponent<Transform>().localScale += wobble;
                 }
                 else
                 {
-                    //line.GetComponent<SpriteRenderer>().color = lineColor;
-                    line.GetComponent<Transform>().localScale -= wobble;
+                    line.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1) ;
+                    //line.GetComponent<Transform>().localScale -= wobble;
                 }
             }
         }

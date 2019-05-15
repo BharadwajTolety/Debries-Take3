@@ -101,7 +101,7 @@ public class mapBrushing : MonoBehaviour
             string edgeName = updateEdge.Key;
 
             GameObject NewObj = GameObject.Find(updateEdge.Value);
-            GameObject theSelectedObj = new GameObject();
+            GameObject theSelectedObj = null;
 
             foreach (GameObject go in allGameObjects)
             {

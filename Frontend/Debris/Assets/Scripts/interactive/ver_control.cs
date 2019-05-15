@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -56,10 +58,26 @@ public class ver_control : MonoBehaviour
         else
         {
             System.IO.DirectoryInfo di = new DirectoryInfo(ver_directory);
+            FileInfo[] files = di.GetFiles("*.csv");
+
+            for (int i = 0; i < files.Length-1; i++)
+            {
+                for (int j = 0; j < files.Length - i-1; j++)
+                {
+                    int val = int.Parse(files[j].Name.Substring(0, files[j].Name.IndexOf("_")));
+                    int val2 = int.Parse(files[j + 1].Name.Substring(0, files[j + 1].Name.IndexOf("_"))); ;
+                    if (val > val2)
+                    {
+                        FileInfo temp = files[j];
+                        files[j] = files[j + 1];
+                        files[j + 1] = temp;
+                    }
+                }
+            }
 
             if (restart)
             {
-                foreach (FileInfo file in di.GetFiles())
+                foreach (FileInfo file in files)
                 {
                     file.Delete();
                 }
@@ -69,9 +87,9 @@ public class ver_control : MonoBehaviour
             }
             else
             {
-                foreach (FileInfo file in di.GetFiles())
+                foreach (FileInfo file in files)
                 {
-                    string s = file.Name.Substring(5,1);
+                    string s = file.Name.Substring(0, file.Name.IndexOf("_"));
                     int ver = (int.Parse(s));
                     if (ver > Manager.Instance.on_ver)
                         file.Delete();
@@ -102,10 +120,9 @@ public class ver_control : MonoBehaviour
             if (count_ver < Manager.Instance.scans)
             {
                 count_ver++;
-                if (ver_cont < 5)
+                if (ver_cont < ver_buttons.Length)
                     ver_cont++;
             }
-
             //for (int i = (ver_cont - 1); i >= 0; i--)
             //{
             //    Button vers_button = ver_buttons[i];
@@ -119,19 +136,47 @@ public class ver_control : MonoBehaviour
             //}
 
             System.IO.DirectoryInfo di = new DirectoryInfo(ver_directory);
-            int text_number = 0;
-            for (int k = di.GetFiles().Length - 1; k >= 0; k--)
-                if (di.GetFiles()[k].Name.EndsWith(".csv"))
-                    text_number++;
-                
-            for (int i = 0, j = di.GetFiles().Length - 1; j >= 0 ; j--)
+            FileInfo[] files = di.GetFiles("*.csv");
+
+            //sort that file array based on those names; bubble sort coz why is name sort like not already a thing in this getfiles method?
+            for(int i = 0; i<files.Length-1; i++)
             {
-                if (di.GetFiles()[j].Name.EndsWith(".csv"))
+                for(int j = 0; j<files.Length-i-1;j++)
+                {
+                    int val = int.Parse(files[j].Name.Substring(0, files[j].Name.IndexOf("_")));
+                    int val2 = int.Parse(files[j + 1].Name.Substring(0, files[j + 1].Name.IndexOf("_")));
+                    if (val > val2)
+                    {
+                        FileInfo temp = files[j];
+                        files[j] = files[j + 1];
+                        files[j + 1] = temp;
+                    }
+                }
+            }
+
+            int text_number = 0;
+            for (int k = files.Length - 1; k >= 0; k--)
+                if (files[k].Name.EndsWith(".csv"))
+                    text_number++;
+
+            if(text_number > ver_buttons.Length)
+            {
+                for (int i = 0; i < files.Length; i++)
+                    if (files[i].Name.EndsWith(".csv"))
+                    {
+                        files[i].Delete();
+                        break;
+                    }
+            }
+
+            for (int i = 0, j = files.Length-1; j >= 0 ; j--)
+            {
+                if (files[j].Name.EndsWith(".csv") && i<ver_buttons.Length)
                 {
                     ver_buttons[i].interactable = true;
-                    ver_buttons[i].name = di.GetFiles()[j].Name.Substring(5, 1);
-                    ver_buttons[i].gameObject.GetComponent<Text>().text = text_number.ToString();
-                    text_number--;
+                    int length_ver_name = files[j].Name.IndexOf("_");
+                    ver_buttons[i].name = files[j].Name.Substring(0, length_ver_name);
+                    ver_buttons[i].gameObject.GetComponent<Text>().text = files[j].Name.Substring(0, length_ver_name);
                     i++;
                 }
             }
@@ -191,7 +236,7 @@ public class ver_control : MonoBehaviour
 
     public void update_mapVer(GameObject ver)
     {
-        string total = ver.tag.Substring(4,1);
+        string total = ver.tag.Substring(4);
         //the version name should only be the version number
         if (read_scanFile(ver.name))
         {
@@ -241,7 +286,7 @@ public class ver_control : MonoBehaviour
     private bool read_scanFile(string ver)
     {
         map.Clear();
-        string scanFile = Application.streamingAssetsPath + "/Database/Input/ver_cntrl/Scan_" + (ver) + ".csv";
+        string scanFile = Application.streamingAssetsPath + "/Database/Input/ver_cntrl/" + (ver) + "_Scan.csv";
 
         if(!File.Exists(scanFile))
         {
